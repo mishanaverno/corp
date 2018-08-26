@@ -1,6 +1,6 @@
 map:
 xSize:7
-ySize:8
+zSize:8
 levels:1
 level:0
 0|0|0|0|0|0|0|3

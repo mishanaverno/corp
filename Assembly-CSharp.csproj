@@ -113,6 +113,7 @@
     <Compile Include="Assets\Scripts\CombatMap\CameraZoom.cs" />
     <Compile Include="Assets\Scripts\CombatMap\Game\GameController.cs" />
     <Compile Include="Assets\Scripts\CombatMap\Game\GameManager.cs" />
+    <Compile Include="Assets\Scripts\CombatMap\Game\StageConstructor.cs" />
     <Compile Include="Assets\Scripts\CombatMap\Map\CellController.cs" />
     <Compile Include="Assets\Scripts\CombatMap\Map\ControllZoneController.cs" />
     <Compile Include="Assets\Scripts\CombatMap\Map\MapGenerator.cs" />

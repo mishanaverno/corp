@@ -7,7 +7,8 @@ using Units;
 namespace Game{
 	[System.Serializable]
 	public class GameManager : MonoBehaviour {
-		
+
+        
 		public int[,,] incomingMap;
 		public GameObject floorPrefab;
 		public GameObject halfShelterPrefab;
@@ -22,7 +23,8 @@ namespace Game{
 		public List<Unit> enemyUnits = new List<Unit>();
 		// Use this for initialization
 		void Start () {
-			incomingMap = MapLoader.LoadMap ("test.txt");
+            int[,,] newMap = StageConstructor.Construct();
+            incomingMap = MapLoader.LoadMap ("test.txt");
 			teams.Add (new Team ("Master", "Player"));
 			teams.Add (new Team ("Enemy", "AI"));
 			playerUnits.Add (new Unit ("Igor Svezdov-pezdof", teams.Find (x => x.title == "Master"), 10, 8)); 
