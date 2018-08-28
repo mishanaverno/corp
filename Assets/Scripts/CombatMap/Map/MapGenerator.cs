@@ -46,12 +46,7 @@ public class MapGenerator : MonoBehaviour {
 		private void GenerateCell(GameObject prefab, Vector3 position, bool movable){// метод генерации клетки
 			GameObject cellInstance = Instantiate (prefab, position, Quaternion.identity, this.transform) as GameObject; 
 			cellInstance.transform.name = "cell-[" + position.x + "," + position.z + "]:" + position.y;
-			Node node = new Node();
-			node.x = Mathf.RoundToInt(position.x);
-			node.y = Mathf.RoundToInt(position.z);
-			node.level = Mathf.RoundToInt(position.y);
-			node.isWalkable = movable;
-			node.busy = false;
+			Node node = new Node(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z), Mathf.RoundToInt(position.y), movable);
 			node.Cell = cellInstance;
 			CellController cellController = cellInstance.GetComponent<CellController> ();
 			cellController.node = node;

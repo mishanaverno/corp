@@ -9,18 +9,18 @@ namespace Units{
 		public List<Unit> playerUnits = new List<Unit>();
 		public List<Unit> enemyUnits = new List<Unit>();
 		private List<Unit> allUnits = new List<Unit>();
-		Node node; 
+		public Node node; 
 		void Start () {
 			int startx = 0;
 			int starty = 0;
-			foreach (Unit playerUnit in playerUnits) {
+            foreach (Unit playerUnit in playerUnits) {
 				GeneratePlayerUnit (GameManager.instance.Unit, startx, starty, MapManager.instance.map, playerUnit);
 				startx++;
 				starty++;
 			}
 			GenerateEnemyUnit (GameManager.instance.EnemyUnit, 3, 6, 0, MapManager.instance.map, enemyUnits [0]);
 
-			UnitsController.instance.enabled = true;
+            UnitsController.instance.enabled = true;
 			GameController.instance.allUnits = allUnits;
 			Destroy (this);
 		}

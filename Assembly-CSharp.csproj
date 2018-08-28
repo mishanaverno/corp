@@ -100,9 +100,16 @@
     <Compile Include="Assets\Cinemachine\Timeline\CinemachineShot.cs" />
     <Compile Include="Assets\Cinemachine\Timeline\CinemachineTrack.cs" />
     <Compile Include="Assets\Classes\MapLoader.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\BaseMentFloor.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\CRD.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\Floor.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\Node.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\NodeLink.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\Painter.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\Pathfinder.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\RCT.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\Road.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\Stage.cs" />
     <Compile Include="Assets\Classes\Team.cs" />
     <Compile Include="Assets\Classes\Unit.cs" />
     <Compile Include="Assets\GridBase.cs" />

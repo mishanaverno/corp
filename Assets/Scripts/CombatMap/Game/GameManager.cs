@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Map;
 using Units;
-  // скрипт получающий стартовые данные для игры, карту, юнитов, команды, префабы
-namespace Game{
-	[System.Serializable]
+// скрипт получающий стартовые данные для игры, карту, юнитов, команды, префабы
+namespace Game
+{
+    [System.Serializable]
 	public class GameManager : MonoBehaviour {
-
         
 		public int[,,] incomingMap;
 		public GameObject floorPrefab;
@@ -23,7 +22,8 @@ namespace Game{
 		public List<Unit> enemyUnits = new List<Unit>();
 		// Use this for initialization
 		void Start () {
-            int[,,] newMap = StageConstructor.Construct();
+            StageConstructor SC = new StageConstructor();
+
             incomingMap = MapLoader.LoadMap ("test.txt");
 			teams.Add (new Team ("Master", "Player"));
 			teams.Add (new Team ("Enemy", "AI"));
