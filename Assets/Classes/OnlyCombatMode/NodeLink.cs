@@ -1,16 +1,19 @@
 ﻿
+using UnityEngine;
+
 namespace Map {
     public class NodeLink
     {
         public float w;
-        private Node[] linkedNodes;
+        private Node from;
+        private Node to;
 
-        public NodeLink(Node node1, Node node2, float w)
+        public NodeLink(Node from, Node to, float w)
         {
             this.w = w;
-            this.linkedNodes = new Node[2];
-            this.linkedNodes[0] = node1;
-            this.linkedNodes[1] = node2;
+            this.from = from;
+            this.to = to;
+            Debug.Log("link from:" + from.crd.x + "," + from.crd.z + " to:" + to.crd.x + "," + to.crd.z + " w:"+ w);
         }
     }
 }

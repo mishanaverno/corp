@@ -1,16 +1,17 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Map
-{
-    public class CRD : Object
+{   [Serializable]
+    public class CRD
     {
-        public int x, z, level;
         
-        public CRD(int x, int z, int level)
+        public int x, z;
+        
+        public CRD(int x, int z)
         {
             this.x = x;
             this.z = z;
-            this.level = level;
         } 
     }
 

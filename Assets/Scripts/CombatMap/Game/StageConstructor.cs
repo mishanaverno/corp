@@ -8,7 +8,9 @@ namespace Map
         public Stage stage;
         public StageConstructor()
         {
-            stage = new Stage(2, 5, 5, false);
+            stage = new Stage(2, 3, 3, true);
+            string json = JsonUtility.ToJson(stage);
+            Debug.Log(json);
         }
     }
    

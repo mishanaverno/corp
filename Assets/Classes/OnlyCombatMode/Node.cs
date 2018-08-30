@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Map
 {						// класс описывающий модель данных клетки поля, хранит все данные о состоянии клетки
-	public class Node {
-
-		public int x; // позиция по оси X
-		public int z; // позиция по оси Z
+    public class Node {
+        [SerializeField]
+        public CRD crd;
+        public int x; // позиция по оси X
+        public int z; // позиция по оси Z
         public int y; // УДАЛИТЬ
 		public int level; //этаж
 		// переменные необходимые для поиска пути из точки в которой стоит юнит, далее стартовая точка, в ту на которую наведен курсор, даллее конечная точка
@@ -14,40 +16,44 @@ namespace Map
 		public float gCost; // расстояние от стартовой точки
 		public float fCost; // сумма растояний от стартовой, до конечной точек
 		public Node parentNode; // ссылка на клетку из которой пришел Pathfinder, при поиске пути
-
-		public bool isWalkable; // проходима ли клетка для юнитов
-		public bool busy; // занята ли клетка каким-либо юнитом
-		public GameObject Cell; // ссылка на объект в сцене, представляющий клетку
+        [SerializeField]
+        public bool isWalkable; // проходима ли клетка для юнитов
+        [SerializeField]
+        public bool busy; // занята ли клетка каким-либо юнитом
+        [SerializeField]
+        public GameObject Cell; // ссылка на объект в сцене, представляющий клетку
+        [SerializeField]
         public List<NodeLink> links;
+        [SerializeField]
         public Floor floor;
-        //ПОЗЖЕ УДАЛИТЬ
+        //----------ПОЗЖЕ УДАЛИТЬ--------
         public Node(int x, int z, int floor, bool movable)
         {
+            this.crd = new CRD(x, z);
             this.x = x;
             this.z = z;
             this.level = floor;
             this.busy = false;
             this.isWalkable = movable;
+            this.links = new List<NodeLink>();
         }
+        // -------------------
         public Node(int x, int z, Floor floor, bool movable)
         {
+            this.crd = new CRD(x, z);
             this.x = x;
             this.z = z;
             this.y = z;
             this.floor = floor;
             this.busy = false;
             this.isWalkable = movable;
+            this.links = new List<NodeLink>();
         }
         public void refreshFCost(){ // метод вычисляющий fCost, должен вызыватся при изменении hCost или gCost
 			fCost = hCost + gCost;
 		}
         //ПЕРЕПИСАТЬ->
-        public class Shelters : Object { // класс описывающий модель данных укрытий для юнита находящегося в текущей клетке
-			public int top; // верх по X
-			public int bot; // низ по X
-			public int left; // верх по Y
-			public int right; // низ по Y
-		}
+
        
 		public Shelters shelters; // поле для хранения данных об укрытиях
 		public void InitShelters(int[,,] incomingMap){ //  метод инициирующий, проверяющий соседние клетки, и сохраняющий данные об укрытиях в переменную shelters
@@ -73,8 +79,15 @@ namespace Map
 
 		}
         //<-ПЕРЕПИСАТЬ
-        public void LinkSiblings() {
-
+        public void LinkNode(Node node, float w) {
+            NodeLink link = new NodeLink(this, node, w);
+            if (!this.links.Contains(link))
+            {
+                this.links.Add(link);
+            }
+        }
+        public void UnlinkNode(Node node)
+        {
         }
         public void OccupyNode(){ // метод осуществляющий занятие клетки юнитом, должен вызываться при остановке юнита в клетке 
 	    	busy = true; // не дает другим юнитам стать сюда
@@ -85,4 +98,11 @@ namespace Map
 	    	Cell.GetComponent<CellController> ().HideCellShelters (); // скрывает значки укрытий
 	    }
 	}
+    public class Shelters
+    { // класс описывающий модель данных укрытий для юнита находящегося в текущей клетке
+        public int top; // верх по X
+        public int bot; // низ по X
+        public int left; // верх по Y
+        public int right; // низ по Y
+    }
 }
