@@ -13,12 +13,12 @@ public class MapGenerator : MonoBehaviour {
 			incomingMap = GameManager.instance.incomingMap; // получение карты высот из Game Managera
 			CameraMoving.instance.SetMapLengths (incomingMap.GetLength (1), incomingMap.GetLength (2));// передаем в скрипт камеры размерность игрового поля
 			map = new Node[incomingMap.GetLength (0), incomingMap.GetLength (1), incomingMap.GetLength (2)]; // инициализация массива с клетками с размерностью карты высот
- 			RenderGamefield (incomingMap); // вызов методда отображения игровых клеток в сцене
+ 			//RenderGamefield (incomingMap); // вызов методда отображения игровых клеток в сцене
 			MapManager.instance.map = map; // передает полученую карту в MapManager
 			MapManager.instance.enabled = true; // делает MapManager актвным
 			Destroy (this); // уничтожает себя
 		}
-	
+	/*
 		private void RenderGamefield(int[,,] incomingMap){// метод отображения карты, позже будет переделан
 			int levelCount = incomingMap.GetLength (0);
 			int sizeY = incomingMap.GetLength (2);
@@ -57,7 +57,7 @@ public class MapGenerator : MonoBehaviour {
 
 			this.map[node.level,node.x,node.y] = node;
 		}
-
+        */
 	
 		public static MapGenerator instance;
 		void Awake(){

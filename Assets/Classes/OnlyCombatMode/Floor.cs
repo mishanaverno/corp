@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Map
@@ -8,7 +9,7 @@ namespace Map
         [SerializeField]
         public int number;
         public Node[,] map;
-        protected Stage stage;
+        public Stage stage;
         protected RCT rct;
         [SerializeField]
         protected bool defaultIsWalkable;
@@ -18,6 +19,7 @@ namespace Map
             this.stage = stage;
             this.rct = new RCT(new CRD(0, 0), stage.height, stage.width);
             map = new Node[stage.height,stage.width];
+                
         }
         public virtual void Init()
         {
@@ -34,22 +36,23 @@ namespace Map
                 {
                     Node node = new Node(x, z, this, defaultIsWalkable);
                     map[x, z] = node;
-                    string json = JsonUtility.ToJson(node);
-                    Debug.Log(json);
+                    stage.childNodes.Add(node);
+                   // string json = JsonUtility.ToJson(node);
+                    //Debug.Log(json);
                 }
             }
         }
-        protected void LinkNodes()
+        public void LinkNodes()
         {
             //+++++++++++++++++++++++++++++++++++++
-            Debug.Log("Generate floor " + number);
+            Debug.Log("Linked floor " + number);
             //+++++++++++++++++++++++++++++++++++++
             for (int fx = 0; fx < stage.height; fx++)
             {
                 for(int fz = 0; fz < stage.width; fz++)
                 {
                     Node currentNode = GetNode(fx, fz);
-                    Debug.Log("Node -------- " + currentNode.crd.x + "," + currentNode.crd.z);
+                    //Debug.Log("Node -------- " + currentNode.crd.x + "," + currentNode.crd.z);
                     for (int x = -1; x <= 1; x++)
                     {
                         for(int z = -1; z <= +1; z++)
@@ -72,6 +75,20 @@ namespace Map
                             currentNode.LinkNode(sibblingnode, w);
                         }
                     }
+                }
+            }
+        }
+        public void GenerateCells()
+        {
+            //+++++++++++++++++++++++++++++++++++++
+            Debug.Log("Generate cells " + number);
+            //+++++++++++++++++++++++++++++++++++++
+            for(int x = 0; x < stage.height; x++)
+            {
+                for(int z = 0; z < stage.width; z++)
+                {
+                    Node node = GetNode(x, z);
+                    node.GenerateCell();
                 }
             }
         }

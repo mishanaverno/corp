@@ -13,7 +13,7 @@ namespace Map {
             this.w = w;
             this.from = from;
             this.to = to;
-            Debug.Log("link from:" + from.crd.x + "," + from.crd.z + " to:" + to.crd.x + "," + to.crd.z + " w:"+ w);
+           // Debug.Log("link from:" + from.crd.x + "," + from.crd.z + " to:" + to.crd.x + "," + to.crd.z + " w:"+ w);
         }
     }
 }

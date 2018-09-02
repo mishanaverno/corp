@@ -22,18 +22,22 @@ namespace Game
 		public List<Unit> enemyUnits = new List<Unit>();
 		// Use this for initialization
 		void Start () {
-            StageConstructor SC = new StageConstructor();
+            StageConstructor Constructor = new StageConstructor();
+            Constructor.CreateStage(1, 6, 6, false, "Dev");
+            Constructor.AddStreet(1, 'h', 1, 1);
+            Constructor.AddStreet(1, 'v', 2, 1);
+            Constructor.UpgradeStreets();
 
-            
-			//teams.Add (new Team ("Master", "Player"));
-			//teams.Add (new Team ("Enemy", "AI"));
-			//playerUnits.Add (new Unit ("Igor Svezdov-pezdof", teams.Find (x => x.title == "Master"), 10, 8)); 
-			//playerUnits.Add (new Unit ("Alexander Sukinsin", teams.Find (x => x.title == "Master"), 10, 8));
-			//UnitsGenerator.instance.playerUnits = playerUnits;
-			//enemyUnits.Add (new Unit ("Angry Sailon", teams.Find (x => x.title == "Enemy"), 8, 7));
-			//UnitsGenerator.instance.enemyUnits = enemyUnits;
 
-		}
+            //teams.Add (new Team ("Master", "Player"));
+            //teams.Add (new Team ("Enemy", "AI"));
+            //playerUnits.Add (new Unit ("Igor Svezdov-pezdof", teams.Find (x => x.title == "Master"), 10, 8)); 
+            //playerUnits.Add (new Unit ("Alexander Sukinsin", teams.Find (x => x.title == "Master"), 10, 8));
+            //UnitsGenerator.instance.playerUnits = playerUnits;
+            //enemyUnits.Add (new Unit ("Angry Sailon", teams.Find (x => x.title == "Enemy"), 8, 7));
+            //UnitsGenerator.instance.enemyUnits = enemyUnits;
+
+        }
 
 		public static GameManager instance;
 		void Awake(){

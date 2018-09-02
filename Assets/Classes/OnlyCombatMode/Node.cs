@@ -6,6 +6,7 @@ namespace Map
 {						// класс описывающий модель данных клетки поля, хранит все данные о состоянии клетки
     public class Node {
         [SerializeField]
+        public string name;
         public CRD crd;
         public int x; // позиция по оси X
         public int z; // позиция по оси Z
@@ -26,18 +27,7 @@ namespace Map
         public List<NodeLink> links;
         [SerializeField]
         public Floor floor;
-        //----------ПОЗЖЕ УДАЛИТЬ--------
-        public Node(int x, int z, int floor, bool movable)
-        {
-            this.crd = new CRD(x, z);
-            this.x = x;
-            this.z = z;
-            this.level = floor;
-            this.busy = false;
-            this.isWalkable = movable;
-            this.links = new List<NodeLink>();
-        }
-        // -------------------
+ 
         public Node(int x, int z, Floor floor, bool movable)
         {
             this.crd = new CRD(x, z);
@@ -47,10 +37,16 @@ namespace Map
             this.floor = floor;
             this.busy = false;
             this.isWalkable = movable;
+            this.name = "cell-[" + x + "," + z + "]:" + floor.number;
             this.links = new List<NodeLink>();
         }
         public void refreshFCost(){ // метод вычисляющий fCost, должен вызыватся при изменении hCost или gCost
 			fCost = hCost + gCost;
+		}
+        public void GenerateCell(){// метод генерации клетки
+            Vector3 position = new Vector3(crd.x, floor.number, crd.z);
+            GameObject cellInstance = GameObject.Instantiate (Resources.Load("Stage/" + floor.stage.DesignName + "/GroundNode/0/Cell"), position, Quaternion.identity) as GameObject;
+            cellInstance.transform.name = "cell-[" + position.x + "," + position.z + "]:" + position.y;
 		}
         //ПЕРЕПИСАТЬ->
 
