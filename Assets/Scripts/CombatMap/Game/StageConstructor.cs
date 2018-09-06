@@ -22,12 +22,14 @@ namespace Map
            if (axis == 'v')
             {
                 rct = new RCT(new CRD(0, start), width + sidewalk * 2, stage.height);
+                //Debug.Log("RCT " + rct.Start.x + "," + rct.Start.z + ":" + rct.End.x + "," + rct.End.z + " h: " + rct.Height + " w: " + rct.Width);
             }
             else
             {
                 rct = new RCT(new CRD(start, 0), stage.width, width + sidewalk * 2);
+                //Debug.Log("RCT " + rct.Start.x + "," + rct.Start.z + ":" + rct.End.x + "," + rct.End.z + " h: " + rct.Height + " w: " + rct.Width);
             }
-            stage.CreateStreet(rct, sidewalk);
+            stage.CreateStreet(rct, axis, sidewalk);
         }
         public void UpgradeStreets()
         {
@@ -37,6 +39,15 @@ namespace Map
                 {
                     Street street = stage.childElements[i] as Street;
                     street.Upgrade();
+                }
+                else if(stage.childElements[i] is Crossroad)
+                {
+                    Crossroad crossroad = stage.childElements[i] as Crossroad;
+                    crossroad.Upgrade();
+                    for (int k = 0; k < crossroad.childElements.Count; k++)
+                    {
+                        crossroad.childElements[k].NodesToConsole();
+                    }
                 }
             }
         }
