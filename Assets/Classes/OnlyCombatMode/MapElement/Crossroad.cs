@@ -12,7 +12,7 @@ namespace Map
             this.hsidewalk = hsidewalk;
             this.vsidewalk = vsidewalk;
         }
-        public void Upgrade()
+        public override void Upgrade()
         {
             if(vsidewalk>0 && hsidewalk > 0)
             {
@@ -69,10 +69,10 @@ namespace Map
                 intersection.parentElement = this;
                 intersection.moveNodesFromMapElementToThis(this);
             }
-            for (int i = 0; i < this.childElements.Count; i++)
+            /*for (int i = 0; i < this.childElements.Count; i++)
             {
                 childElements[i].NodesToConsole();
-            }
+            }*/
 
 
         }

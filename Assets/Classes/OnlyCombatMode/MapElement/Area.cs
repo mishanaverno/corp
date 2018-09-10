@@ -8,7 +8,7 @@ namespace Map
     {
         public Area(RCT rct) : base(rct)
         {
-
+            surface = "Ground";
         }
         public Area cutArea(char axis, int width, int start)
         {

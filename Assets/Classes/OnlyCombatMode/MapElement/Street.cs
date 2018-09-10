@@ -47,7 +47,7 @@ namespace Map
             }
             return newStreet;
         }
-        public void Upgrade()
+        public override void Upgrade()
         {
             
             RCT road;
@@ -62,10 +62,7 @@ namespace Map
             }
             //Debug.Log("ROAD RCT " + road.Start.x + "," + road.Start.z + ":" + road.End.x + "," + road.End.z + " h: " + road.Height + " w: " + rct.Width);
             List<RCT> rcts = RCT.Cuttind(this.rct, road);
-            for (int i = 0; i < rcts.Count; i++)
-            {
-                Debug.Log(rcts[i].Start.x + "," + rcts[i].Start.z + " : " + rcts[i].End.x + "," + rcts[i].End.z);
-            }
+            
             for (int i = 0; i < rcts.Count; i++)
             {
                 if (rcts[i].Equals(road))
@@ -74,6 +71,7 @@ namespace Map
                     newRoad.moveNodesFromMapElementToThis(this);
                     newRoad.parentElement = this;
                     this.childElements.Add(newRoad);
+                   
                 }
                 else
                 {
@@ -83,11 +81,11 @@ namespace Map
                     this.childElements.Add(newSidewalk);
                 }
             }
-            this.NodesToConsole();      
+            /*this.NodesToConsole();      
             for(int i = 0; i < this.childElements.Count; i++)
             {
                 childElements[i].NodesToConsole();
-            }
+            }*/
 
         }
     }

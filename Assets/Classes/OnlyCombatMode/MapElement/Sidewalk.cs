@@ -9,7 +9,8 @@ namespace Map
         char axis;
         public Sidewalk(RCT rct, char axis) : base(rct)
         {
-
+            this.axis = axis;
+            surface = "Sidewalk";
         }
     }
 }

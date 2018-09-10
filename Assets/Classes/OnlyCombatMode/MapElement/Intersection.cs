@@ -8,7 +8,7 @@ namespace Map
     {
         public Intersection(RCT rct) : base(rct)
         {
-
+            surface = "Road";
         }
     }
 }

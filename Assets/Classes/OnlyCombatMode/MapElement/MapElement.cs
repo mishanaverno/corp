@@ -9,6 +9,7 @@ namespace Map
         public MapElement parentElement;
         public List<Node> childNodes;
         public RCT rct;
+        public string surface = "";
         public static int iterator = 0;
         public int id;
 
@@ -37,7 +38,6 @@ namespace Map
         }
         public void moveNodesFromMapElementToThis(MapElement from) 
         {
-            Debug.Log("MOVING: "+from.ToString()+"->"+this.ToString());
             for (int i = 0; i < from.childNodes.Count; i++)
             {
                 Node node = from.childNodes[i];
@@ -48,9 +48,11 @@ namespace Map
                     //Debug.Log("MOVE NODE: "+node.name);
                 }
             }
+            Debug.Log("Nodes moving from: "+from.ToString()+" to: "+this.ToString());
         }
         public void moveNode(int index, MapElement from, MapElement to)
         {
+            from.childNodes[index].ChangeSurface(to.surface);
             to.childNodes.Add(from.childNodes[index]);
             from.childNodes.RemoveAt(index);
         }
@@ -79,6 +81,33 @@ namespace Map
                 Debug.Log(this.childNodes[i].name);
             }
 
+        }
+        public virtual void setNodeDirections()
+        {
+
+        }
+        public void UpgradeChildElements()
+        {
+            for(int i = 0; i < childElements.Count; i++)
+            {
+                childElements[i].Upgrade();
+                //Debug.Log(childElements[i].GetType() + " CHILD ELEMENTS COUNT: " + childElements[i].childElements.Count);
+                childElements[i].UpgradeChildElements();
+            }
+        }
+        public virtual void Upgrade()
+        {
+
+        }
+        public void addNewElements(List<MapElement> newMapElements)
+        {
+            for (int i = 0; i < newMapElements.Count; i++)
+            {
+                newMapElements[i].parentElement = this;
+                newMapElements[i].moveNodesFromMapElementToThis(this);
+                this.childElements.Add(newMapElements[i]);
+                Debug.Log("NE NODE Count: " + newMapElements[i].childNodes.Count);
+            }
         }
     }
    

@@ -81,7 +81,7 @@ namespace Map
         public RCT(CRD start, int width, int height)
         {
             this.end = new CRD(start.x + height - 1, start.z + width - 1);
-            this.start = start;
+            this.start = new CRD(start.x, start.z);
             this.width = width;
             this.height = height;
             this.sq = width * height;
@@ -89,11 +89,15 @@ namespace Map
         }
         public RCT(CRD start, CRD end)
         {
-            this.end = end;
-            this.start = start;
+            this.end = new CRD(end.x, end.z);
+            this.start = new CRD(start.x, start.z);
             this.width = end.z - start.z + 1;
             this.height = end.x - start.x + 1;
             this.sq = width * height;
+        }
+        public void CalcSq()
+        {
+            this.sq = this.width * this.height;
         }
         public bool isContainCRD(CRD crd)
         {
@@ -172,6 +176,12 @@ namespace Map
                 return false;
             }
         }
+
+        public RCT Clone()
+        {
+            return new RCT(new CRD(this.start.x, this.start.z), new CRD(this.end.x, this.end.z));
+        }
+
     }
 }
 

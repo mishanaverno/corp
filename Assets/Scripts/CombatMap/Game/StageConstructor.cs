@@ -19,6 +19,14 @@ namespace Map
         public void AddStreet(int start, char axis, int width, int sidewalk)
         {
             RCT rct;
+            if (width < 2)
+            {
+                width = 2;
+            }
+            if (width == 3)
+            {
+                width++;
+            }
            if (axis == 'v')
             {
                 rct = new RCT(new CRD(0, start), width + sidewalk * 2, stage.height);
@@ -31,24 +39,16 @@ namespace Map
             }
             stage.CreateStreet(rct, axis, sidewalk);
         }
-        public void UpgradeStreets()
+        public void Upgrade()
         {
-            for(int i = 0; i < stage.childElements.Count; i++)
+            stage.UpgradeChildElements();
+            
+        }
+        public void RenderStage()
+        {
+            for(int i = 0; i < stage.floors.Length; i++)
             {
-                if(stage.childElements[i] is Street)
-                {
-                    Street street = stage.childElements[i] as Street;
-                    street.Upgrade();
-                }
-                else if(stage.childElements[i] is Crossroad)
-                {
-                    Crossroad crossroad = stage.childElements[i] as Crossroad;
-                    crossroad.Upgrade();
-                    for (int k = 0; k < crossroad.childElements.Count; k++)
-                    {
-                        crossroad.childElements[k].NodesToConsole();
-                    }
-                }
+                stage.floors[i].GenerateCells();
             }
         }
 

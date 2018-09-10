@@ -27,6 +27,10 @@ namespace Map
         public List<NodeLink> links;
         [SerializeField]
         public Floor floor;
+        public string order = "Default";
+        public string surface = "Ground";
+        public int prefabNumber = 0;
+        public string direction = "r";
  
         public Node(int x, int z, Floor floor, bool movable)
         {
@@ -44,10 +48,18 @@ namespace Map
 			fCost = hCost + gCost;
 		}
         public void GenerateCell(){// метод генерации клетки
+            GenerateSurface();
+        }
+        private void GenerateSurface()
+        {
             Vector3 position = new Vector3(crd.x, floor.number, crd.z);
-            GameObject cellInstance = GameObject.Instantiate (Resources.Load("Stage/" + floor.stage.DesignName + "/GroundNode/0/Cell"), position, Quaternion.identity) as GameObject;
+            GameObject cellInstance = GameObject.Instantiate (Resources.Load("Stage/" + this.floor.stage.DesignName + "/Premetives/Surface/"+this.surface+"/" + this.order+"/"+this.prefabNumber), position, Quaternion.identity) as GameObject;
             cellInstance.transform.name = "cell-[" + position.x + "," + position.z + "]:" + position.y;
-		}
+        }
+        public void ChangeSurface(string surface)
+        {
+                this.surface = surface;
+        }
         //ПЕРЕПИСАТЬ->
 
        

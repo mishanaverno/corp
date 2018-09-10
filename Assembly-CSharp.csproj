@@ -109,6 +109,9 @@
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Intersection.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\MapElement.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Road.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\RoadLine.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\RoadSafetyZone.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\RoadStripe.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Sidewalk.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Stage.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Street.cs" />

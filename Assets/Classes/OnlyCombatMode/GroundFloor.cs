@@ -14,7 +14,6 @@ namespace Map
         {
             GenerateNodes();
             LinkNodes();
-            GenerateCells();
             Area area = new Area(rct);
             area.moveNodesFromMapElementToThis(this.stage);
             this.stage.childElements.Add(area);
