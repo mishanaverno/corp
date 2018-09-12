@@ -51,8 +51,8 @@ namespace Map
 
                 RCT rct = new RCT(roadRCT.Start, this.rct.Width, firststripeWidth * 2);
                 RoadStripe firsrStripe = new RoadStripe(rct, axis);
-                Debug.Log("ROADSTRIPE FIRST RCT" + firsrStripe.rct.Start.x + "," + firsrStripe.rct.Start.z + ":" + firsrStripe.rct.End.x + ","
-                    + firsrStripe.rct.End.z + " h: " + firsrStripe.rct.Height + " w: " + firsrStripe.rct.Width);
+                //Debug.Log("ROADSTRIPE FIRST RCT" + firsrStripe.rct.Start.x + "," + firsrStripe.rct.Start.z + ":" + firsrStripe.rct.End.x + ","
+                  //  + firsrStripe.rct.End.z + " h: " + firsrStripe.rct.Height + " w: " + firsrStripe.rct.Width);
                 newElements.Add(firsrStripe);
                 lines -= firststripeWidth;
                 roadRCT.Start = new CRD(roadRCT.Start.x += firststripeWidth * 2, roadRCT.Start.z );
@@ -68,8 +68,8 @@ namespace Map
                     newElements.Add(safetyZone);
                 }
 
-                Debug.Log("ROADSTRIPE SECOND RCT " + rct.Start.x + "," + rct.Start.z + ":" + rct.End.x + "," + rct.End.z + " h: " + rct.Height + " w: " + rct.Width);
-                Debug.Log("SAFETY SECOND RCT " + roadRCT.Start.x + "," + roadRCT.Start.z + ":" + roadRCT.End.x + "," + roadRCT.End.z + " h: " + roadRCT.Height + " w: " + roadRCT.Width + "sq:"+ roadRCT.sq);
+                //Debug.Log("ROADSTRIPE SECOND RCT " + rct.Start.x + "," + rct.Start.z + ":" + rct.End.x + "," + rct.End.z + " h: " + rct.Height + " w: " + rct.Width);
+                //Debug.Log("SAFETY SECOND RCT " + roadRCT.Start.x + "," + roadRCT.Start.z + ":" + roadRCT.End.x + "," + roadRCT.End.z + " h: " + roadRCT.Height + " w: " + roadRCT.Width + "sq:"+ roadRCT.sq);
             }
             this.addNewElements(newElements);
             newElements.Clear();

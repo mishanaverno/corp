@@ -46,10 +46,12 @@ namespace Map
         }
         public void RenderStage()
         {
+            stage.ProcessLayersChildElements();
             for(int i = 0; i < stage.floors.Length; i++)
             {
                 stage.floors[i].GenerateCells();
             }
+            
         }
 
     }

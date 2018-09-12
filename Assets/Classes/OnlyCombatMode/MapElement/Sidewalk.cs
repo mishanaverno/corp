@@ -10,7 +10,8 @@ namespace Map
         public Sidewalk(RCT rct, char axis) : base(rct)
         {
             this.axis = axis;
-            surface = "Sidewalk";
+            surface = "Road";
+            AddLayer(new NodeLayer(0,"Surface","Sidewalk"));
         }
     }
 }

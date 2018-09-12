@@ -12,6 +12,7 @@ namespace Map
         public string surface = "";
         public static int iterator = 0;
         public int id;
+        private List<NodeLayer> layers = new List<NodeLayer>();
 
         public MapElement(RCT rct)
         {
@@ -91,7 +92,6 @@ namespace Map
             for(int i = 0; i < childElements.Count; i++)
             {
                 childElements[i].Upgrade();
-                //Debug.Log(childElements[i].GetType() + " CHILD ELEMENTS COUNT: " + childElements[i].childElements.Count);
                 childElements[i].UpgradeChildElements();
             }
         }
@@ -107,6 +107,33 @@ namespace Map
                 newMapElements[i].moveNodesFromMapElementToThis(this);
                 this.childElements.Add(newMapElements[i]);
                 Debug.Log("NE NODE Count: " + newMapElements[i].childNodes.Count);
+            }
+        }
+        public void AddLayer(NodeLayer layer)
+        {
+            this.layers.Add(layer);
+        }
+        public void RemoveLayer(NodeLayer layer)
+        {
+            this.layers.Remove(layer);
+        }
+        public void RemoveLayer(int index)
+        {
+            this.layers.RemoveAt(index);
+        }
+        public void ProcessLayersChildElements()
+        {
+             for(int i = 0; i < childElements.Count; i++)
+            {
+                childElements[i].ProcessLayers();
+                childElements[i].ProcessLayersChildElements();
+            }
+        }
+        public void ProcessLayers()
+        {
+            for(int i = 0; i < childNodes.Count; i++)
+            {
+                childNodes[i].Layers.AddRange(this.layers);
             }
         }
     }

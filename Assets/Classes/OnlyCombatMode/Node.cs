@@ -31,6 +31,7 @@ namespace Map
         public string surface = "Ground";
         public int prefabNumber = 0;
         public string direction = "r";
+        public List<NodeLayer> Layers; 
  
         public Node(int x, int z, Floor floor, bool movable)
         {
@@ -43,18 +44,47 @@ namespace Map
             this.isWalkable = movable;
             this.name = "cell-[" + x + "," + z + "]:" + floor.number;
             this.links = new List<NodeLink>();
+            this.Layers = new List<NodeLayer>();
         }
         public void refreshFCost(){ // метод вычисляющий fCost, должен вызыватся при изменении hCost или gCost
 			fCost = hCost + gCost;
 		}
         public void GenerateCell(){// метод генерации клетки
             GenerateSurface();
+            GenerateLayers();
         }
         private void GenerateSurface()
         {
             Vector3 position = new Vector3(crd.x, floor.number, crd.z);
-            GameObject cellInstance = GameObject.Instantiate (Resources.Load("Stage/" + this.floor.stage.DesignName + "/Premetives/Surface/"+this.surface+"/" + this.order+"/"+this.prefabNumber), position, Quaternion.identity) as GameObject;
+            GameObject cellInstance = GameObject.Instantiate (Resources.Load("Stage/" + this.floor.stage.DesignName + "/Premetives/Surface/" + this.surface + "/" + this.order + "/" + this.prefabNumber), position, Quaternion.identity) as GameObject;
             cellInstance.transform.name = "cell-[" + position.x + "," + position.z + "]:" + position.y;
+            Cell = cellInstance;
+        }
+        private void GenerateLayers()
+        {
+            float pPY = 0;
+            float pSY = 1;
+            float cSY;
+            for(int i = 0; i < Layers.Count; i++)
+            {
+                GameObject Instance = this.CreateLayer(Layers[i]);
+                Instance.transform.parent = Cell.transform;
+                cSY = Instance.transform.localScale.y;
+                float cPY = pPY + pSY + ((cSY - pSY) / 2);
+                Debug.Log(cPY);
+                Vector3 cPos = Instance.transform.localPosition;
+                cPos.y = cPY;
+                Instance.transform.localPosition = cPos;
+                pPY = cPY;
+                pSY = cSY;
+            }
+        }
+        private GameObject CreateLayer(NodeLayer layer)
+        {
+            UnityEngine.Object prefab = Resources.Load("Stage/" + this.floor.stage.DesignName + "/Premetives/" + layer.premitive + "/" + layer.name + "/" + this.order + "/" + layer.prefabNumber);
+            Vector3 position = new Vector3(crd.x, floor.number, crd.z);
+            GameObject LayerInstance;
+            return LayerInstance = GameObject.Instantiate(prefab ,position, Quaternion.identity) as GameObject;
         }
         public void ChangeSurface(string surface)
         {

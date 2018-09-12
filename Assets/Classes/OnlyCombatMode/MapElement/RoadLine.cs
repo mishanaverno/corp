@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoadLine : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+namespace Map
+{
+    public class RoadLine : MapElement
+    {
+        public char axis;
+        public RoadLine(RCT rct, char axis) : base(rct)
+        {
+            this.rct = rct;
+            this.axis = axis;
+            surface = "Road";
+        }
+    }
 }
+
