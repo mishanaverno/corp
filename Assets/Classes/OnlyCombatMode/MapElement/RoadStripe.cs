@@ -36,5 +36,9 @@ namespace Map
             }
             this.addNewElements(mapElements);
         }
+        public override void OnAddToChildElements()
+        {
+           
+        }
     }
 }

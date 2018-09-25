@@ -11,7 +11,47 @@ namespace Map
         {
             this.rct = rct;
             this.axis = axis;
-            surface = "Road";
+        }
+        public override void setNodeDirections()
+        {
+            for(int i = 0; i < childNodes.Count; i++)
+            {
+                if(axis == 'v')
+                {
+                    if (childNodes[i].z == rct.Start.z)
+                    {
+                        childNodes[i].direction = "l";
+                    }
+                    else
+                    {
+                        childNodes[i].direction = "r";
+                    }
+                }
+                else
+                {
+                    if(childNodes[i].x == rct.Start.x)
+                    {
+                        childNodes[i].direction = "t";
+                    }
+                    else
+                    {
+                        childNodes[i].direction = "b";
+                    }
+                }
+            }
+        }
+        public override void OnAddToChildElements()
+        {
+            
+            if (parentElement.parentElement is CrossroadCrosswalk)
+            {
+                surface = "Crosswalk";
+            }
+            else
+            {
+                surface = "Road";
+
+            }
         }
     }
 }

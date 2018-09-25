@@ -75,7 +75,30 @@ namespace Map
                 }
                 else
                 {
-                    Sidewalk newSidewalk = new Sidewalk(rcts[i], this.axis);
+                    string direction;
+                    if(axis == 'v')
+                    {
+                        if(rcts[i].Start.z < road.Start.z)
+                        {
+                            direction = "r";
+                        }
+                        else
+                        {
+                            direction = "l";
+                        }
+                    }
+                    else
+                    {
+                        if (rcts[i].Start.x < road.Start.x)
+                        {
+                            direction = "b";
+                        }
+                        else
+                        {
+                            direction = "t";
+                        }
+                    }
+                    Sidewalk newSidewalk = new Sidewalk(rcts[i], this.axis, direction);
                     newSidewalk.moveNodesFromMapElementToThis(this);
                     newSidewalk.parentElement = this;
                     this.childElements.Add(newSidewalk);

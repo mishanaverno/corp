@@ -9,7 +9,7 @@ namespace Map
         public MapElement parentElement;
         public List<Node> childNodes;
         public RCT rct;
-        public string surface = "";
+        public string surface = "Ground";
         public static int iterator = 0;
         public int id;
         private List<NodeLayer> layers = new List<NodeLayer>();
@@ -49,7 +49,8 @@ namespace Map
                     //Debug.Log("MOVE NODE: "+node.name);
                 }
             }
-            Debug.Log("Nodes moving from: "+from.ToString()+" to: "+this.ToString());
+            setNodeDirections();
+            //Debug.Log("Nodes moving from: "+from.ToString()+" to: "+this.ToString());
         }
         public void moveNode(int index, MapElement from, MapElement to)
         {
@@ -60,6 +61,7 @@ namespace Map
         public void moveNode(Node node, MapElement from, MapElement to)
         {
             int index = from.childNodes.IndexOf(node);
+            from.childNodes[index].ChangeSurface(to.surface);
             to.childNodes.Add(from.childNodes[index]);
             from.childNodes.RemoveAt(index);
         }
@@ -74,15 +76,7 @@ namespace Map
                 return false;
             }
         }
-        public void NodesToConsole()
-        {
-            Debug.Log("ELEMENT " + this.ToString() + " ID:" + this.id + " w: " + this.rct.Width + " h: " + this.rct.Height + " sq: " + this.rct.sq);
-            for(int i = 0; i < this.childNodes.Count; i++)
-            {
-                Debug.Log(this.childNodes[i].name);
-            }
-
-        }
+        
         public virtual void setNodeDirections()
         {
 
@@ -97,17 +91,23 @@ namespace Map
         }
         public virtual void Upgrade()
         {
-
+           
         }
         public void addNewElements(List<MapElement> newMapElements)
         {
             for (int i = 0; i < newMapElements.Count; i++)
             {
-                newMapElements[i].parentElement = this;
-                newMapElements[i].moveNodesFromMapElementToThis(this);
-                this.childElements.Add(newMapElements[i]);
-                Debug.Log("NE NODE Count: " + newMapElements[i].childNodes.Count);
+                addNewElement(newMapElements[i]);
             }
+            
+        }
+        public void addNewElement(MapElement newMapElement)
+        {
+            newMapElement.parentElement = this;
+            newMapElement.OnAddToChildElements();
+
+            newMapElement.moveNodesFromMapElementToThis(this);
+            childElements.Add(newMapElement);
         }
         public void AddLayer(NodeLayer layer)
         {
@@ -121,21 +121,55 @@ namespace Map
         {
             this.layers.RemoveAt(index);
         }
-        public void ProcessLayersChildElements()
+        
+        public void ProcessLayersChildElements(List<NodeLayer> llayers)
         {
-             for(int i = 0; i < childElements.Count; i++)
+            List<NodeLayer> newLayers = new List<NodeLayer>();
+            newLayers.AddRange(llayers);
+            newLayers.AddRange(this.layers);
+            ProcessLayers(newLayers);
+            for (int i = 0; i < childElements.Count; i++)
             {
-                childElements[i].ProcessLayers();
-                childElements[i].ProcessLayersChildElements();
+                childElements[i].ProcessLayersChildElements(newLayers);
+                
+            }
+
+        }
+        public void ProcessLayers(List<NodeLayer> layers)
+        {
+            for (int i = 0; i < childNodes.Count; i++)
+            {
+                childNodes[i].Layers.AddRange(layers);
             }
         }
-        public void ProcessLayers()
+        public virtual void OnAddToChildElements()
         {
-            for(int i = 0; i < childNodes.Count; i++)
-            {
-                childNodes[i].Layers.AddRange(this.layers);
-            }
+           
         }
+        
+        public void DebugParents()
+        {
+            MapElement elem = this; 
+            string log = "";
+            do
+            {
+                log += elem.ToString() + " > ";
+                elem = elem.parentElement;
+            } while (!(elem is Stage));
+            log += elem.ToString();
+
+            Debug.Log("PARENTS LOG " + log);
+        }
+        public void NodesToConsole()
+        {
+            Debug.Log("ELEMENT " + this.ToString() + " ID:" + this.id + " w: " + this.rct.Width + " h: " + this.rct.Height + " sq: " + this.rct.sq);
+            for (int i = 0; i < this.childNodes.Count; i++)
+            {
+                Debug.Log(this.childNodes[i].name);
+            }
+
+        }
+
     }
    
    

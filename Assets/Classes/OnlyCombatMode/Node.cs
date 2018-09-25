@@ -53,10 +53,34 @@ namespace Map
             GenerateSurface();
             GenerateLayers();
         }
+        private Vector3 GetRotation()
+        {
+            Vector3 rotation;
+            switch (this.direction)
+            {
+                case "r":
+                    rotation = new Vector3(0, 0, 0);
+                    break;
+                case "b":
+                    rotation = new Vector3(0, 90, 0);
+                    break;
+                case "l":
+                    rotation = new Vector3(0, 180, 0);
+                    break;
+                case "t":
+                    rotation = new Vector3(0, 270, 0);
+                    break;
+                default:
+                    rotation = new Vector3(0, 0, 0);
+                    break;
+            }
+            return rotation;
+        }
         private void GenerateSurface()
         {
+            Vector3 rotation = GetRotation();
             Vector3 position = new Vector3(crd.x, floor.number, crd.z);
-            GameObject cellInstance = GameObject.Instantiate (Resources.Load("Stage/" + this.floor.stage.DesignName + "/Premetives/Surface/" + this.surface + "/" + this.order + "/" + this.prefabNumber), position, Quaternion.identity) as GameObject;
+            GameObject cellInstance = GameObject.Instantiate (Resources.Load("Stage/" + this.floor.stage.DesignName + "/Premetives/Surface/" + this.surface + "/" + this.order + "/" + this.prefabNumber), position, Quaternion.Euler(rotation)) as GameObject;
             cellInstance.transform.name = "cell-[" + position.x + "," + position.z + "]:" + position.y;
             Cell = cellInstance;
         }
@@ -71,7 +95,7 @@ namespace Map
                 Instance.transform.parent = Cell.transform;
                 cSY = Instance.transform.localScale.y;
                 float cPY = pPY + pSY + ((cSY - pSY) / 2);
-                Debug.Log(cPY);
+                
                 Vector3 cPos = Instance.transform.localPosition;
                 cPos.y = cPY;
                 Instance.transform.localPosition = cPos;
@@ -81,10 +105,11 @@ namespace Map
         }
         private GameObject CreateLayer(NodeLayer layer)
         {
+            Vector3 rotation = GetRotation();
             UnityEngine.Object prefab = Resources.Load("Stage/" + this.floor.stage.DesignName + "/Premetives/" + layer.premitive + "/" + layer.name + "/" + this.order + "/" + layer.prefabNumber);
             Vector3 position = new Vector3(crd.x, floor.number, crd.z);
             GameObject LayerInstance;
-            return LayerInstance = GameObject.Instantiate(prefab ,position, Quaternion.identity) as GameObject;
+            return LayerInstance = GameObject.Instantiate(prefab ,position, Quaternion.Euler(rotation)) as GameObject;
         }
         public void ChangeSurface(string surface)
         {

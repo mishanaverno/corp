@@ -181,6 +181,18 @@ namespace Map
         {
             return new RCT(new CRD(this.start.x, this.start.z), new CRD(this.end.x, this.end.z));
         }
+        public CRD CloneStart()
+        {
+            return new CRD(start.x, start.z); 
+        }
+        public CRD CloneEnd()
+        {
+            return new CRD(end.x, end.z);
+        }
+        public void DebugLog(string text="")
+        {
+            Debug.Log(text+" RCT start: " + Start.x + "," + Start.z + " end: " + End.x + "," + End.z + " w:" + Width + " h:" + Height + " sq:" + sq);
+        }
 
     }
 }

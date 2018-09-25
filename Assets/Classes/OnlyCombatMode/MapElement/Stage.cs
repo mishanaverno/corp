@@ -55,71 +55,63 @@ namespace Map
         }
         public void CreateStreet(RCT rct, char axis, int sidewalk)
         {
-            Street street = new Street(rct, axis, sidewalk);
             List<MapElement> newElements = new List<MapElement>();
             for(int i = 0; i< this.childElements.Count; i++)
             {
-                if (this.childElements[i].rct.checkCollision(street.rct))
+                if (this.childElements[i].rct.checkCollision(rct))
                 {
-                    if(this.childElements[i] is Area)
+        
+                    if (this.childElements[i] is Area)
                     {
-                        street.moveNodesFromMapElementToThis(this.childElements[i]);
-                        Area area = this.childElements[i] as Area;
-                        //Debug.Log("STREET WIDTH:" + street.width);
-                        Area newArea = area.cutArea(street.axis, street.width, street.start);
-                        if (!newArea.isEmpty())
+                        RCT collision = RCT.getCollision(childElements[i].rct, rct);
+                        List<RCT> newRcts = RCT.Cuttind(childElements[i].rct, collision);
+                        for(int n = 0; n < newRcts.Count; n++)
                         {
-                            newElements.Add(newArea);
-
+                            if (newRcts[n].Equals(collision)){
+                                newElements.Add(new Street(collision, axis, sidewalk));
+                            }
+                            else
+                            {
+                                newElements.Add(new Area(newRcts[n]));
+                            }
                         }
-                    
-                        
                     }
                     else if(this.childElements[i] is Street)
                     {
                         Street oldstreet = this.childElements[i] as Street;
                         int hsidewalk, vsidewalk;
-                        if(oldstreet.axis == 'v')
+                        if (oldstreet.axis == 'v')
                         {
                             vsidewalk = oldstreet.sidewalk;
-                            hsidewalk = street.sidewalk;
+                            hsidewalk = sidewalk;
                         }
                         else
                         {
-                            vsidewalk = street.sidewalk;
+                            vsidewalk = sidewalk;
                             hsidewalk = oldstreet.sidewalk;
                         }
-                        Crossroad crossroad = new Crossroad(RCT.getCollision(street.rct, oldstreet.rct), vsidewalk, hsidewalk);
-                        crossroad.moveNodesFromMapElementToThis(oldstreet);
-                        Street newoldstreet = oldstreet.cutStreet(crossroad);
-                        newoldstreet.moveNodesFromMapElementToThis(oldstreet);
-                        Street newstreet = street.cutStreet(crossroad);
-                        newElements.Add(crossroad);
-                        if (!newoldstreet.isEmpty())
+                        RCT collision = RCT.getCollision(oldstreet.rct, rct);
+                        List<RCT> newRcts = RCT.Cuttind(oldstreet.rct, collision);
+                        for(int n = 0; n < newRcts.Count; n++)
                         {
-                            newElements.Add(newoldstreet);
-                        }
-                        if (!newstreet.isEmpty())
-                        {
-                            newElements.Add(street);
-                            street = newstreet;
+                            if (newRcts[n].Equals(collision))
+                            {
+                                newElements.Add(new Crossroad(collision, vsidewalk, hsidewalk));
+                            }
+                            else
+                            {
+                                newElements.Add(new Street(newRcts[n], oldstreet.axis, oldstreet.sidewalk));
+                            }
                         }
                         
-
                     }
-                    
+                   moveNodesFromMapElementToThis(childElements[i]);
+                   childElements.Remove(childElements[i]);
+                   i--;
                 }
             }
-            newElements.Add(street);
-            for (int i = 0; i < newElements.Count; i++)
-            {
-                this.childElements.Add(newElements[i]);
-            }
-            /*for (int i = 0; i < this.childElements.Count; i++)
-            {
-                this.childElements[i].NodesToConsole();
-            }*/
-            
+            addNewElements(newElements);
+               
 
         }
 

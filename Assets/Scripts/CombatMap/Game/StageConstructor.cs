@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Map
 {
@@ -27,15 +28,14 @@ namespace Map
             {
                 width++;
             }
-           if (axis == 'v')
+            if (axis == 'v')
             {
                 rct = new RCT(new CRD(0, start), width + sidewalk * 2, stage.height);
-                //Debug.Log("RCT " + rct.Start.x + "," + rct.Start.z + ":" + rct.End.x + "," + rct.End.z + " h: " + rct.Height + " w: " + rct.Width);
             }
             else
             {
                 rct = new RCT(new CRD(start, 0), stage.width, width + sidewalk * 2);
-                //Debug.Log("RCT " + rct.Start.x + "," + rct.Start.z + ":" + rct.End.x + "," + rct.End.z + " h: " + rct.Height + " w: " + rct.Width);
+
             }
             stage.CreateStreet(rct, axis, sidewalk);
         }
@@ -46,7 +46,7 @@ namespace Map
         }
         public void RenderStage()
         {
-            stage.ProcessLayersChildElements();
+            stage.ProcessLayersChildElements(new List<NodeLayer>());
             for(int i = 0; i < stage.floors.Length; i++)
             {
                 stage.floors[i].GenerateCells();

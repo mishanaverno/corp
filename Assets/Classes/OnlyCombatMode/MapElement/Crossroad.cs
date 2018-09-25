@@ -24,42 +24,37 @@ namespace Map
                     switch (i)
                     {
                         case 0:
-                            newMapElements.Add(new Sidewalk(rcts[i], 'v'));
+                            newMapElements.Add(new CrossroadSidewalk(rcts[i], rcts[i].CloneEnd()));
                             break;
                         case 1:
-                            newMapElements.Add(new Road(rcts[i], 'v'));
+                            newMapElements.Add(new CrossroadRoad(rcts[i], 'v', rcts[i].Start.x));
                             break;
                         case 2:
-                            newMapElements.Add(new Sidewalk(rcts[i], 'v'));
+                            newMapElements.Add(new CrossroadSidewalk(rcts[i], new CRD(rcts[i].End.x, rcts[i].Start.z)));
                             break;
                         case 3:
-                            newMapElements.Add(new Road(rcts[i], 'h'));
+                            newMapElements.Add(new CrossroadRoad(rcts[i], 'h', rcts[i].Start.z));
                             break;
                         case 4:
                             newMapElements.Add(new Intersection(rcts[i]));
                             break;
                         case 5:
-                            newMapElements.Add(new Road(rcts[i], 'h'));
+                            newMapElements.Add(new CrossroadRoad(rcts[i], 'h', rcts[i].End.z));
                             break;
                         case 6:
-                            newMapElements.Add(new Sidewalk(rcts[i], 'v'));
+                            newMapElements.Add(new CrossroadSidewalk(rcts[i], new CRD(rcts[i].Start.x, rcts[i].End.z)));
                             break;
                         case 7:
-                            newMapElements.Add(new Road(rcts[i], 'v'));
+                            newMapElements.Add(new CrossroadRoad(rcts[i], 'v', rcts[i].End.x));
                             break;
                         case 8:
-                            newMapElements.Add(new Sidewalk(rcts[i], 'v'));
+                            newMapElements.Add(new CrossroadSidewalk(rcts[i], rcts[i].CloneStart()));
                             break;
                         default:
                             break;
                     }
                 }
-                for(int i = 0; i < newMapElements.Count; i++)
-                {
-                    newMapElements[i].parentElement = this;
-                    newMapElements[i].moveNodesFromMapElementToThis(this);
-                    this.childElements.Add(newMapElements[i]);
-                }
+                addNewElements(newMapElements);
                 newMapElements.Clear();
             }
             else

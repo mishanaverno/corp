@@ -41,9 +41,9 @@ namespace Map
             }
             else
             {
-                Debug.Log("ROAD NODE Count: " + this.childNodes.Count);
-                Debug.Log("ROAD RCT" + this.rct.Start.x + "," + this.rct.Start.z + ":" + this.rct.End.x + ","
-                   + this.rct.End.z + " h: " + this.rct.Height + " w: " + this.rct.Width);
+                //Debug.Log("ROAD NODE Count: " + this.childNodes.Count);
+                //Debug.Log("ROAD RCT" + this.rct.Start.x + "," + this.rct.Start.z + ":" + this.rct.End.x + ","
+                  // + this.rct.End.z + " h: " + this.rct.Height + " w: " + this.rct.Width);
                 int lines = roadRCT.Height / 2;
                 //Debug.Log("ROAD " + this.axis + " LINES "+lines);
                 int firststripeWidth = lines / 2;
