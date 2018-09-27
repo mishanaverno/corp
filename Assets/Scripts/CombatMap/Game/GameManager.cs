@@ -23,9 +23,10 @@ namespace Game
 		// Use this for initialization
 		void Start () {
             StageConstructor Constructor = new StageConstructor();
-            Constructor.CreateStage(1, 27, 27, false, "Dev");
-            Constructor.AddStreet(0, 'h', 3, 2);
-            Constructor.AddStreet(1, 'v', 7, 2);
+            Constructor.CreateStage(27, 27, false, "Dev");
+            Constructor.AddStreet(0, 'h', 3, 3);
+            Constructor.AddStreet(12, 'h', 1, 3);
+            Constructor.AddStreet(1, 'v', 7, 3);
 
             Constructor.Upgrade();
             Constructor.RenderStage();

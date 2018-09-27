@@ -11,9 +11,9 @@ namespace Map
         {
 
         }
-        public void CreateStage(int floors,int height,int width, bool enableUnderground, string DesignName)
+        public void CreateStage(int height,int width, bool enableUnderground, string DesignName)
         {
-            this.stage = new Stage(floors, height, width, enableUnderground, DesignName);
+            this.stage = new Stage(height, width, enableUnderground, DesignName);
             string json = JsonUtility.ToJson(stage);
             Debug.Log(json);
         }
@@ -47,7 +47,7 @@ namespace Map
         public void RenderStage()
         {
             stage.ProcessLayersChildElements(new List<NodeLayer>());
-            for(int i = 0; i < stage.floors.Length; i++)
+            for(int i = 0; i < stage.floors.Count; i++)
             {
                 stage.floors[i].GenerateCells();
             }

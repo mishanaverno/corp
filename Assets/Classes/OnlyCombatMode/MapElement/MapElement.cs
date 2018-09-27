@@ -122,11 +122,9 @@ namespace Map
             this.layers.RemoveAt(index);
         }
         
-        public void ProcessLayersChildElements(List<NodeLayer> llayers)
+        public void ProcessLayersChildElements(List<NodeLayer> layers)
         {
-            List<NodeLayer> newLayers = new List<NodeLayer>();
-            newLayers.AddRange(llayers);
-            newLayers.AddRange(this.layers);
+            List<NodeLayer> newLayers = BeforeProcessLayers(layers);
             ProcessLayers(newLayers);
             for (int i = 0; i < childElements.Count; i++)
             {
@@ -137,10 +135,18 @@ namespace Map
         }
         public void ProcessLayers(List<NodeLayer> layers)
         {
+
             for (int i = 0; i < childNodes.Count; i++)
             {
                 childNodes[i].Layers.AddRange(layers);
             }
+        }
+        public virtual List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)
+        {
+            List<NodeLayer> newLayers = new List<NodeLayer>();
+            newLayers.AddRange(layers);
+            newLayers.AddRange(this.layers);
+            return newLayers;
         }
         public virtual void OnAddToChildElements()
         {

@@ -46,6 +46,37 @@ namespace Map
                 childNodes[i].direction = direction;
             }
         }
+        public override void Upgrade()
+        {
+            List<MapElement> newElements = new List<MapElement>();
+            if (parentElement.GetType() == typeof(Road))
+            {
+                if (axis == 'v')
+                {
+                    if (rct.Start.x > 0)
+                    {
+                        newElements.Add(new RoadSafetyZoneEnd(new RCT(rct.Start, rct.Start), "t"));
+                    }
+                    if (rct.End.x < Stage.GetStage().rct.End.x)
+                    {
+                        newElements.Add(new RoadSafetyZoneEnd(new RCT(rct.End, rct.End), "b"));
+                    }
+
+                }
+                else
+                {
+                    if (rct.Start.z > 0)
+                    {
+                        newElements.Add(new RoadSafetyZoneEnd(new RCT(rct.Start, rct.Start), "l"));
+                    }
+                    if (rct.End.z < Stage.GetStage().rct.End.z)
+                    {
+                        newElements.Add(new RoadSafetyZoneEnd(new RCT(rct.End, rct.End), "r"));
+                    }
+                }
+            }
+            addNewElements(newElements);
+        }
     }
 }
 

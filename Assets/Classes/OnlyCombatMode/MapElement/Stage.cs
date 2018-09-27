@@ -8,50 +8,55 @@ namespace Map
     public class Stage : MapElement
     {
         [SerializeField]
-        public int floorCount, width, height, groundFloor, basementFloor = 0;
+        public int floorCounter = 0, width, height, groundFloor, basementFloor = 0;
         [SerializeField]
         public bool enabledBasement;
-        public Floor[] floors;
+        public List<Floor> floors;
         public string DesignName;
-        public Stage(int floorCount, int width, int height, bool enabledBasement, string DesignName) : base(new RCT(new CRD(0, 0), width, height))
+        private static Stage instance;
+        public Stage(int width, int height, bool enabledBasement, string DesignName) : base(new RCT(new CRD(0, 0), width, height))
         {
             Debug.Log(parentElement);
-            this.floorCount = floorCount;
             this.width = width;
             this.height = height;
             this.enabledBasement = enabledBasement;
             this.DesignName = DesignName;
-            if (enabledBasement)
+            floors = new List<Floor>();
+            /* (i == this.basementFloor)
             {
-                this.groundFloor = 1;
-                this.floorCount++;
+                floor = new UndergroundFloor(i, this);
+            }                    
+            else if(i == this.groundFloor)
+            {
+                floor = new GroundFloor(i, this);
             }
             else
             {
-                this.groundFloor = 0;
-                this.basementFloor = -1;
+                floor = new AbovegroundFloor(i, this);
             }
-            this.floors = new Floor[this.floorCount];
-            for (int i = 0; i < floorCount; i++)
+            string json = JsonUtility.ToJson(floor);
+            Debug.Log(json);
+            this.floors[i] = floor;*/
+            
+            if (enabledBasement)
             {
-                Floor floor;
-                if (i == this.basementFloor)
-                {
-                    floor = new UndergroundFloor(i, this);
-                }                    
-                else if(i == this.groundFloor)
-                {
-                    floor = new GroundFloor(i, this);
-                }
-                else
-                {
-                    floor = new AbovegroundFloor(i, this);
-                }
-                string json = JsonUtility.ToJson(floor);
-                Debug.Log(json);
-                this.floors[i] = floor;
-                floor.Init();
+                AddFloor( new UndergroundFloor(floorCounter, this));
+                AddFloor(new GroundFloor(floorCounter, this));
+                groundFloor = 1;
             }
+            else
+            {
+                AddFloor(new GroundFloor(floorCounter, this));
+                groundFloor = 0;
+            }
+            
+            instance = this;
+        }
+        public void AddFloor(Floor floor)
+        {
+            floor.Init();
+            floors.Add(floor);
+            floorCounter++;
         }
         public void CreateStreet(RCT rct, char axis, int sidewalk)
         {
@@ -111,13 +116,29 @@ namespace Map
                 }
             }
             addNewElements(newElements);
-               
-
+        }
+        public static Node GetNode(CRD crd, int floornumber)
+        {
+            Stage stage = Stage.GetStage();
+            return stage.floors[floornumber].GetNode(crd.x, crd.z);
+        }
+        public static Node GetNode(CRD crd)
+        {
+            Stage stage = Stage.GetStage();
+            return stage.floors[stage.groundFloor].GetNode(crd.x, crd.z);
+        }
+        public static Node GetNode(int x, int z, int floornumber)
+        {
+            return Stage.GetNode(new CRD(x, z), floornumber);
+        }
+        public static Node GetNode(int x, int z)
+        {
+            return Stage.GetNode(new CRD(x, z));
+        }
+        public static Stage GetStage()
+        {
+            return instance;
         }
 
-
-
-
     }
-
 }
