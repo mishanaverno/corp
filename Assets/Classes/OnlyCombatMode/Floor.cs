@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace Map
 {
-    public class Floor
+    public class Floor //этаж
     {
         [SerializeField]
-        public int number;
-        public Node[,] map;
-        public Stage stage;
-        protected RCT rct;
+        public int number;//номер
+        public Node[,] map;//узлы
+        public Stage stage;//сцена
+        protected RCT rct;//прямоугольник
         [SerializeField]
-        protected bool defaultIsWalkable;
+        protected bool defaultIsWalkable;//доступен ли для передвижения по умолчанию
         public Floor(int number, Stage stage)
         {
             this.number = number;
@@ -25,11 +25,9 @@ namespace Map
         {
             GenerateNodes();
         }
-        protected void GenerateNodes()
+        protected void GenerateNodes()// генерирует узлы
         {
-            //+++++++++++++++++++++++++++++++++++++
             Debug.Log("Generate floor " + number);
-            //+++++++++++++++++++++++++++++++++++++
             for(int x = 0; x < stage.height; x++)
             {
                 for(int z = 0; z < stage.width; z++)
@@ -42,23 +40,19 @@ namespace Map
                 }
             }
         }
-        public void LinkNodes()
+        public void LinkNodes()//связывает все узлы на этаже между собой
         {
-            //+++++++++++++++++++++++++++++++++++++
-            Debug.Log("Linked floor " + number);
-            //+++++++++++++++++++++++++++++++++++++
             for (int fx = 0; fx < stage.height; fx++)
             {
                 for(int fz = 0; fz < stage.width; fz++)
                 {
                     Node currentNode = GetNode(fx, fz);
-                    //Debug.Log("Node -------- " + currentNode.crd.x + "," + currentNode.crd.z);
                     for (int x = -1; x <= 1; x++)
                     {
                         for(int z = -1; z <= +1; z++)
                         {
 
-                            if ((z == 0 && x == 0) || !isInFloor(new CRD(fx + x, fz + z)))
+                            if ((z == 0 && x == 0) || !this.rct.isContainCRD(new CRD(fx + x, fz + z)))
                             {
                                 continue;
                             }
@@ -78,11 +72,9 @@ namespace Map
                 }
             }
         }
-        public void GenerateCells()
+        public void GenerateCells()//генерирует игровые объекты - клетки
         {
-            //+++++++++++++++++++++++++++++++++++++
             Debug.Log("Generate cells " + number);
-            //+++++++++++++++++++++++++++++++++++++
             for(int x = 0; x < stage.height; x++)
             {
                 for(int z = 0; z < stage.width; z++)
@@ -92,14 +84,9 @@ namespace Map
                 }
             }
         }
-        public Node GetNode(int x, int z)
+        public Node GetNode(int x, int z)//возвращает узел
         {
             return map[x, z];
         }
-        public bool isInFloor(CRD crd)
-        {
-            return this.rct.isContainCRD(crd);
-        }
-
     }
 }

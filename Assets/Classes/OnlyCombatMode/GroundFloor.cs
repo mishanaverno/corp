@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Map
 {
 
-    public class GroundFloor : Floor
+    public class GroundFloor : Floor//первый этаж
     {
         public GroundFloor(int number, Stage stage) : base(number, stage)
         {
@@ -14,9 +14,7 @@ namespace Map
         {
             GenerateNodes();
             LinkNodes();
-            Area area = new Area(rct);
-            area.moveNodesFromMapElementToThis(this.stage);
-            this.stage.childElements.Add(area);
+            stage.addNewElement(new Area(rct));
         }
         
     }

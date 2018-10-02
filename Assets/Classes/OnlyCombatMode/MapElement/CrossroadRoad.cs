@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Map
 {
-    public class CrossroadRoad : Road
+    public class CrossroadRoad : Road//дорога на перекрестке
     {
         private int croswalk;
         private int croswalkwidth = 1;

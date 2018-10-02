@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Map
 {
-    public class SidewalkParkingOuterCorner : MapElement
+    public class SidewalkParkingOuterCorner : MapElement //внешний угол парковочного кармана
     {
         public SidewalkParkingOuterCorner(RCT rct) : base(rct)
         {

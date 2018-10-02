@@ -121,6 +121,7 @@
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\RoadStripe.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Sidewalk.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\SidewalkParking.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\SidewalkParkingInnerCorner.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\SidewalkParkingOuterCorner.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Stage.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Street.cs" />

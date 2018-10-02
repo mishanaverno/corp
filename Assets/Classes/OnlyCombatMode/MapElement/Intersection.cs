@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Map
 {
-    public class Intersection : MapElement
+    public class Intersection : MapElement//пересечение дорог на перекрестке
     {
         public Intersection(RCT rct) : base(rct)
         {

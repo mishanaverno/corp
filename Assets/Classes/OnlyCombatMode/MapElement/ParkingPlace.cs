@@ -4,12 +4,16 @@ using UnityEngine;
 
 namespace Map
 {
-    public class ParkingPlace : MapElement
+    public class ParkingPlace : MapElement //Парковочное место в парковочном кармане
     {
-        public ParkingPlace(RCT rct): base(rct)
+        public char axis;
+        public ParkingPlace(RCT rct, char axis): base(rct)
         {
-
+            this.axis = axis;
         }
-
+        public override void OnAddToChildElements()
+        {
+            surface = "Road";
+        }
     }
 }

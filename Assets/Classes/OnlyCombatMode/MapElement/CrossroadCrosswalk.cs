@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Map
 {
-    public class CrossroadCrosswalk : Road
+    public class CrossroadCrosswalk : Road //пешеходный переход
     {
         public CrossroadCrosswalk(RCT rct, char axis) : base(rct, axis)
         {

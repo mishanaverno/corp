@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Map
 {
-    public class CrossroadCorner : MapElement
+    public class CrossroadCorner : MapElement//угол на перекрестке
     {
         public CrossroadCorner(RCT rct) : base(rct)
         {

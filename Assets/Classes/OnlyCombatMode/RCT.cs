@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Map
 {
     [Serializable]
-    public class RCT
+    public class RCT // кастомный клас прямоугольник используется в каждом элементе карты
     {
         private CRD start = new CRD(0,0);
         private CRD end = new CRD(0,0);
@@ -95,11 +95,11 @@ namespace Map
             this.height = end.x - start.x + 1;
             this.sq = width * height;
         }
-        public void CalcSq()
+        public void CalcSq() //вычисляет площадь прямоугольника
         {
             this.sq = this.width * this.height;
         }
-        public bool isContainCRD(CRD crd)
+        public bool isContainCRD(CRD crd)// проверяет находится ли координата внутри прямоугольника
         {
             if ((crd.x < this.Start.x) || (crd.z < this.Start.z) || (crd.x > this.End.x) || (crd.z > this.End.z))
             {
@@ -110,7 +110,7 @@ namespace Map
                 return true;
             }
         }
-        public bool checkCollision(RCT rct)
+        public bool checkCollision(RCT rct)// проверяет пересекается ли данный прямоугольник с указанным прямоугольником
         {
             if (rct.End.z < this.Start.z || rct.Start.z > this.End.z || rct.Start.x > this.End.x || rct.End.x < this.Start.x)
             {
@@ -121,11 +121,11 @@ namespace Map
                 return true;
             }
         }
-        public static RCT getCollision(RCT rct1, RCT rct2)
+        public static RCT getCollision(RCT rct1, RCT rct2) // получает два прямоугольника и возвращает новый равный их пересекающейся части
         {
             return new RCT(new CRD(Mathf.Max(rct1.Start.x, rct2.Start.x), Mathf.Max(rct1.Start.z, rct2.Start.z)), new CRD(Mathf.Min(rct1.End.x, rct2.End.x), Mathf.Min(rct1.End.z, rct2.End.z)));
         }
-        public static List<RCT> Cuttind(RCT rct1, RCT rct2)
+        public static List<RCT> Cuttind(RCT rct1, RCT rct2) // получает два прямоугольника и получает несколько новых являющихся частями порезанных старых
         {
             rct1.End.StepRB();
             rct2.End.StepRB();
@@ -165,7 +165,7 @@ namespace Map
             }
             return newRCTs;
         }
-        public bool Equals(RCT rct)
+        public bool Equals(RCT rct) // проверяет равны ли прямоугольники
         {
             if(this.Start==rct.Start && this.End == rct.End)
             {
@@ -177,19 +177,19 @@ namespace Map
             }
         }
 
-        public RCT Clone()
+        public RCT Clone() // возвращает копию прямоугольника
         {
             return new RCT(new CRD(this.start.x, this.start.z), new CRD(this.end.x, this.end.z));
         }
-        public CRD CloneStart()
+        public CRD CloneStart() // возвращает копию стартовой точки прямоугольника
         {
             return new CRD(start.x, start.z); 
         }
-        public CRD CloneEnd()
+        public CRD CloneEnd()  // возвращает копию конечной точки прямоугольника
         {
             return new CRD(end.x, end.z);
         }
-        public void DebugLog(string text="")
+        public void DebugLog(string text="") // выводит прямоугольник в консоль
         {
             Debug.Log(text+" RCT start: " + Start.x + "," + Start.z + " end: " + End.x + "," + End.z + " w:" + Width + " h:" + Height + " sq:" + sq);
         }

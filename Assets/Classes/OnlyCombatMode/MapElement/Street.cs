@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Map
 {
-    public class Street : MapElement
+    public class Street : MapElement//улица
     {
         public int start, width, sidewalk;
         public char axis;
@@ -28,7 +28,7 @@ namespace Map
             //Debug.Log("NEW STREET RCT: h: " + rct.Height + " w: " + rct.Width);
             //Debug.Log("Street RCT " + this.rct.Start.x + "," + this.rct.Start.z + ":" + this.rct.End.x + "," + this.rct.End.z+" h: "+this.rct.Height+" w: "+this.rct.Width);
         }
-        public Street cutStreet(Crossroad crossroad)
+        public Street cutStreet(Crossroad crossroad)//разрезание улицы перекрестком
         {
             Street newStreet;
             if(this.axis == 'v')

@@ -25,7 +25,7 @@ namespace Game
             StageConstructor Constructor = new StageConstructor();
             Constructor.CreateStage(27, 27, false, "Dev");
             Constructor.AddStreet(0, 'h', 3, 3);
-            Constructor.AddStreet(12, 'h', 1, 3);
+            //Constructor.AddStreet(12, 'h', 1, 3);
             Constructor.AddStreet(1, 'v', 7, 3);
 
             Constructor.Upgrade();

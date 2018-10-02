@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Map
 {
-    public class RoadSafetyZoneEnd : MapElement
+    public class RoadSafetyZoneEnd : MapElement //конец островока безопасности на дороге
     {
         private string direction;
         public RoadSafetyZoneEnd(RCT rct, string direction) : base(rct)

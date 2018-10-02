@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Map
 {
-    public class RoadLine : MapElement
+    public class RoadLine : MapElement // линия движения транспорта
     {
         public char axis;
         public RoadLine(RCT rct, char axis) : base(rct)

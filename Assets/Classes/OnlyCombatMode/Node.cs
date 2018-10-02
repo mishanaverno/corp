@@ -53,7 +53,7 @@ namespace Map
             GenerateSurface();
             GenerateLayers();
         }
-        private Vector3 GetRotation()
+        private Vector3 GetRotation()//в зависимости от направление задает угол вращения
         {
             Vector3 rotation;
             switch (this.direction)
@@ -76,7 +76,7 @@ namespace Map
             }
             return rotation;
         }
-        private void GenerateSurface()
+        private void GenerateSurface()// генерация поверхности
         {
             Vector3 rotation = GetRotation();
             Vector3 position = new Vector3(crd.x, floor.number, crd.z);
@@ -84,7 +84,7 @@ namespace Map
             cellInstance.transform.name = "cell-[" + position.x + "," + position.z + "]:" + position.y;
             Cell = cellInstance;
         }
-        private void GenerateLayers()
+        private void GenerateLayers()// генерация слоев
         {
             float pPY = 0;
             float pSY = 1;
@@ -103,7 +103,7 @@ namespace Map
                 pSY = cSY;
             }
         }
-        private GameObject CreateLayer(NodeLayer layer)
+        private GameObject CreateLayer(NodeLayer layer)//создание слоя
         {
             Vector3 rotation = GetRotation();
             UnityEngine.Object prefab = Resources.Load("Stage/" + this.floor.stage.DesignName + "/Premetives/" + layer.premitive + "/" + layer.name + "/" + this.order + "/" + layer.prefabNumber);
@@ -142,14 +142,15 @@ namespace Map
 
 		}
         //<-ПЕРЕПИСАТЬ
-        public void LinkNode(Node node, float w) {
+        public void LinkNode(Node node, float w) //создание ссылки из этого узла в указанный
+        {
             NodeLink link = new NodeLink(this, node, w);
             if (!this.links.Contains(link))
             {
                 this.links.Add(link);
             }
         }
-        public void UnlinkNode(Node node)
+        public void UnlinkNode(Node node)//удаление ссылки
         {
         }
         public void OccupyNode(){ // метод осуществляющий занятие клетки юнитом, должен вызываться при остановке юнита в клетке 

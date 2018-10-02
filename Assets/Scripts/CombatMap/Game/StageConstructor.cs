@@ -17,7 +17,7 @@ namespace Map
             string json = JsonUtility.ToJson(stage);
             Debug.Log(json);
         }
-        public void AddStreet(int start, char axis, int width, int sidewalk)
+        public void AddStreet(int start, char axis, int width, int sidewalk) //добавляет улицу
         {
             RCT rct;
             if (width < 2)
@@ -42,9 +42,8 @@ namespace Map
         public void Upgrade()
         {
             stage.UpgradeChildElements();
-            
         }
-        public void RenderStage()
+        public void RenderStage() // рендерит игровые объекты
         {
             stage.ProcessLayersChildElements(new List<NodeLayer>());
             for(int i = 0; i < stage.floors.Count; i++)

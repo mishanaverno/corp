@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Map
 {
-    public class Crossroad : MapElement
+    public class Crossroad : MapElement//перекресток
     {
         public int hsidewalk, vsidewalk;
         public Crossroad(RCT rct, int vsidewalk, int hsidewalk) : base(rct)

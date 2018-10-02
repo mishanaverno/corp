@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace Map {
-    public class NodeLink
+    public class NodeLink//ссылка от одной ноды в другую
     {
         public float w;
         private Node from;

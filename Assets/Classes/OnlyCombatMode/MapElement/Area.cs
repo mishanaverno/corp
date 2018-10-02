@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Map
 {
-    public class Area : MapElement
+    public class Area : MapElement // свободная зона
     {
         public Area(RCT rct) : base(rct)
         {

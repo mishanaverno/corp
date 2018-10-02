@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Map
 {
-    public struct NodeLayer
+    public struct NodeLayer// слой узла
     {
         public int prefabNumber;
         public string premitive;

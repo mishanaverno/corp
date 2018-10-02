@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Map
 {
    
-    public class Stage : MapElement
+    public class Stage : MapElement // родительский элемент карты - singleton
     {
         [SerializeField]
         public int floorCounter = 0, width, height, groundFloor, basementFloor = 0;
@@ -22,25 +22,10 @@ namespace Map
             this.enabledBasement = enabledBasement;
             this.DesignName = DesignName;
             floors = new List<Floor>();
-            /* (i == this.basementFloor)
-            {
-                floor = new UndergroundFloor(i, this);
-            }                    
-            else if(i == this.groundFloor)
-            {
-                floor = new GroundFloor(i, this);
-            }
-            else
-            {
-                floor = new AbovegroundFloor(i, this);
-            }
-            string json = JsonUtility.ToJson(floor);
-            Debug.Log(json);
-            this.floors[i] = floor;*/
             
             if (enabledBasement)
             {
-                AddFloor( new UndergroundFloor(floorCounter, this));
+                AddFloor(new UndergroundFloor(floorCounter, this));
                 AddFloor(new GroundFloor(floorCounter, this));
                 groundFloor = 1;
             }
@@ -52,13 +37,13 @@ namespace Map
             
             instance = this;
         }
-        public void AddFloor(Floor floor)
+        public void AddFloor(Floor floor)//добавляет этаж
         {
             floor.Init();
             floors.Add(floor);
             floorCounter++;
         }
-        public void CreateStreet(RCT rct, char axis, int sidewalk)
+        public void CreateStreet(RCT rct, char axis, int sidewalk)//добавляет улицу
         {
             List<MapElement> newElements = new List<MapElement>();
             for(int i = 0; i< this.childElements.Count; i++)
@@ -117,7 +102,7 @@ namespace Map
             }
             addNewElements(newElements);
         }
-        public static Node GetNode(CRD crd, int floornumber)
+        public static Node GetNode(CRD crd, int floornumber)// возвращает узел
         {
             Stage stage = Stage.GetStage();
             return stage.floors[floornumber].GetNode(crd.x, crd.z);
@@ -135,7 +120,7 @@ namespace Map
         {
             return Stage.GetNode(new CRD(x, z));
         }
-        public static Stage GetStage()
+        public static Stage GetStage() //возвращает экземпляр сцены 
         {
             return instance;
         }

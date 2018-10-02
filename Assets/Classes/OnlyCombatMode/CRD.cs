@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Map
 {   [Serializable]
-    public class CRD
+    public class CRD // координата в логической структуре карты
     {
         
         public int x, z;
@@ -13,12 +13,12 @@ namespace Map
             this.x = x;
             this.z = z;
         }
-        public void StepLT ()
+        public void StepLT () //смещение точки в лево и верх
         {
             x--;
             z--;
         }
-        public void StepRB()
+        public void StepRB() //смещение в право и вниз
         {
             x++;
             z++;

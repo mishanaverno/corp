@@ -4,11 +4,16 @@ using UnityEngine;
 
 namespace Map
 {
-    public class ParkingDelimetr : MapElement
+    public class ParkingDelimetr : MapElement //Разделитель парковочных мест в парковочных карманах
     {
-        public ParkingDelimetr(RCT rct) : base(rct)
+        public char axis;
+        public ParkingDelimetr(RCT rct, char axis) : base(rct)
         {
-
+            this.axis = axis;
+        }
+        public override void OnAddToChildElements()
+        {
+            surface = "Sidewalk";
         }
     }
 }

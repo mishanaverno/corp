@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Map
 {
-    public class CrossroadSidewalk : MapElement
+    public class CrossroadSidewalk : MapElement//тратуар в перекрестке
     {
         public CRD corner;
         public CrossroadSidewalk(RCT rct, CRD corner) : base(rct)

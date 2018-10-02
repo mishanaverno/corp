@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Map
 {
 
-    public class AbovegroundFloor : Floor
+    public class AbovegroundFloor : Floor // надземный этаж
     {
         public AbovegroundFloor(int number, Stage stage) : base(number, stage)
         {

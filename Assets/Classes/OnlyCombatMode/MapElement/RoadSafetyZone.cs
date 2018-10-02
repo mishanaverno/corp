@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Map
 {
-    public class RoadSafetyZone : MapElement
+    public class RoadSafetyZone : MapElement//островок безопасности
     {
         public char axis;
         public RoadSafetyZone(RCT rct, char axis) : base(rct)

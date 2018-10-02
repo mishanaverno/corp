@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Map
 {
-    public class RoadStripe : MapElement
+    public class RoadStripe : MapElement //полоса движения(напр. встречная)
     {
         public char axis;
         public RoadStripe(RCT rct, char axis) : base(rct)
