@@ -87,20 +87,20 @@ namespace Map
         private void GenerateLayers()// генерация слоев
         {
             float pPY = 0;
-            float pSY = 1;
+            float pSY = 0.05f;
             float cSY;
             for(int i = 0; i < Layers.Count; i++)
             {
                 GameObject Instance = this.CreateLayer(Layers[i]);
                 Instance.transform.parent = Cell.transform;
-                cSY = Instance.transform.localScale.y;
-                float cPY = pPY + pSY + ((cSY - pSY) / 2);
+                float cPY = pPY + pSY;
                 
                 Vector3 cPos = Instance.transform.localPosition;
                 cPos.y = cPY;
                 Instance.transform.localPosition = cPos;
                 pPY = cPY;
-                pSY = cSY;
+                Mesh mesh = Instance.GetComponent<MeshFilter>().mesh;
+                pSY = mesh.bounds.size.y;
             }
         }
         private GameObject CreateLayer(NodeLayer layer)//создание слоя
