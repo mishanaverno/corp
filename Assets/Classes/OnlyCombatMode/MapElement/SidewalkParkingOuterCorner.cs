@@ -6,13 +6,21 @@ namespace Map
 {
     public class SidewalkParkingOuterCorner : MapElement //внешний угол парковочного кармана
     {
-        public SidewalkParkingOuterCorner(RCT rct) : base(rct)
+        public string direction; 
+        public SidewalkParkingOuterCorner(RCT rct, string direction) : base(rct)
         {
-
+            this.direction = direction;
         }
         public override void OnAddToChildElements()
         {
-            AddLayer(new NodeLayer(0, "Surface", "Road"));
+            surface = "Road";
+            NodeLayer layer = new NodeLayer(getPrefabNuber(), "Additions/Sidewalk", "OuterCorner");
+            layer.direction = direction;
+            AddLayer(layer);
+        }
+        public override List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)
+        {
+            return new List<NodeLayer>(this.layers);
         }
     }
 }

@@ -11,9 +11,13 @@ namespace Map
         public Sidewalk(RCT rct, char axis, string direction) : base(rct)
         {
             this.axis = axis;
-            surface = "Road";
             this.direction = direction;
-            AddLayer(new NodeLayer(0,"Surface","Sidewalk"));
+        }
+        public override void OnAddToChildElements()
+        {
+            surface = "Road";
+            AddLayer(new NodeLayer(0, "Premetives/Surface", "Sidewalk"));
+
         }
         public override void setNodeDirections()
         {
@@ -24,7 +28,15 @@ namespace Map
         }
         public override void Upgrade()
         {
-            
+            Street street = parentElement as Street;
+            if(street.width - street.sidewalk * 2 > 2 && street.sidewalk > 3)
+            {
+                createParkingPlaces();
+            }
+        }
+        public void createParkingPlaces()
+        {
+            string outerStartDirection, outerEndDirection;
             int maxParkingSize = 2;
             int placeSize = 4;
             CRD startParking = rct.CloneStart();
@@ -48,21 +60,27 @@ namespace Map
                     start = startParking.z;
                     ocorner = startParking.z;
                     icorner = startParking.z + maxParkingSize - 1;
+                    outerStartDirection = "lb";
+                    outerEndDirection = "lt";
                 }
                 else
                 {
                     start = rct.End.z - 1;
                     ocorner = rct.End.z;
                     icorner = rct.End.z - maxParkingSize + 1;
+                    outerStartDirection = "rb";
+                    outerEndDirection = "rt";
                 }
                 SidewalkParking parking = new SidewalkParking(new RCT(new CRD(startParking.x, start), 2, parkingSize), axis, placeSize);
                 // С этим позже могут быть проблемы, т.к. угловая нода не попадает в объект parking
-                mapElements.Add(new SidewalkParkingInnerCorner(new RCT(new CRD(parking.rct.Start.x, icorner), 1, 1), ""));
-                mapElements.Add(new SidewalkParkingInnerCorner(new RCT(new CRD(parking.rct.End.x, icorner), 1, 1), ""));
+                CRD cornerCRD = new CRD(parking.rct.Start.x, icorner);
+                mapElements.Add(new SidewalkParkingInnerCorner(new RCT(cornerCRD, 1, 1), parking.rct.GetDirection(cornerCRD)));
+                cornerCRD = new CRD(parking.rct.End.x, icorner);
+                mapElements.Add(new SidewalkParkingInnerCorner(new RCT(cornerCRD, 1, 1), parking.rct.GetDirection(cornerCRD)));
                 //
                 mapElements.Add(parking);
-                mapElements.Add(new SidewalkParkingOuterCorner(new RCT(new CRD(parking.rct.Start.x - 1, ocorner), 1, 1)));
-                mapElements.Add(new SidewalkParkingOuterCorner(new RCT(new CRD(parking.rct.End.x + 1, ocorner), 1, 1)));
+                mapElements.Add(new SidewalkParkingOuterCorner(new RCT(new CRD(parking.rct.Start.x - 1, ocorner), 1, 1), outerStartDirection));
+                mapElements.Add(new SidewalkParkingOuterCorner(new RCT(new CRD(parking.rct.End.x + 1, ocorner), 1, 1), outerEndDirection));
                 
             }
             else
@@ -79,6 +97,8 @@ namespace Map
                     start = startParking.x;
                     ocorner = startParking.x;
                     icorner = startParking.x + maxParkingSize - 1;
+                    outerStartDirection = "rt";
+                    outerEndDirection = "lt";
                 }
                 else
                 {
@@ -86,15 +106,19 @@ namespace Map
                     start = rct.End.x - 1;
                     ocorner = rct.End.x;
                     icorner = rct.End.x - maxParkingSize + 1;
+                    outerStartDirection = "rb";
+                    outerEndDirection = "lb";
                 }
                 SidewalkParking parking = new SidewalkParking(new RCT(new CRD(start, startParking.z), parkingSize, 2), axis, placeSize);
                 // С этим позже могут быть проблемы, т.к. угловая нода не попадает в объект parking
-                mapElements.Add(new SidewalkParkingInnerCorner(new RCT(new CRD(icorner, parking.rct.Start.z ), 1, 1), ""));
-                mapElements.Add(new SidewalkParkingInnerCorner(new RCT(new CRD(icorner, parking.rct.End.z), 1, 1), ""));
+                CRD cornerCRD = new CRD(icorner, parking.rct.Start.z);
+                mapElements.Add(new SidewalkParkingInnerCorner(new RCT(cornerCRD, 1, 1), parking.rct.GetDirection(cornerCRD)));
+                cornerCRD = new CRD(icorner, parking.rct.End.z);
+                mapElements.Add(new SidewalkParkingInnerCorner(new RCT(cornerCRD, 1, 1), parking.rct.GetDirection(cornerCRD)));
                 //
                 mapElements.Add(parking);
-                mapElements.Add(new SidewalkParkingOuterCorner(new RCT(new CRD(ocorner, parking.rct.Start.z - 1), 1, 1)));
-                mapElements.Add(new SidewalkParkingOuterCorner(new RCT(new CRD(ocorner, parking.rct.End.z + 1), 1, 1)));
+                mapElements.Add(new SidewalkParkingOuterCorner(new RCT(new CRD(ocorner, parking.rct.Start.z - 1), 1, 1), outerStartDirection));
+                mapElements.Add(new SidewalkParkingOuterCorner(new RCT(new CRD(ocorner, parking.rct.End.z + 1), 1, 1), outerEndDirection));
             }
             addNewElements(mapElements);
         }

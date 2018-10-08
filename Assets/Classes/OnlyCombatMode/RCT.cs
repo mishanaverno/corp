@@ -189,6 +189,51 @@ namespace Map
         {
             return new CRD(end.x, end.z);
         }
+        public string GetDirection(CRD crd)
+        {
+            string direction, vDirection, hDirection;
+            int VD, HD;
+            int DSX = crd.x - start.x;
+            int DEX = end.x - crd.x;
+            int DSZ = crd.z - start.z;
+            int DEZ = end.z - crd.z;
+            if(DSX < DEX)
+            {
+                VD = DSX;
+                vDirection = "t";
+            }
+            else
+            {
+                VD = DEX;
+                vDirection = "b";
+            }
+            if(DSZ < DEZ)
+            {
+                HD = DSZ;
+                hDirection = "l";
+            }
+            else
+            {
+                HD = DEZ;
+                hDirection = "r";
+            }
+            if(HD == VD)
+            {
+                direction = hDirection + vDirection;
+            }
+            else
+            {
+                if(HD < VD)
+                {
+                    direction = hDirection;
+                }
+                else
+                {
+                    direction = vDirection;
+                }
+            }
+            return direction;
+        }
         public void DebugLog(string text="") // выводит прямоугольник в консоль
         {
             Debug.Log(text+" RCT start: " + Start.x + "," + Start.z + " end: " + End.x + "," + End.z + " w:" + Width + " h:" + Height + " sq:" + sq);

@@ -16,6 +16,7 @@ namespace Map
         private static Stage instance;
         public Stage(int width, int height, bool enabledBasement, string DesignName) : base(new RCT(new CRD(0, 0), width, height))
         {
+            prefabNumber = 0;
             Debug.Log(parentElement);
             this.width = width;
             this.height = height;

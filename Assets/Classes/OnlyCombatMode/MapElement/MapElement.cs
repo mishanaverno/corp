@@ -13,7 +13,8 @@ namespace Map
         public string surface = "Ground"; // название поверхности передаваемое узлам
         public static int iterator = 0;   //итератор для установки id
         public int id;                    //порядковый номер
-        private List<NodeLayer> layers = new List<NodeLayer>(); //слои передаваемые узлам
+        protected List<NodeLayer> layers = new List<NodeLayer>(); //слои передаваемые узлам
+        public int prefabNumber = -1;
 
         public MapElement(RCT rct)
         {
@@ -104,7 +105,17 @@ namespace Map
         {
             this.layers.RemoveAt(index);
         }
-        
+        public int getPrefabNuber()
+        {
+            if(prefabNumber >= 0)
+            {
+                return prefabNumber;
+            }
+            else
+            {
+                return parentElement.getPrefabNuber();
+            }
+        }
         public void ProcessLayersChildElements(List<NodeLayer> layers)// рекурсивная обработка слоев всех елементов  
         {
             List<NodeLayer> newLayers = BeforeProcessLayers(layers);
@@ -121,9 +132,14 @@ namespace Map
 
             for (int i = 0; i < childNodes.Count; i++)
             {
-                childNodes[i].Layers.AddRange(layers);
+                List<NodeLayer> newLayers = BeforeAddLayersToNode(layers, childNodes[i]);
+                childNodes[i].Layers.AddRange(newLayers);
             }
         }
+        public virtual List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
+        {
+            return layers;
+        } 
         public virtual List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)// виртуальный метод по необходимости переопределяемый конкретными классами
         {                                                                         // обработка слоев перед добавление узлам
             List<NodeLayer> newLayers = new List<NodeLayer>();

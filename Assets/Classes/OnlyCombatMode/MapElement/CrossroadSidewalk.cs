@@ -14,7 +14,7 @@ namespace Map
         public override void OnAddToChildElements()
         {
             surface = "Road";
-            AddLayer(new NodeLayer(0, "Surface", "Sidewalk"));
+            AddLayer(new NodeLayer(getPrefabNuber(), "Premetives/Surface", "Sidewalk"));
         }
         public override void setNodeDirections()
         {

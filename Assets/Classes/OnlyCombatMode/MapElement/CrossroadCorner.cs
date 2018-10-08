@@ -13,7 +13,18 @@ namespace Map
         public override void OnAddToChildElements()
         {
             surface = "Road";
-            AddLayer(new NodeLayer(0, "Surface", "Road"));
+            NodeLayer corner = new NodeLayer(getPrefabNuber(), "Additions/Sidewalk", "OuterCorner");
+            string layerDirection = parentElement.rct.GetDirection(this.rct.Start);
+            corner.direction = layerDirection;
+            AddLayer(corner);
+            NodeLayer trafficLight = new NodeLayer(getPrefabNuber(), "Additions/Pilars", "TrafficLight");
+            trafficLight.direction = layerDirection;
+            trafficLight.hasMesh = false;
+            AddLayer(trafficLight);
+        }
+        public override List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)
+        {
+            return new List<NodeLayer>(this.layers); 
         }
 
     }

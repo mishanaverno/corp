@@ -27,25 +27,25 @@ namespace Map
                             newMapElements.Add(new CrossroadSidewalk(rcts[i], rcts[i].CloneEnd()));
                             break;
                         case 1:
-                            newMapElements.Add(new CrossroadRoad(rcts[i], 'v', rcts[i].Start.x));
+                            newMapElements.Add(new CrossroadRoad(rcts[i], 'v'));
                             break;
                         case 2:
                             newMapElements.Add(new CrossroadSidewalk(rcts[i], new CRD(rcts[i].End.x, rcts[i].Start.z)));
                             break;
                         case 3:
-                            newMapElements.Add(new CrossroadRoad(rcts[i], 'h', rcts[i].Start.z));
+                            newMapElements.Add(new CrossroadRoad(rcts[i], 'h'));
                             break;
                         case 4:
                             newMapElements.Add(new Intersection(rcts[i]));
                             break;
                         case 5:
-                            newMapElements.Add(new CrossroadRoad(rcts[i], 'h', rcts[i].End.z));
+                            newMapElements.Add(new CrossroadRoad(rcts[i], 'h'));
                             break;
                         case 6:
                             newMapElements.Add(new CrossroadSidewalk(rcts[i], new CRD(rcts[i].Start.x, rcts[i].End.z)));
                             break;
                         case 7:
-                            newMapElements.Add(new CrossroadRoad(rcts[i], 'v', rcts[i].End.x));
+                            newMapElements.Add(new CrossroadRoad(rcts[i], 'v'));
                             break;
                         case 8:
                             newMapElements.Add(new CrossroadSidewalk(rcts[i], rcts[i].CloneStart()));

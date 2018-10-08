@@ -55,8 +55,12 @@ namespace Map
         }
         private Vector3 GetRotation()//в зависимости от направление задает угол вращения
         {
+            return GetRotation(direction);
+        }
+        private Vector3 GetRotation(string direction)
+        {
             Vector3 rotation;
-            switch (this.direction)
+            switch (direction)
             {
                 case "r":
                     rotation = new Vector3(0, 0, 0);
@@ -69,6 +73,18 @@ namespace Map
                     break;
                 case "t":
                     rotation = new Vector3(0, 270, 0);
+                    break;
+                case "rt":
+                    rotation = new Vector3(0, -45, 0);
+                    break;
+                case "rb":
+                    rotation = new Vector3(0, 45, 0);
+                    break;
+                case "lt":
+                    rotation = new Vector3(0, 225, 0);
+                    break;
+                case "lb":
+                    rotation = new Vector3(0, 135, 0);
                     break;
                 default:
                     rotation = new Vector3(0, 0, 0);
@@ -93,20 +109,31 @@ namespace Map
             {
                 GameObject Instance = this.CreateLayer(Layers[i]);
                 Instance.transform.parent = Cell.transform;
-                float cPY = pPY + pSY;
+                float cPY = pPY + pSY + 0.0001f;
                 
                 Vector3 cPos = Instance.transform.localPosition;
                 cPos.y = cPY;
                 Instance.transform.localPosition = cPos;
                 pPY = cPY;
-                Mesh mesh = Instance.GetComponent<MeshFilter>().mesh;
-                pSY = mesh.bounds.size.y;
+                if (Layers[i].hasMesh)
+                {
+                    Mesh mesh = Instance.GetComponent<MeshFilter>().mesh;
+                    pSY = mesh.bounds.size.y;
+                }
             }
         }
         private GameObject CreateLayer(NodeLayer layer)//создание слоя
         {
-            Vector3 rotation = GetRotation();
-            UnityEngine.Object prefab = Resources.Load("Stage/" + this.floor.stage.DesignName + "/Premetives/" + layer.premitive + "/" + layer.name + "/" + this.order + "/" + layer.prefabNumber);
+            Vector3 rotation;
+            if (layer.direction == "i")
+            {
+                rotation = GetRotation();
+            }
+            else
+            {
+                rotation = GetRotation(layer.direction);
+            }
+            UnityEngine.Object prefab = Resources.Load("Stage/" + this.floor.stage.DesignName + "/" + layer.premitive + "/" + layer.name + "/" + this.order + "/" + layer.prefabNumber);
             Vector3 position = new Vector3(crd.x, floor.number, crd.z);
             GameObject LayerInstance;
             return LayerInstance = GameObject.Instantiate(prefab ,position, Quaternion.Euler(rotation)) as GameObject;

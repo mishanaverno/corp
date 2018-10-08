@@ -13,7 +13,12 @@ namespace Map
         }
         public override void OnAddToChildElements()
         {
-            AddLayer(new NodeLayer(0, "Surface", "Road"));
+            surface = "Road";
+            AddLayer(new NodeLayer(getPrefabNuber(), "Additions/SafetyZone", "End"));
+        }
+        public override List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)
+        {
+            return this.layers;
         }
         public override void setNodeDirections()
         {

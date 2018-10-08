@@ -23,11 +23,11 @@ namespace Game
 		// Use this for initialization
 		void Start () {
             StageConstructor Constructor = new StageConstructor();
-            Constructor.CreateStage(27, 27, false, "Dev");
-            Constructor.AddStreet(0, 'h', 3, 3);
-            //Constructor.AddStreet(12, 'h', 1, 3);
-            Constructor.AddStreet(1, 'v', 7, 3);
-
+            Constructor.CreateStage(37, 37, false, "Dev");
+            Constructor.AddStreet(0, 'h', 3, 5);
+            Constructor.AddStreet(20, 'h', 1, 3);
+            Constructor.AddStreet(0, 'v', 7, 5);
+            //Constructor.AddStreet(16, 'v', 6, 4);
             Constructor.Upgrade();
             Constructor.RenderStage();
             /*RCT rct1 = new RCT(new CRD(0, 0), new CRD(1, 3));

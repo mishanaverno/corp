@@ -49,7 +49,7 @@ namespace Map
         }
         public override void Upgrade()
         {
-            
+            List<MapElement> mapElements = new List<MapElement>();
             RCT road;
             if (axis == 'v')
             {
@@ -60,18 +60,13 @@ namespace Map
             {
                 road = new RCT(new CRD(this.rct.Start.x+this.sidewalk,this.rct.Start.z),this.rct.Width,this.width-sidewalk*2);
             }
-            //Debug.Log("ROAD RCT " + road.Start.x + "," + road.Start.z + ":" + road.End.x + "," + road.End.z + " h: " + road.Height + " w: " + rct.Width);
             List<RCT> rcts = RCT.Cuttind(this.rct, road);
             
             for (int i = 0; i < rcts.Count; i++)
             {
                 if (rcts[i].Equals(road))
                 {
-                    Road newRoad = new Road(rcts[i], this.axis);
-                    newRoad.moveNodesFromMapElementToThis(this);
-                    newRoad.parentElement = this;
-                    this.childElements.Add(newRoad);
-                   
+                    mapElements.Add(new Road(rcts[i], this.axis));
                 }
                 else
                 {
@@ -98,18 +93,10 @@ namespace Map
                             direction = "t";
                         }
                     }
-                    Sidewalk newSidewalk = new Sidewalk(rcts[i], this.axis, direction);
-                    newSidewalk.moveNodesFromMapElementToThis(this);
-                    newSidewalk.parentElement = this;
-                    this.childElements.Add(newSidewalk);
+                    mapElements.Add(new Sidewalk(rcts[i], this.axis, direction));
                 }
             }
-            /*this.NodesToConsole();      
-            for(int i = 0; i < this.childElements.Count; i++)
-            {
-                childElements[i].NodesToConsole();
-            }*/
-
+            addNewElements(mapElements);
         }
     }
 }

@@ -6,28 +6,26 @@ namespace Map
 {
     public class CrossroadRoad : Road//дорога на перекрестке
     {
-        private int croswalk;
-        private int croswalkwidth = 1;
-        public CrossroadRoad(RCT rct, char axis, int croswalk) : base(rct, axis)
+        public CrossroadRoad(RCT rct, char axis) : base(rct, axis)
         {
-            this.croswalk = croswalk;
+
         }
         public override void Upgrade()
         {
-            if (croswalk >= 0)
+            if (rct.Height > 2 && rct.Width > 2)
             {
                 RCT crosswalkRct;
                 if (axis == 'v')
                 {
-                    crosswalkRct = new RCT(new CRD(croswalk, rct.Start.z), rct.Width, croswalkwidth);
+                    crosswalkRct = new RCT(new CRD(rct.Start.x + 1, rct.Start.z), new CRD(rct.End.x - 1, rct.End.z));
                 }
                 else
                 {
-                    crosswalkRct = new RCT(new CRD(rct.Start.x, croswalk), croswalkwidth, rct.Height);
+                    crosswalkRct = new RCT(new CRD(rct.Start.x, rct.Start.z + 1), new CRD(rct.End.x, rct.End.z - 1));
                 }
                 List<RCT> newRCTs = RCT.Cuttind(rct, crosswalkRct);
                 List<MapElement> newElements = new List<MapElement>();
-                for(int i = 0; i < newRCTs.Count; i++)
+                for (int i = 0; i < newRCTs.Count; i++)
                 {
                     //newRCTs[i].DebugLog(this.ToString() + " id:" + this.id);
                     if (newRCTs[i].Equals(crosswalkRct))
@@ -36,16 +34,13 @@ namespace Map
                     }
                     else
                     {
-                        newElements.Add(new CrossroadRoad(newRCTs[i], axis, -1));
+                        newElements.Add(new CrossroadRoad(newRCTs[i], axis));
                     }
                 }
                 parentElement.moveNodesFromMapElementToThis(this);
                 parentElement.addNewElements(newElements);
             }
-            else
-            {
                 base.Upgrade();
-            }
         }
     }
 

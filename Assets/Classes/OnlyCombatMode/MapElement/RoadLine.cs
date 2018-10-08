@@ -42,17 +42,51 @@ namespace Map
         }
         public override void OnAddToChildElements()
         {
-            
-            if (parentElement.parentElement is CrossroadCrosswalk)
-            {
-                surface = "Crosswalk";
-            }
-            else
-            {
                 surface = "Road";
+        }
+        public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
+        {
+            List<NodeLayer> nodeLayers = new List<NodeLayer>(layers);
+            if(parentElement.parentElement.GetType() == typeof(Road)){
+                if (axis == 'v')
+                {
+                    if (node.crd.z == parentElement.parentElement.rct.Start.z || node.crd.z == parentElement.parentElement.rct.End.z)
+                    {
+                        nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "SideLine"));
+                    }
+                    else if (node.crd.z == parentElement.rct.Start.z || node.crd.z == parentElement.rct.End.z)
+                    {
+                        nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "SolidLine"));
+                    }
+                    else
+                    {
+                        nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "DashedLine"));
+                    }
+                }
+                else
+                {
+                    if (node.crd.x == parentElement.parentElement.rct.Start.x || node.crd.x == parentElement.parentElement.rct.End.x)
+                    {
+                        nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "SideLine"));
+                    }
+                    else if (node.crd.x == parentElement.rct.Start.x || node.crd.x == parentElement.rct.End.x)
+                    {
+                        nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "SolidLine"));
+                    }
+                    else
+                    {
+                        nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "DashedLine"));
+                    }
+                }
 
             }
+            else if(parentElement.parentElement.GetType() == typeof(CrossroadCrosswalk))
+            {
+                nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "Crosswalk"));
+            }
+            return base.BeforeAddLayersToNode(nodeLayers, node);
         }
+
     }
 }
 

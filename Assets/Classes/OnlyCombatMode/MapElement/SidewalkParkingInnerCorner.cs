@@ -13,11 +13,14 @@ namespace Map
         }
         public override void OnAddToChildElements()
         {
-            surface = "Ground";
+            surface = "Road";
+            NodeLayer layer = new NodeLayer(getPrefabNuber(), "Additions/Sidewalk", "InnerCorner");
+            layer.direction = direction;
+            AddLayer(layer);
         }
         public override List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)
         {
-            return new List<NodeLayer>();
+            return new List<NodeLayer>(this.layers);
         }
     }
 }

@@ -16,7 +16,8 @@ namespace Map
         {
             if (parentElement.GetType() == typeof(CrossroadCrosswalk))
             {
-                surface = "Crosswalk";
+                surface = "Road";
+                AddLayer(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "Crosswalk"));
             }
             if (parentElement.GetType() == typeof(CrossroadRoad))
             {
@@ -26,8 +27,7 @@ namespace Map
             {
                
                 surface = "Road";
-                AddLayer(new NodeLayer(0, "Surface", "Sidewalk"));
-                AddLayer(new NodeLayer(0, "Surface", "Sidewalk"));
+                AddLayer(new NodeLayer(0, "Premetives/Surface", "Sidewalk"));
             }
         }
         public override void setNodeDirections()
