@@ -16,7 +16,7 @@ namespace Map
 		public float hCost; // приблизительное расстояние до конечной точки
 		public float gCost; // расстояние от стартовой точки
 		public float fCost; // сумма растояний от стартовой, до конечной точек
-		public Node parentNode; // ссылка на клетку из которой пришел Pathfinder, при поиске пути
+		public Node parentNode; // удалить ссылка на клетку из которой пришел Pathfinder, при поиске пути
         [SerializeField]
         public bool isWalkable; // проходима ли клетка для юнитов
         [SerializeField]
@@ -24,15 +24,15 @@ namespace Map
         [SerializeField]
         public GameObject Cell; // ссылка на объект в сцене, представляющий клетку
         [SerializeField]
-        public List<NodeLink> links;
+        public List<NodeLink> links;// ссылки на другие узлы
         [SerializeField]
-        public Floor floor;
-        public string order = "Default";
-        public string surface = "Ground";
-        public int prefabNumber = 0;
-        public string direction = "r";
-        public List<NodeLayer> Layers; 
- 
+        public Floor floor; // ссылка на этаж
+        public string order = "Default"; //ордер архитектуры
+        public string surface = "Ground"; //поверхность 
+        public int prefabNumber = 0; //номер префаба
+        public string direction = "r"; //направление
+        public List<NodeLayer> Layers; //список слоев
+        public MapElement mapElement;
         public Node(int x, int z, Floor floor, bool movable)
         {
             this.crd = new CRD(x, z);

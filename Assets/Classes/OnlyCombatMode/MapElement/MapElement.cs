@@ -15,6 +15,7 @@ namespace Map
         public int id;                    //порядковый номер
         protected List<NodeLayer> layers = new List<NodeLayer>(); //слои передаваемые узлам
         public int prefabNumber = -1;
+        public string order = "Default";
 
         public MapElement(RCT rct)
         {
@@ -37,18 +38,18 @@ namespace Map
             }
             setNodeDirections();
         }
+
         public void moveNode(int index, MapElement from, MapElement to) //передача узла
         {
             from.childNodes[index].ChangeSurface(to.surface);
+            from.childNodes[index].mapElement = to;
             to.childNodes.Add(from.childNodes[index]);
             from.childNodes.RemoveAt(index);
         }
         public void moveNode(Node node, MapElement from, MapElement to)
         {
             int index = from.childNodes.IndexOf(node);
-            from.childNodes[index].ChangeSurface(to.surface);
-            to.childNodes.Add(from.childNodes[index]);
-            from.childNodes.RemoveAt(index);
+            moveNode(index, from, to);
         }
         public bool isEmpty()//проверяет прямоугольник элемента на пустоту
         {
@@ -151,7 +152,17 @@ namespace Map
         {                                         // метод вызываемый перед добавлением елемента к дочерним, после него к нему добавляются узлы
            
         }
-        
+        public MapElement GetParentByClass(System.Type C)
+        {
+            if (GetType() == C || GetType() == typeof(Stage)) 
+            {
+                return this;
+            }
+            else
+            {
+                return parentElement.GetParentByClass(C);
+            }
+        }
         public void DebugParents()
         {
             MapElement elem = this; 

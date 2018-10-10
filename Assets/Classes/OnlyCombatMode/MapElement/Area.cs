@@ -8,9 +8,13 @@ namespace Map
     {
         public Area(RCT rct) : base(rct)
         {
+            
+        }
+        public override void OnAddToChildElements()
+        {
             surface = "Ground";
         }
-        
+
     }
    
 }

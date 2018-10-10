@@ -102,7 +102,6 @@ namespace Map
                 }
                 else
                 {
-                    Debug.Log(startParking.x+":"+startParking.z);
                     start = rct.End.x - 1;
                     ocorner = rct.End.x;
                     icorner = rct.End.x - maxParkingSize + 1;

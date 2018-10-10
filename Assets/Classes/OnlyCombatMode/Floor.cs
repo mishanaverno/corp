@@ -17,8 +17,8 @@ namespace Map
         {
             this.number = number;
             this.stage = stage;
-            this.rct = new RCT(new CRD(0, 0), stage.height, stage.width);
-            map = new Node[stage.height,stage.width];
+            this.rct = new RCT(new CRD(0, 0), stage.width, stage.height);
+            map = new Node[stage.height, stage.width];
                 
         }
         public virtual void Init()
@@ -27,7 +27,6 @@ namespace Map
         }
         protected void GenerateNodes()// генерирует узлы
         {
-            Debug.Log("Generate floor " + number);
             for(int x = 0; x < stage.height; x++)
             {
                 for(int z = 0; z < stage.width; z++)
@@ -35,8 +34,6 @@ namespace Map
                     Node node = new Node(x, z, this, defaultIsWalkable);
                     map[x, z] = node;
                     stage.childNodes.Add(node);
-                   // string json = JsonUtility.ToJson(node);
-                    //Debug.Log(json);
                 }
             }
         }
@@ -49,10 +46,10 @@ namespace Map
                     Node currentNode = GetNode(fx, fz);
                     for (int x = -1; x <= 1; x++)
                     {
-                        for(int z = -1; z <= +1; z++)
+                        for(int z = -1; z <= 1; z++)
                         {
 
-                            if ((z == 0 && x == 0) || !this.rct.isContainCRD(new CRD(fx + x, fz + z)))
+                            if ((z == 0 && x == 0) || !rct.isContainCRD(new CRD(fx + x, fz + z)))
                             {
                                 continue;
                             }
@@ -74,7 +71,6 @@ namespace Map
         }
         public void GenerateCells()//генерирует игровые объекты - клетки
         {
-            Debug.Log("Generate cells " + number);
             for(int x = 0; x < stage.height; x++)
             {
                 for(int z = 0; z < stage.width; z++)
