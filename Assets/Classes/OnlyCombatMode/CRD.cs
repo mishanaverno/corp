@@ -45,6 +45,10 @@ namespace Map
                 return true;
             }
         }
+        public CRD Clone()
+        {
+            return new CRD(x, z);
+        } 
     }
 
 }

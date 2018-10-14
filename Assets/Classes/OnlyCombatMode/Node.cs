@@ -180,6 +180,39 @@ namespace Map
         public void UnlinkNode(Node node)//удаление ссылки
         {
         }
+        public List<Node> GetSiblings()
+        {
+            List<Node> siblings = new List<Node>();
+            RCT rct = Stage.GetStage().rct;
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int z = -1; z <= 1; z++)
+                {
+
+                    if ((z == 0 && x == 0) || !rct.isContainCRD(new CRD(crd.x + x, crd.z + z)))
+                    {
+                        continue;
+                    }
+                  
+                    siblings.Add(Stage.GetNode(crd.x + x, crd.z + z, floor.number));
+                }
+            }
+            return siblings;
+        }
+        public bool borderWidthType(System.Type type)
+        {
+            List<Node> siblings = this.GetSiblings();
+            bool bordered = false;
+            for (int i = 0; i < siblings.Count; i++)
+            {
+                if (siblings[i].mapElement.GetType() == type)
+                {
+                    bordered = true;
+                    break;
+                }
+            }
+            return bordered;
+        }
         public void OccupyNode(){ // метод осуществляющий занятие клетки юнитом, должен вызываться при остановке юнита в клетке 
 	    	busy = true; // не дает другим юнитам стать сюда
 	    	Cell.GetComponent<CellController> ().ShowCellShelters (); // отображает значки укрытий в сцене

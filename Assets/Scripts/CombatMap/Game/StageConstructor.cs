@@ -161,9 +161,8 @@ namespace Map
             createQuad(new CRD(stage.height, -1), new Vector3(0, -45, 0), -1);
             createQuad(new CRD(stage.height, stage.width), new Vector3(0, -135, 0), -1);
         }
-        private void createQuads(CRD crd, Vector3 rotation, int width)
+        private void createQuads(CRD crd, Vector3 rotation, int width)//Добавление фона карты одна сторона
         {
-            Debug.Log("bgsss crd: " + crd.x + ":" + crd.z + " w:" + width);
             CRD ncrd = new CRD(crd.x, crd.z);
             int quadWidt = 1;
             while (width > 0)
@@ -206,9 +205,8 @@ namespace Map
                 width -= quadWidt;
             }
         }
-        private void createQuad(CRD crd, Vector3 rotation, int width)
+        private void createQuad(CRD crd, Vector3 rotation, int width)//Добавление фона карты один элемент
         {
-            Debug.Log("bg crd: " + crd.x + ":" + crd.z + " w:" + width);
             Vector3 position = new Vector3(crd.x, stage.groundFloor, crd.z);
             int prefabNumber = 0;
             string size;
@@ -219,6 +217,63 @@ namespace Map
             GameObject cellInstance = GameObject.Instantiate (Resources.Load("Stage/" + stage.DesignName + "/Background/" + stage.order + "/"+ size +"/" + prefabNumber), position, Quaternion.Euler(rotation)) as GameObject;
             cellInstance.transform.name = "bg-[" + position.x + "," + position.z + "]";
         }
+        private static bool[,] createLayerMap(RCT rct) //создание карты слоя
+        {
+            bool[,] map = new bool[rct.Height, rct.Width];
+            return map;
+        }
+        public static bool[,] createPeriodicalMap(RCT rct, char axis, int offset, int step)
+        {
+            bool[,] map = createLayerMap(rct);
+            int row, element, nextElement = step;
+            for(int x=0; x < map.GetLength(0); x++)
+            {
+                for (int z = 0; z < map.GetLength(1); z++)
+                {
+                    if(axis == 'v')
+                    {
+                        row = z;
+                        element = x;
+                    }
+                    else
+                    {
+                        row = x;
+                        element = z;
+                    }
+                    if(row == offset && element == nextElement)
+                    {
+                        nextElement += step;
+                        map[x, z] = true;
+                    }
+                    else
+                    {
+                        map[x, z] = false;
+                    }
+                }
+            }
+            return map;
+        }
+        public static bool[,] createRandomMap(RCT rct, int treshold)
+        {
+            bool[,] map = createLayerMap(rct);
+            for(int x = 0; x < map.GetLength(0); x++)
+            {
+                for (int z = 0; z < map.GetLength(1); z++)
+                {
+                    if(Random.Range(0, 100) < treshold)
+                    {
+                        map[x, z] = true;
+                    }
+                    else
+                    {
+                        map[x, z] = false;
+                    }
+                   
+                }
+            }
+                    return map;
+        }
+
 
     }
    

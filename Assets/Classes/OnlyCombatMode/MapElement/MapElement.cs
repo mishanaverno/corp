@@ -16,6 +16,7 @@ namespace Map
         protected List<NodeLayer> layers = new List<NodeLayer>(); //слои передаваемые узлам
         public int prefabNumber = -1;
         public string order = "Default";
+        public List<string> furnitureList = new List<string>();
 
         public MapElement(RCT rct)
         {
@@ -79,6 +80,71 @@ namespace Map
         {                            // Усложняет елемент, т.е. добавляет более мелкие дочерние элементы и передает им узлы 
            
         }
+        public void addFurniture(string name, CRD start, string furnitureDirection)//добавление мебели
+        {
+            Furniture furniture = new Furniture(name, start, furnitureDirection, getPrefabNuber());
+            bool collision = false;
+            for(int i = 0; i < childElements.Count; i++)
+            {
+                if (childElements[i].rct.checkCollision(furniture.rct))//проверка столкновений с другими дочерними элементами
+                {
+                    collision = true;
+                    break;
+                }
+            }
+            if (!collision && rct.isContainRCT(furniture.rct))//проверка столкновений и вписывается ли мебель в элемент
+            {
+                addNewElement(furniture);
+            }
+        }
+        public void AddPeriodicalFurniture(string name, string furnitureDirection, char axis, int offset, int step)
+        {
+            bool[,] map = StageConstructor.createPeriodicalMap(rct,axis,offset,step);
+            for(int x = 0; x < map.GetLength(0); x++)
+            {
+                for(int z = 0; z < map.GetLength(1); z++)
+                {
+                    if (map[x, z])
+                    {
+                        addFurniture(name, new CRD(x + rct.Start.x, z + rct.Start.z), furnitureDirection);
+                    }
+                }
+            }
+        }
+        public void AddRandomFurniture(string name, string furnitureDirection, int treshold)
+        {
+            bool[,] map = StageConstructor.createRandomMap(rct, treshold);
+            for (int x = 0; x < map.GetLength(0); x++)
+            {
+                for (int z = 0; z < map.GetLength(1); z++)
+                {
+                    if (map[x, z])
+                    {
+                        addFurniture(name, new CRD(x + rct.Start.x, z + rct.Start.z), furnitureDirection);
+                    }
+                }
+            }
+        }
+        public void AddRandomFurniture(string furnitureDirection, int treshold)
+        {
+            int furnitureListCount = furnitureList.Count;
+            if (furnitureListCount < 0) return;
+            
+            bool[,] map = StageConstructor.createRandomMap(rct, treshold);
+            for (int x = 0; x < map.GetLength(0); x++)
+            {
+                for (int z = 0; z < map.GetLength(1); z++)
+                {
+                    if (map[x, z])
+                    {
+                        float rand = Random.Range(0, furnitureListCount * 100) / 100;
+                        int index = Mathf.RoundToInt(rand);
+                        string name = furnitureList[index];
+                        addFurniture(name, new CRD(x + rct.Start.x, z + rct.Start.z), furnitureDirection);
+                    }
+                }
+            }
+        }
         public void addNewElements(List<MapElement> newMapElements)// добавляет елементу список дочерних
         {
             for (int i = 0; i < newMapElements.Count; i++)
@@ -137,10 +203,33 @@ namespace Map
                 childNodes[i].Layers.AddRange(newLayers);
             }
         }
-        public virtual List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
+        public virtual List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)// виртуальный метод по необходимости переопределяемый конкретными классами
+        {                                                                                      // обработка слоев перед добавлением узлу
+            List<NodeLayer> nodeLayers = new List<NodeLayer>(layers);
+            for (int i = 0; i < nodeLayers.Count; i++)
+            {
+                if (nodeLayers[i].mapping)
+                {
+                    if(!checkMap(node.crd, nodeLayers[i].map))
+                    {
+                        nodeLayers.RemoveAt(i);
+                    }
+                }
+            }
+            return nodeLayers;
+        }
+        public bool checkMap(CRD crd, bool[,] map)
         {
-            return layers;
-        } 
+            if(map[crd.x - rct.Start.x,crd.z - rct.Start.z])
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public virtual List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)// виртуальный метод по необходимости переопределяемый конкретными классами
         {                                                                         // обработка слоев перед добавление узлам
             List<NodeLayer> newLayers = new List<NodeLayer>();

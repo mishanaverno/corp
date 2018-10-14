@@ -31,22 +31,26 @@ namespace Game
             Constructor.Upgrade();
             Constructor.RenderStage();
             Constructor.RenderBackground();
-            /*RCT rct1 = new RCT(new CRD(0, 0), new CRD(1, 3));
-            RCT rct2 = new RCT(new CRD(1, 1), new CRD(2, 2));
-            List<RCT> rcts = RCT.Cuttind(rct1, rct2);
-            for(int i = 0; i < rcts.Count; i++)
+            /*RCT rct = new RCT(new CRD(2, 3), 6, 4);
+            bool[,] nmap = StageConstructor.createPeraiodicalMap(rct, 'h', 1, 2);
+            for (int x = 0; x < nmap.GetLength(0); x++)
             {
-                Debug.Log(rcts[i].start.x + "," + rcts[i].start.z + " : " + rcts[i].end.x + "," + rcts[i].end.z);
+                string row = "x: " + x + " ";
+                for (int z = 0; z < nmap.GetLength(1); z++)
+                {
+                    row += nmap[x, z].ToString() + " + ";
+                }
+                Debug.Log(row);
             }*/
+            
 
-
-            //teams.Add (new Team ("Master", "Player"));
-            //teams.Add (new Team ("Enemy", "AI"));
-            //playerUnits.Add (new Unit ("Igor Svezdov-pezdof", teams.Find (x => x.title == "Master"), 10, 8)); 
-            //playerUnits.Add (new Unit ("Alexander Sukinsin", teams.Find (x => x.title == "Master"), 10, 8));
-            //UnitsGenerator.instance.playerUnits = playerUnits;
-            //enemyUnits.Add (new Unit ("Angry Sailon", teams.Find (x => x.title == "Enemy"), 8, 7));
-            //UnitsGenerator.instance.enemyUnits = enemyUnits;
+                    //teams.Add (new Team ("Master", "Player"));
+                    //teams.Add (new Team ("Enemy", "AI"));
+                    //playerUnits.Add (new Unit ("Igor Svezdov-pezdof", teams.Find (x => x.title == "Master"), 10, 8)); 
+                    //playerUnits.Add (new Unit ("Alexander Sukinsin", teams.Find (x => x.title == "Master"), 10, 8));
+                    //UnitsGenerator.instance.playerUnits = playerUnits;
+                    //enemyUnits.Add (new Unit ("Angry Sailon", teams.Find (x => x.title == "Enemy"), 8, 7));
+                    //UnitsGenerator.instance.enemyUnits = enemyUnits;
 
         }
 

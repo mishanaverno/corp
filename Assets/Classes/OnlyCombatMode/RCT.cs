@@ -110,6 +110,17 @@ namespace Map
                 return true;
             }
         }
+        public bool isContainRCT(RCT rct)
+        {
+            if(this.isContainCRD(rct.start) && this.isContainCRD(rct.end))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public bool checkCollision(RCT rct)// проверяет пересекается ли данный прямоугольник с указанным прямоугольником
         {
             if (rct.End.z < this.Start.z || rct.Start.z > this.End.z || rct.Start.x > this.End.x || rct.End.x < this.Start.x)

@@ -13,7 +13,8 @@ namespace Map
         }
         public override void OnAddToChildElements()
         {
-            surface = "Sidewalk";
+            surface = "Road";
+            AddLayer(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "CenterLine"));
         }
     }
 }

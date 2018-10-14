@@ -17,7 +17,33 @@ namespace Map
         {
             surface = "Road";
             AddLayer(new NodeLayer(0, "Premetives/Surface", "Sidewalk"));
+            NodeLayer lights = new NodeLayer(getPrefabNuber(), "Additions/Pilars", "NightLight");
+            int offset = 2;
+            int roadOffset = getRoadOffset(offset);
+            lights.addMap(StageConstructor.createPeriodicalMap(rct, axis, roadOffset, 10));
+            lights.hasMesh = false;
+            AddLayer(lights);
 
+        }
+        private int getRoadOffset(int offset)
+        {
+            int roadOffset;
+            if (rct.Start == parentElement.rct.Start)
+            {
+                if (axis == 'v')
+                {
+                    roadOffset = rct.Width - offset - 1;
+                }
+                else
+                {
+                    roadOffset = rct.Height - offset - 1;
+                }
+            }
+            else
+            {
+                roadOffset = offset;
+            }
+            return roadOffset;
         }
         public override void setNodeDirections()
         {
@@ -33,9 +59,41 @@ namespace Map
             {
                 createParkingPlaces();
             }
+            string benchDirection;
+            if (rct.Start == parentElement.rct.Start)
+            {
+                if (axis == 'v')
+                {
+                    benchDirection = "b";
+                }
+                else
+                {
+                    benchDirection = "l";
+                }
+            }
+            else
+            {
+                if (axis == 'v')
+                {
+                    benchDirection = "t";
+                }
+                else
+                {
+                    benchDirection = "r";
+                }
+            }
+            //addFurniture("SidewalkBench", rct.Start, benchDirection);
+            AddPeriodicalFurniture("SidewalkBench", benchDirection, axis, getRoadOffset(1), 10);
+            furnitureList.Add("StreetTerminal");
+            furnitureList.Add("GarbageBasket");
+            furnitureList.Add("BoxBasket");
+            furnitureList.Add("StreetStand");
+
+            AddRandomFurniture(direction, 6);
         }
         public void createParkingPlaces()
         {
+            if (parentElement.GetType() == typeof(BackgroundStreet)) return;
             string outerStartDirection, outerEndDirection;
             int maxParkingSize = 2;
             int placeSize = 4;
