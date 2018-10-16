@@ -44,6 +44,22 @@ namespace Map
         {
             from.childNodes[index].ChangeSurface(to.surface);
             from.childNodes[index].mapElement = to;
+            if(this is Furniture)
+            {
+                Furniture that = this as Furniture;
+                from.childNodes[index].isWalkable = that.monoFurniture.Walkable;
+                if (that.monoFurniture.Walkable)
+                {
+                    from.childNodes[index].UpdateLinkedSiblingsLinksMutually(that.monoFurniture.ExtraWeightTo, that.monoFurniture.ExtraWeightFrom);
+                }
+                else
+                {
+                    from.childNodes[index].UnlinkAllLinksMutually();
+                    from.childNodes[index].UnlinkAllSiblingsLinksMutually();
+                }
+                from.childNodes[index].AddSheltersToSiblings(that.monoFurniture.ShelterHeight);
+            }
+
             to.childNodes.Add(from.childNodes[index]);
             from.childNodes.RemoveAt(index);
         }

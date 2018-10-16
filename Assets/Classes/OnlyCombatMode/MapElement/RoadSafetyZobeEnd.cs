@@ -14,7 +14,7 @@ namespace Map
         public override void OnAddToChildElements()
         {
             surface = "Road";
-            AddLayer(new NodeLayer(getPrefabNuber(), "Additions/SafetyZone", "End"));
+            AddLayer(new NodeLayer(0, "Premetives/Surface", "Sidewalk"));
         }
         public override List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)
         {

@@ -82,7 +82,14 @@ namespace Map
         }
         public Node GetNode(int x, int z)//возвращает узел
         {
-            return map[x, z];
+            if (x < 0 || z < 0 || x >= map.GetLength(0) || z >= map.GetLength(1))
+            {
+                return new Node();
+            }
+            else
+            {
+                return map[x, z];
+            }
         }
     }
 }

@@ -113,3 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 1
   height: 1
+  walkable: 0
+  extraWeightTo: 0
+  extraWeightFrom: 0
+  shelterHeight: 1

@@ -12,7 +12,7 @@ namespace Map
         }
         public override void Upgrade()
         {
-            if (rct.Height > 2 && rct.Width > 2)
+            if (rct.Height >= 2 && rct.Width >= 2)
             {
                 RCT crosswalkRct;
                 if (axis == 'v')

@@ -22,6 +22,7 @@ namespace Map
             if (parentElement.GetType() == typeof(CrossroadRoad))
             {
                 surface = "Road";
+                
             }
             if (parentElement.GetType() == typeof(Road))
             {
@@ -29,6 +30,30 @@ namespace Map
                 surface = "Road";
                 AddLayer(new NodeLayer(0, "Premetives/Surface", "Sidewalk"));
             }
+        }
+        public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
+        {
+            List<NodeLayer> nodeLayers = new List<NodeLayer>();
+            if (parentElement.GetType() == typeof(CrossroadRoad))
+            {
+                if (node.BorderWidthType(typeof(Intersection)))
+                {
+                    //nodeLayers.Add(new NodeLayer(0, "Premetives/Surface", "Sidewalk"));
+                }
+                else
+                {
+                    NodeLayer layer = new NodeLayer(getPrefabNuber(), "Additions/SafetyZone", "End");
+                    layer.direction = GetParentByClass(typeof(Crossroad)).rct.GetDirection(node.crd);
+                    layer.InvertDirection();
+                    nodeLayers.Add(layer);
+                }
+               
+            }
+            else
+            {
+                nodeLayers = layers;
+            }
+            return base.BeforeAddLayersToNode(nodeLayers, node);
         }
         public override void setNodeDirections()
         {
@@ -48,34 +73,7 @@ namespace Map
         }
         public override void Upgrade()
         {
-            List<MapElement> newElements = new List<MapElement>();
-            if (parentElement.GetType() == typeof(Road))
-            {
-                if (axis == 'v')
-                {
-                    if (rct.Start.x > 0)
-                    {
-                        newElements.Add(new RoadSafetyZoneEnd(new RCT(rct.Start, rct.Start), "t"));
-                    }
-                    if (rct.End.x < Stage.GetStage().rct.End.x)
-                    {
-                        newElements.Add(new RoadSafetyZoneEnd(new RCT(rct.End, rct.End), "b"));
-                    }
-
-                }
-                else
-                {
-                    if (rct.Start.z > 0)
-                    {
-                        newElements.Add(new RoadSafetyZoneEnd(new RCT(rct.Start, rct.Start), "l"));
-                    }
-                    if (rct.End.z < Stage.GetStage().rct.End.z)
-                    {
-                        newElements.Add(new RoadSafetyZoneEnd(new RCT(rct.End, rct.End), "r"));
-                    }
-                }
-            }
-            addNewElements(newElements);
+            
         }
     }
 }

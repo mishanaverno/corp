@@ -32,7 +32,13 @@ namespace Map
         public int prefabNumber = 0; //номер префаба
         public string direction = "r"; //направление
         public List<NodeLayer> Layers; //список слоев
+        public List<Shelter> shelters; //укрытия
         public MapElement mapElement;
+        public bool empty = false;
+        public Node()
+        {
+            empty = true;
+        }
         public Node(int x, int z, Floor floor, bool movable)
         {
             this.crd = new CRD(x, z);
@@ -45,6 +51,7 @@ namespace Map
             this.name = "cell-[" + x + "," + z + "]:" + floor.number;
             this.links = new List<NodeLink>();
             this.Layers = new List<NodeLayer>();
+            this.shelters = new List<Shelter>();
         }
         public void refreshFCost(){ // метод вычисляющий fCost, должен вызыватся при изменении hCost или gCost
 			fCost = hCost + gCost;
@@ -142,64 +149,8 @@ namespace Map
         {
                 this.surface = surface;
         }
-        //ПЕРЕПИСАТЬ->
-
-       
-		public Shelters shelters; // поле для хранения данных об укрытиях
-		public void InitShelters(int[,,] incomingMap){ //  метод инициирующий, проверяющий соседние клетки, и сохраняющий данные об укрытиях в переменную shelters
-			shelters = new Shelters (); // инициализация экземпляра класса
-			if (this.x < incomingMap.GetLength (1)-1) {  
-				if (incomingMap [this.level, this.x + 1, this.z] < 3) 
-					this.shelters.bot = incomingMap [this.level, this.x + 1, this.z];
-				
-			}
-			if (this.x > 0) {
-				if (incomingMap [this.level, this.x - 1, this.z] < 3)
-					this.shelters.top = incomingMap [this.level, this.x - 1, this.z];
-			}
-			if (this.y < incomingMap.GetLength (2)-1) {
-				if (incomingMap [this.level, this.x, this.z + 1] < 3)
-					this.shelters.right = incomingMap [this.level, this.x, this.z + 1];
-			}
-			if (this.y > 0) {
-				if (incomingMap [this.level, this.x, this.z - 1] < 3)
-					this.shelters.left = incomingMap [this.level, this.x, this.z - 1];
-			}
-			
-
-		}
-        //<-ПЕРЕПИСАТЬ
-        public void LinkNode(Node node, float w) //создание ссылки из этого узла в указанный
-        {
-            NodeLink link = new NodeLink(this, node, w);
-            if (!this.links.Contains(link))
-            {
-                this.links.Add(link);
-            }
-        }
-        public void UnlinkNode(Node node)//удаление ссылки
-        {
-        }
-        public List<Node> GetSiblings()
-        {
-            List<Node> siblings = new List<Node>();
-            RCT rct = Stage.GetStage().rct;
-            for (int x = -1; x <= 1; x++)
-            {
-                for (int z = -1; z <= 1; z++)
-                {
-
-                    if ((z == 0 && x == 0) || !rct.isContainCRD(new CRD(crd.x + x, crd.z + z)))
-                    {
-                        continue;
-                    }
-                  
-                    siblings.Add(Stage.GetNode(crd.x + x, crd.z + z, floor.number));
-                }
-            }
-            return siblings;
-        }
-        public bool borderWidthType(System.Type type)
+        
+        public bool BorderWidthType(Type type)//проверяет граничит ли нода с типом MapElement
         {
             List<Node> siblings = this.GetSiblings();
             bool bordered = false;
@@ -213,6 +164,152 @@ namespace Map
             }
             return bordered;
         }
+        public bool BorderWidthTypeNoDiagonal(Type type)
+        {
+            List<Node> siblings = this.GetSiblingsNoDiagonals();
+            bool bordered = false;
+            for (int i = 0; i < siblings.Count; i++)
+            {
+                if (siblings[i].mapElement.GetType() == type)
+                {
+                    bordered = true;
+                    break;
+                }
+            }
+            return bordered;
+        }
+        public List<Node> GetSiblings()// Получение соседних узлов
+        {
+            List<Node> siblings = new List<Node>();
+            RCT rct = Stage.GetStage().rct;
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int z = -1; z <= 1; z++)
+                {
+                    if ((z == 0 && x == 0) || !rct.isContainCRD(new CRD(crd.x + x, crd.z + z)))
+                    {
+                        continue;
+                    }
+                    siblings.Add(Stage.GetNode(crd.x + x, crd.z + z, floor.number));
+                }
+            }
+            return siblings;
+        }
+        public List<Node> GetSiblingsNoDiagonals()// Получение соседних узлов
+        {
+            List<Node> siblings = new List<Node>();
+            RCT rct = Stage.GetStage().rct;
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int z = -1; z <= 1; z++)
+                {
+                    if ((z == 0 && x == 0) || !rct.isContainCRD(new CRD(crd.x + x, crd.z + z)) || (z != 0 && x != 0))
+                    {
+                        continue;
+                    }
+                    siblings.Add(Stage.GetNode(crd.x + x, crd.z + z, floor.number));
+                }
+            }
+            return siblings;
+        }
+        // МЕТОДЫ СВЯЗАННЫЕ СО СВЯЗЯМИ УЗЛОВ  TODO добавить брэйки в циклы
+        public void LinkNode(Node node, float w) //создание ссылки из этого узла в указанный
+        {
+            NodeLink link = new NodeLink(this, node, w);
+            if (!this.links.Contains(link))
+            {
+                this.links.Add(link);
+            }
+        }
+        public void UnlinkNode(Node node)//удаление ссылки
+        {
+            for (int i = 0; i < links.Count; i++)
+            {
+                if (links[i].LinkedTo(node))
+                {
+                    links.RemoveAt(i);
+                }
+            }
+        }
+        public void UnlinkAllLinks()
+        {
+            links.Clear();
+        }
+        public void UnlinkAllLinksMutually()
+        {
+            for (int i = 0; i < links.Count; i++)
+            {
+                links[i].To.UnlinkNode(this);
+            }
+            UnlinkAllLinks();
+        }
+        public void UnlinkAllSiblingsLinks()
+        {
+            List<Node> siblings = GetSiblings();
+            for (int i = 0; i < siblings.Count; i++)
+            {
+                if (IsLinked(siblings[i])) UnlinkNode(siblings[i]);
+            }
+        }
+        public void UnlinkAllSiblingsLinksMutually()
+        {
+            List<Node> siblings = GetSiblings();
+            for (int i = 0; i < siblings.Count; i++)
+            {
+                if (IsLinked(siblings[i])) {
+                    UnlinkNode(siblings[i]);
+                    if (siblings[i].IsLinked(this)) siblings[i].UnlinkNode(this);
+                }
+            }
+        }
+        public bool IsLinked(Node node)
+        {
+            bool linked = false;
+            for(int i = 0;i < links.Count; i++)
+            {
+                if (links[i].LinkedTo(node)) linked = true;
+            }
+            return linked;
+        }
+       
+        public void UpdateLinkTo(Node node, float extra)
+        {
+            for (int i = 0; i < links.Count; i++)
+            {
+                if (links[i].LinkedTo(node)) links[i].UpdateW(extra);
+            }
+        }
+        public void UpdateLinkedSiblingsLinks(float extra)
+        {
+            List<Node> siblings = GetSiblings();
+            for(int i = 0; i < siblings.Count; i++)
+            {
+                for (int l = 0; l < siblings[i].links.Count; l++)
+                {
+                    if (siblings[i].links[l].LinkedTo(this))
+                    {
+                        siblings[i].links[l].UpdateW(extra);
+                    }
+                }
+            }
+        }
+        public void UpdateLinkedSiblingsLinksMutually(float extraTo, float extraFrom)
+        {
+            List<Node> siblings = GetSiblings();
+            for (int i = 0; i < siblings.Count; i++)
+            {
+                for (int l = 0; l < siblings[i].links.Count; l++)
+                {
+                    if (siblings[i].links[l].LinkedTo(this))
+                    {
+                        siblings[i].links[l].UpdateW(extraTo);
+                        this.UpdateLinkTo(siblings[i], extraFrom);
+                    }
+                }
+            }
+        }
+
+        /// МЕТОДЫ ВЗАИМОДЕЙСТВИЯ С ЮНИТАМИ
         public void OccupyNode(){ // метод осуществляющий занятие клетки юнитом, должен вызываться при остановке юнита в клетке 
 	    	busy = true; // не дает другим юнитам стать сюда
 	    	Cell.GetComponent<CellController> ().ShowCellShelters (); // отображает значки укрытий в сцене
@@ -221,12 +318,56 @@ namespace Map
 	    	busy = false; // разрешает занимать клетку
 	    	Cell.GetComponent<CellController> ().HideCellShelters (); // скрывает значки укрытий
 	    }
+        // МЕТОДЫ РАБОТЫ УКРЫТИЙ
+        public void AddShelter(Shelter shelter)
+        {
+            for(int i = 0; i < shelters.Count; i++)
+            {
+                if (shelters[i] == shelter) return;
+            }
+            shelters.Add(shelter);
+        }
+        public void RemoveShelter(Shelter shelter)
+        {
+            for (int i = 0; i < shelters.Count; i++)
+            {
+                if (shelters[i] == shelter)
+                {
+                    shelters.RemoveAt(i);
+                    return;
+                }
+            }
+        }
+        public void AddSheltersToSiblings(int height)
+        {
+            Node node = floor.GetNode(crd.x, crd.z - 1);
+            if (!node.empty) node.AddShelter(new Shelter(height, 'r'));
+            node = floor.GetNode(crd.x, crd.z + 1);
+            if (!node.empty) node.AddShelter(new Shelter(height, 'l'));
+            node = floor.GetNode(crd.x - 1, crd.z);
+            if (!node.empty) node.AddShelter(new Shelter(height, 'b'));
+            node = floor.GetNode(crd.x + 1, crd.z);
+            if (!node.empty) node.AddShelter(new Shelter(height, 't'));
+        }
 	}
-    public class Shelters
+    public class Shelter
     { // класс описывающий модель данных укрытий для юнита находящегося в текущей клетке
-        public int top; // верх по X
-        public int bot; // низ по X
-        public int left; // верх по Y
-        public int right; // низ по Y
+        public int height; // высота
+        public char direction;
+        public Shelter(int height, char direction)
+        {
+            this.height = height;
+            this.direction = direction;
+        }
+        public static bool operator ==(Shelter sh1, Shelter sh2)
+        {
+            if (sh1.height == sh2.height && sh1.direction == sh2.direction) return true;
+            else return false;
+        }
+        public static bool operator !=(Shelter sh1, Shelter sh2)
+        {
+            if (sh1.height == sh2.height && sh1.direction == sh2.direction) return false;
+            else return true;
+        }
     }
 }

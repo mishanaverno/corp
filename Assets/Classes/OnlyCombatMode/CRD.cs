@@ -7,11 +7,16 @@ namespace Map
     {
         
         public int x, z;
-        
+        public bool empty;
+        public CRD()
+        {
+            empty = true;
+        }
         public CRD(int x, int z)
         {
             this.x = x;
             this.z = z;
+            empty = false;
         }
         public void StepLT () //смещение точки в лево и верх
         {
@@ -25,25 +30,13 @@ namespace Map
         }
         public static bool operator==(CRD crd1, CRD crd2)
         {
-            if(crd1.x == crd2.x && crd1.z == crd2.z)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            if(crd1.x == crd2.x && crd1.z == crd2.z) return true;
+            else return false;
         }
         public static bool operator!=(CRD crd1, CRD crd2)
         {
-            if (crd1.x == crd2.x && crd1.z == crd2.z)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            if (crd1.x == crd2.x && crd1.z == crd2.z) return false;
+            else return true;
         }
         public CRD Clone()
         {

@@ -10,14 +10,13 @@ namespace Map
         public string furnitureDirection;
         public CRD origin;
         public string name;
-        public int width, height;
-        public int prefabNumber;
+        public MonoFurniture monoFurniture;
         public Furniture(string name, CRD start, string furnitureDirection, int prefabNumber) :base(new RCT(start, 0, 0))
         {
             this.name = name;
             this.prefabNumber = prefabNumber;
-            getSize();
-            this.rct = createRCT(start, furnitureDirection, width, height);
+            Init();
+            this.rct = createRCT(start, furnitureDirection, monoFurniture.Width, monoFurniture.Height);
         }
         private RCT createRCT(CRD start, string furnitureDirection, int width, int height) 
         {
@@ -48,12 +47,11 @@ namespace Map
             }
             return rct;
         }
-        public void getSize()
+        public void Init()
         {
             GameObject prefab = Resources.Load("Stage/" + Stage.GetStage().DesignName + "/Furniture/" + name + "/" + order + "/" + prefabNumber) as GameObject;
             MonoFurniture script = prefab.GetComponent<MonoFurniture>();
-            this.width = script.Width;
-            this.height = script.Height;
+            monoFurniture = script;
         }
         public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
         {

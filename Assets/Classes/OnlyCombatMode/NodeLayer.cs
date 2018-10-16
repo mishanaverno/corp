@@ -12,7 +12,8 @@ namespace Map
         public string direction;
         public bool hasMesh;
         public bool mapping;
-        public bool[,] map; 
+        public bool[,] map;
+        //public string obstacle;
         public NodeLayer(int number, string premitive, string name)
         {
             map = new bool[0,0];
@@ -27,6 +28,26 @@ namespace Map
         {
             mapping = true;
             this.map = map;
+        }
+        public void InvertDirection()
+        {
+            switch (direction)
+            {
+                case "l":
+                    direction = "r";
+                    break;
+                case "r":
+                    direction = "l";
+                    break;
+                case "b":
+                    direction = "t";
+                    break;
+                case "t":
+                    direction = "b";
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
