@@ -28,9 +28,18 @@ namespace Game
             Constructor.AddStreet(20, 'h', 1, 3);
             Constructor.AddStreet(1, 'v', 7, 5);
             //Constructor.AddStreet(16, 'v', 6, 4);
+            MapElement elem = Constructor.GetMapElementById(22);
+            if (elem.GetType() == typeof(Area))
+            {
+                elem.rct.DebugLog();
+                Area area = elem as Area;
+                area.CreateBuilding(area.rct);
+            }
             Constructor.Upgrade();
+            
             Constructor.RenderStage();
             Constructor.RenderBackground();
+            
             /*RCT rct = new RCT(new CRD(2, 3), 6, 4);
             bool[,] nmap = StageConstructor.createPeraiodicalMap(rct, 'h', 1, 2);
             for (int x = 0; x < nmap.GetLength(0); x++)

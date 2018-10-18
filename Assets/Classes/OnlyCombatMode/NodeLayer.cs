@@ -13,6 +13,7 @@ namespace Map
         public bool hasMesh;
         public bool mapping;
         public bool[,] map;
+        public bool nonWalkable;
         //public string obstacle;
         public NodeLayer(int number, string premitive, string name)
         {
@@ -20,9 +21,21 @@ namespace Map
             mapping = false;
             hasMesh = true;
             direction = "i";
+            nonWalkable = false;
             this.prefabNumber = number;
             this.premitive = premitive;
             this.name = name;
+        }
+        public NodeLayer Clone()
+        {
+            NodeLayer layer = new NodeLayer(prefabNumber, premitive, name);
+            layer.map = map;
+            layer.mapping = mapping;
+            layer.hasMesh = hasMesh;
+            layer.direction = direction;
+            layer.nonWalkable = nonWalkable;
+            return layer;
+
         }
         public void addMap(bool[,] map)
         {
@@ -30,6 +43,10 @@ namespace Map
             this.map = map;
         }
         public void InvertDirection()
+        {
+            direction = InvertDirection(direction);
+        }
+        public string InvertDirection(string direction)
         {
             switch (direction)
             {
@@ -48,6 +65,7 @@ namespace Map
                 default:
                     break;
             }
+            return direction;
         }
     }
 }

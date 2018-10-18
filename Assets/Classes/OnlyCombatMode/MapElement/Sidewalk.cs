@@ -22,6 +22,7 @@ namespace Map
             int roadOffset = getRoadOffset(offset);
             lights.addMap(StageConstructor.createPeriodicalMap(rct, axis, roadOffset, 10));
             lights.hasMesh = false;
+            lights.nonWalkable = true;
             AddLayer(lights);
 
         }

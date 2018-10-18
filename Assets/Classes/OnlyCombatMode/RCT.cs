@@ -200,6 +200,44 @@ namespace Map
         {
             return new CRD(end.x, end.z);
         }
+        public string GetDirectionNoDiagonals(CRD crd)
+        {
+             string direction, vDirection, hDirection;
+            int VD, HD;
+            int DSX = crd.x - start.x;
+            int DEX = end.x - crd.x;
+            int DSZ = crd.z - start.z;
+            int DEZ = end.z - crd.z;
+            if(DSX < DEX)
+            {
+                VD = DSX;
+                vDirection = "t";
+            }
+            else
+            {
+                VD = DEX;
+                vDirection = "b";
+            }
+            if(DSZ < DEZ)
+            {
+                HD = DSZ;
+                hDirection = "l";
+            }
+            else
+            {
+                HD = DEZ;
+                hDirection = "r";
+            }
+            if(HD < VD)
+                {
+                 direction = hDirection;
+            }
+            else
+            {
+                 direction = vDirection;
+            }
+            return direction;
+        }
         public string GetDirection(CRD crd)
         {
             string direction, vDirection, hDirection;

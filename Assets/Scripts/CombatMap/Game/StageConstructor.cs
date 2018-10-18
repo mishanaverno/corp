@@ -273,6 +273,10 @@ namespace Map
             }
                     return map;
         }
+        public MapElement GetMapElementById(int id)
+        {
+            return stage.GetChildMapElementById(id);
+        }
 
 
     }

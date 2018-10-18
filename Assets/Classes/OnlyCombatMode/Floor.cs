@@ -76,7 +76,7 @@ namespace Map
                 for(int z = 0; z < stage.width; z++)
                 {
                     Node node = GetNode(x, z);
-                    node.GenerateCell();
+                    if (!node.empty) node.GenerateCell();
                 }
             }
         }

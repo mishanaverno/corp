@@ -8,6 +8,11 @@ namespace Map
     {
         public Intersection(RCT rct) : base(rct)
         {
+            
+        }
+        public override void OnAddToChildElements()
+        {
+            base.OnAddToChildElements();
             surface = "Road";
         }
     }

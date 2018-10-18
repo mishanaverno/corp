@@ -127,19 +127,28 @@ namespace Map
                     Mesh mesh = Instance.GetComponent<MeshFilter>().mesh;
                     pSY = mesh.bounds.size.y;
                 }
+                else
+                {
+                    pSY = 0;
+                }
             }
         }
         private GameObject CreateLayer(NodeLayer layer)//создание слоя
         {
-            Vector3 rotation;
             if (layer.direction == "i")
             {
-                rotation = GetRotation();
+                layer.direction = direction;
             }
-            else
+            if (layer.nonWalkable)
             {
-                rotation = GetRotation(layer.direction);
+                Node node = GetSibling(layer.direction);
+                if (!node.empty)
+                {
+                    UnlinkNode(node);
+                    node.UnlinkNode(this);
+                }
             }
+            Vector3 rotation = GetRotation(layer.direction);
             UnityEngine.Object prefab = Resources.Load("Stage/" + this.floor.stage.DesignName + "/" + layer.premitive + "/" + layer.name + "/" + this.order + "/" + layer.prefabNumber);
             Vector3 position = new Vector3(crd.x, floor.number, crd.z);
             GameObject LayerInstance;
@@ -195,6 +204,41 @@ namespace Map
             }
             return siblings;
         }
+        public Node GetSibling(string direction)
+        {
+            Node node;
+            switch (direction)
+            {
+                case "r":
+                    node = floor.GetNode(crd.x, crd.z + 1);
+                    break;
+                case "l":
+                    node = floor.GetNode(crd.x, crd.z - 1);
+                    break;
+                case "t":
+                    node = floor.GetNode(crd.x - 1, crd.z);
+                    break;
+                case "b":
+                    node = floor.GetNode(crd.x + 1, crd.z);
+                    break;
+                case "lt":
+                    node = floor.GetNode(crd.x - 1, crd.z - 1);
+                    break;
+                case "rt":
+                    node = floor.GetNode(crd.x - 1, crd.z + 1);
+                    break;
+                case "lb":
+                    node = floor.GetNode(crd.x + 1, crd.z - 1);
+                    break;
+                case "rb":
+                    node = floor.GetNode(crd.x + 1, crd.z + 1);
+                    break;
+                default:
+                    node = new Node();
+                    break;
+            }
+            return node;
+        }
         public List<Node> GetSiblingsNoDiagonals()// Получение соседних узлов
         {
             List<Node> siblings = new List<Node>();
@@ -215,14 +259,15 @@ namespace Map
         // МЕТОДЫ СВЯЗАННЫЕ СО СВЯЗЯМИ УЗЛОВ  TODO добавить брэйки в циклы
         public void LinkNode(Node node, float w) //создание ссылки из этого узла в указанный
         {
-            NodeLink link = new NodeLink(this, node, w);
-            if (!this.links.Contains(link))
+            if (node.empty) return;
+            if (!IsLinked(node))
             {
-                this.links.Add(link);
+                this.links.Add(new NodeLink(this, node, w));
             }
         }
         public void UnlinkNode(Node node)//удаление ссылки
         {
+            if (node.empty) return;
             for (int i = 0; i < links.Count; i++)
             {
                 if (links[i].LinkedTo(node))

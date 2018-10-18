@@ -125,6 +125,5 @@ namespace Map
         {
             return instance;
         }
-
     }
 }

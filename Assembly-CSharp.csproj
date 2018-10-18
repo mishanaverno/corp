@@ -106,6 +106,7 @@
     <Compile Include="Assets\Classes\OnlyCombatMode\GroundFloor.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Area.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\BackgroundStreet.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Building.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Crossroad.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\CrossroadCorner.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\CrossroadCrosswalk.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\RoadSafetyZobeEnd.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\RoadSafetyZone.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\RoadStripe.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Room.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Sidewalk.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\SidewalkParking.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\SidewalkParkingInnerCorner.cs" />

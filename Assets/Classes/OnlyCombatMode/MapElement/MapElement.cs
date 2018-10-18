@@ -255,7 +255,7 @@ namespace Map
         }
         public virtual void OnAddToChildElements()// виртуальный метод по необходимости переопределяемый конкретными классами
         {                                         // метод вызываемый перед добавлением елемента к дочерним, после него к нему добавляются узлы
-           
+            surface = parentElement.surface;
         }
         public MapElement GetParentByClass(System.Type C)
         {
@@ -268,6 +268,28 @@ namespace Map
                 return parentElement.GetParentByClass(C);
             }
         }
+        public MapElement GetChildMapElementById(int id)
+        {
+            for(int i = 0; i < childElements.Count; i++)
+            {
+                if (childElements[i].id == id)
+                {
+                    return childElements[i];
+                }
+            }
+            for (int i = 0; i < childElements.Count; i++)
+            {
+                MapElement childFind = childElements[i].GetChildMapElementById(id);
+                if(childFind.id == id)
+                {
+                    return childFind;
+                }
+
+            }
+            return this;
+            
+        }
+        
         public void DebugParents()
         {
             MapElement elem = this; 
@@ -276,7 +298,7 @@ namespace Map
             {
                 log += elem.ToString() + " > ";
                 elem = elem.parentElement;
-            } while (!(elem is Stage));
+            } while (elem.GetType() != typeof(Stage));
             log += elem.ToString();
 
             Debug.Log("PARENTS LOG " + log);
