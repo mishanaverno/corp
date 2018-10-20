@@ -116,7 +116,15 @@ namespace Map
             {
                 GameObject Instance = this.CreateLayer(Layers[i]);
                 Instance.transform.parent = Cell.transform;
-                float cPY = pPY + pSY + 0.0001f;
+                float cPY;
+                if (Layers[i].ignorePreviosMesh)
+                {
+                    cPY = pPY + 0.0001f;
+                }
+                else
+                {
+                    cPY = pPY + pSY + 0.0001f;
+                }
                 
                 Vector3 cPos = Instance.transform.localPosition;
                 cPos.y = cPY;
@@ -165,13 +173,25 @@ namespace Map
             bool bordered = false;
             for (int i = 0; i < siblings.Count; i++)
             {
-                if (siblings[i].mapElement.GetType() == type)
+                if (siblings[i].mapElement.GetType() == type && siblings[i].mapElement.id != mapElement.id)
                 {
                     bordered = true;
                     break;
                 }
             }
             return bordered;
+        }
+        public MapElement GetMapElementBorderWidtType(Type type)
+        {
+            List<Node> siblings = this.GetSiblings();
+            for (int i = 0; i < siblings.Count; i++)
+            {
+                if (siblings[i].mapElement.GetType() == type && siblings[i].mapElement.id != mapElement.id)
+                {
+                    return siblings[i].mapElement;
+                }
+            }
+            return mapElement;
         }
         public bool BorderWidthTypeNoDiagonal(Type type)
         {
@@ -203,6 +223,32 @@ namespace Map
                 }
             }
             return siblings;
+        }
+        public List<Node> GetMapElementSiblingds()
+        {
+            List<Node> siblings = new List<Node>();
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int z = -1; z <= 1; z++)
+                {
+                    Node node = Stage.GetNode(crd.x + x, crd.z + z, floor.number);
+                    if ((z == 0 && x == 0) || (!mapElement.childNodes.Contains(node)))
+                    {
+                        continue;
+                    }
+                    siblings.Add(node);
+                }
+            }
+            return siblings;
+        }
+        public int GetMapElementSiblingdsCount()
+        {
+            return GetMapElementSiblingds().Count;
+        }
+        public bool IsOnMapElementBorder()
+        {
+            if (GetMapElementSiblingdsCount() < 8) return true;
+            else return false;
         }
         public Node GetSibling(string direction)
         {

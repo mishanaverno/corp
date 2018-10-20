@@ -33,7 +33,12 @@ namespace Game
             {
                 elem.rct.DebugLog();
                 Area area = elem as Area;
-                area.CreateBuilding(area.rct);
+                Building building = area.CreateBuilding(new RCT(area.rct.Start, Mathf.RoundToInt(area.rct.Width / 2), Mathf.RoundToInt(area.rct.Height / 2)));
+                RCT tbuilding = building.rct.Clone();
+                tbuilding.Thin();
+                CRD crd = StageConstructor.GetRandomCRD(tbuilding);
+                RCT newRoom = new RCT(crd, building.rct.Width, building.rct.Height);
+                building.AppendRoom(newRoom);
             }
             Constructor.Upgrade();
             

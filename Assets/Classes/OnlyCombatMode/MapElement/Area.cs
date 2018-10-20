@@ -14,11 +14,12 @@ namespace Map
         {
             surface = "Ground";
         }
-        public void CreateBuilding(RCT rct)
+        public Building CreateBuilding(RCT rct)
         {
             Building building = new Building(rct);
             addNewElement(building);
             building.Init();
+            return building;
         }
 
     }

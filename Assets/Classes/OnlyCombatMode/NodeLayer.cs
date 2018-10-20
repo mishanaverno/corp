@@ -11,6 +11,7 @@ namespace Map
         public string name;
         public string direction;
         public bool hasMesh;
+        public bool ignorePreviosMesh;
         public bool mapping;
         public bool[,] map;
         public bool nonWalkable;
@@ -22,6 +23,7 @@ namespace Map
             hasMesh = true;
             direction = "i";
             nonWalkable = false;
+            ignorePreviosMesh = false;
             this.prefabNumber = number;
             this.premitive = premitive;
             this.name = name;
@@ -34,6 +36,7 @@ namespace Map
             layer.hasMesh = hasMesh;
             layer.direction = direction;
             layer.nonWalkable = nonWalkable;
+            layer.ignorePreviosMesh = ignorePreviosMesh;
             return layer;
 
         }
@@ -61,6 +64,18 @@ namespace Map
                     break;
                 case "t":
                     direction = "b";
+                    break;
+                case "lt":
+                    direction = "rb";
+                    break;
+                case "lb":
+                    direction = "rt";
+                    break;
+                case "rt":
+                    direction = "lb";
+                    break;
+                case "rb":
+                    direction = "lt";
                     break;
                 default:
                     break;

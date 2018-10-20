@@ -18,31 +18,23 @@ namespace Map
         public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
         {
             List<NodeLayer> nodeLayers = new List<NodeLayer>(layers);
-            if(node.crd.x == rct.Start.x || node.crd.x == rct.End.x || node.crd.z == rct.Start.z || node.crd.z == rct.End.z)
+            if(node.IsOnMapElementBorder())
             {
-                NodeLayer innerWall = new NodeLayer(getPrefabNuber(), "Premetives/Wall", "InnerWall");
-                string dir = rct.GetDirection(node.crd);
-                if (dir == "lt" || dir == "rt" || dir == "lb" || dir == "rb")
+                if (node.crd.x == rct.Start.x || node.crd.x == rct.End.x || node.crd.z == rct.Start.z || node.crd.z == rct.End.z)
                 {
-                    innerWall.direction = dir[0].ToString();
-                    NodeLayer dubl = innerWall.Clone();
-                    dubl.direction = dir[1].ToString();
-                    dubl.hasMesh = false;
-                    nodeLayers.Add(dubl);
-                }
-                /*switch (rct.GetDirection(node.crd))
-                {
-                    case "lt":
-                        innerWall.direction = "l";
+                    NodeLayer innerWall = new NodeLayer(getPrefabNuber(), "Premetives/Wall", "InnerWall");
+                    string dir = rct.GetDirection(node.crd);
+                    if (dir == "lt" || dir == "rt" || dir == "lb" || dir == "rb")
+                    {
+                        innerWall.direction = dir[0].ToString();
                         NodeLayer dubl = innerWall.Clone();
-                        dubl.direction = "t";
+                        dubl.direction = dir[1].ToString();
                         dubl.hasMesh = false;
                         nodeLayers.Add(dubl);
-                        break;
-                    default:
-                        break;
-                }*/
-                nodeLayers.Add(innerWall);               
+                    }
+                    nodeLayers.Add(innerWall);
+                    
+                }
             }
             return base.BeforeAddLayersToNode(nodeLayers, node);
         }

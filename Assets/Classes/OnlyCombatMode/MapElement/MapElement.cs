@@ -176,6 +176,12 @@ namespace Map
             newMapElement.moveNodesFromMapElementToThis(this);
             childElements.Add(newMapElement);
         }
+        public void RemoveElement(MapElement mapElement)
+        {
+            mapElement.parentElement = Stage.GetStage();
+            this.moveNodesFromMapElementToThis(mapElement);
+            childElements.Remove(mapElement);
+        }
         public void AddLayer(NodeLayer layer)// добавляет елементу объект слой узла
         {
             this.layers.Add(layer);

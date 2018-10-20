@@ -110,7 +110,7 @@ namespace Map
                 return true;
             }
         }
-        public bool isContainRCT(RCT rct)
+        public bool isContainRCT(RCT rct)//// проверяет находится ли прямоугольник внутри прямоугольника
         {
             if(this.isContainCRD(rct.start) && this.isContainCRD(rct.end))
             {
@@ -283,9 +283,25 @@ namespace Map
             }
             return direction;
         }
+        public static RCT Addition(RCT rct1,RCT rct2)
+        {
+            int sx1 = rct1.Start.x, sx2 = rct2.start.x, ex1 = rct1.end.x, ex2 = rct2.end.x, sz1 = rct1.start.z, sz2 = rct2.start.z, ez1 = rct1.end.z, ez2 = rct2.end.z;
+            int MINsx = Mathf.Min(sx1, sx2), MINsz = Mathf.Min(sz1, sz2), MAXex = Mathf.Max(ex1, ex2), MAXez = Mathf.Max(ez1, ez2);
+            return new RCT(new CRD(MINsx, MINsz), new CRD(MAXex, MAXez));
+        }
         public void DebugLog(string text="") // выводит прямоугольник в консоль
         {
             Debug.Log(text+" RCT start: " + Start.x + "," + Start.z + " end: " + End.x + "," + End.z + " w:" + Width + " h:" + Height + " sq:" + sq);
+        }
+        public void Grow()
+        {
+            Start = Start.ReturnStepLT();
+            End = End.ReturnStepRB();
+        }
+        public void Thin()
+        {
+            Start = Start.ReturnStepRB();
+            End = End.ReturnStepLT();
         }
 
     }
