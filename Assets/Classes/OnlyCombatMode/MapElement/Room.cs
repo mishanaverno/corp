@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,32 +11,53 @@ namespace Map
         {
 
         }
+        public Room CreateSubRoom(RCT rct)
+        {
+            Room room = new Room(rct);
+            room.parentElement = parentElement;
+            room.OnAddToChildElements();
+            room.moveNodesFromMapElementToThis(this);
+            parentElement.childElements.Add(room);
+            return room;
+        }
+       
+        public Door CreateDoor(RCT rct)
+        {
+            Door door = new Door(rct);
+            addNewElement(door);
+            return door;
+        }
         public override void OnAddToChildElements()
         {
-            AddLayer(new NodeLayer(getPrefabNuber(), "Premetives/Surface", "Floor"));
+            NodeLayer floor = new NodeLayer(getPrefabNuber(), "Premetives/Surface", "Floor");
+            floor.hasMesh = false;
+            AddLayer(floor);
             base.OnAddToChildElements();
         }
         public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
         {
             List<NodeLayer> nodeLayers = new List<NodeLayer>(layers);
-            if(node.IsOnMapElementBorder())
+            if (node.IsOnMapElementBorder())
             {
-                if (node.crd.x == rct.Start.x || node.crd.x == rct.End.x || node.crd.z == rct.Start.z || node.crd.z == rct.End.z)
+                
+                List<string> walls = node.GetWall();
+                for(int w = 0; w < walls.Count; w++)
                 {
-                    NodeLayer innerWall = new NodeLayer(getPrefabNuber(), "Premetives/Wall", "InnerWall");
-                    string dir = rct.GetDirection(node.crd);
-                    if (dir == "lt" || dir == "rt" || dir == "lb" || dir == "rb")
-                    {
-                        innerWall.direction = dir[0].ToString();
-                        NodeLayer dubl = innerWall.Clone();
-                        dubl.direction = dir[1].ToString();
-                        dubl.hasMesh = false;
-                        nodeLayers.Add(dubl);
-                    }
-                    nodeLayers.Add(innerWall);
-                    
+                    NodeLayer wall = new NodeLayer(getPrefabNuber(), "Premetives/Wall", "InnerWall");
+                    wall.direction = walls[w];
+                    wall.hasMesh = false;
+                    nodeLayers.Add(wall);
+                }
+                List<string> outerCorners = node.GetOuterCorners();
+                for (int c = 0; c < outerCorners.Count; c++)
+                {
+                    NodeLayer outerCorner = new NodeLayer(getPrefabNuber(), "Premetives/Wall", "innerWallOuterCorner");
+                    outerCorner.direction = outerCorners[c];
+                    outerCorner.hasMesh = false;
+                    nodeLayers.Add(outerCorner);
                 }
             }
+            
             return base.BeforeAddLayersToNode(nodeLayers, node);
         }
         public override void setNodeDirections()

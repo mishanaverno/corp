@@ -112,12 +112,13 @@
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\CrossroadCrosswalk.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\CrossroadRoad.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\CrossroadSidewalk.cs" />
-    <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\ExtansionRoom.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Door.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Furniture.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Intersection.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\MapElement.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\ParkingDelimetr.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\ParkingPlace.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Portal.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Road.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\RoadLine.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\RoadSafetyZobeEnd.cs" />
@@ -152,14 +153,14 @@
     <Compile Include="Assets\Scripts\CombatMap\Map\ControllZoneController.cs" />
     <Compile Include="Assets\Scripts\CombatMap\Map\MapGenerator.cs" />
     <Compile Include="Assets\Scripts\CombatMap\Map\MapManager.cs" />
-    <Compile Include="Assets\Scripts\CombatMap\Map\MonoFurniture.cs" />
-    <Compile Include="Assets\Scripts\CombatMap\Map\portalController.cs" />
     <Compile Include="Assets\Scripts\CombatMap\Map\ShelterViewer.cs" />
     <Compile Include="Assets\Scripts\CombatMap\Map\wallController.cs" />
     <Compile Include="Assets\Scripts\CombatMap\Units\UnitController.cs" />
     <Compile Include="Assets\Scripts\CombatMap\Units\UnitMoveController.cs" />
     <Compile Include="Assets\Scripts\CombatMap\Units\UnitsController.cs" />
     <Compile Include="Assets\Scripts\CombatMap\Units\UnitsGenerator.cs" />
+    <Compile Include="Assets\Scripts\Mono\MonoFurniture.cs" />
+    <Compile Include="Assets\Scripts\Mono\MonoPortal.cs" />
     <None Include="Assets\Cinemachine\license.txt" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/naverno/Desktop/game/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>

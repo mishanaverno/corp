@@ -281,7 +281,6 @@ namespace Map
         {
             int dHeigth = Mathf.RoundToInt( Random.Range(0, (rct.Height - 1) * 100) / 100 );
             int dWidth = Mathf.RoundToInt( Random.Range(0, (rct.Width - 1) * 100) / 100 );
-            rct.DebugLog();
             CRD crd = new CRD(rct.Start.x + dHeigth, rct.Start.z + dWidth);
             return crd;
         }

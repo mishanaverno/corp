@@ -31,14 +31,29 @@ namespace Game
             MapElement elem = Constructor.GetMapElementById(22);
             if (elem.GetType() == typeof(Area))
             {
-                elem.rct.DebugLog();
                 Area area = elem as Area;
-                Building building = area.CreateBuilding(new RCT(area.rct.Start, Mathf.RoundToInt(area.rct.Width / 2), Mathf.RoundToInt(area.rct.Height / 2)));
+                Building building = area.CreateBuilding(new RCT(area.rct.Start, 9, 9));
                 RCT tbuilding = building.rct.Clone();
                 tbuilding.Thin();
                 CRD crd = StageConstructor.GetRandomCRD(tbuilding);
-                RCT newRoom = new RCT(crd, building.rct.Width, building.rct.Height);
+                RCT newRoom = new RCT(new CRD(34,25), 4, 4);
                 building.AppendRoom(newRoom);
+                tbuilding = building.rct.Clone();
+                tbuilding.Thin();
+                crd = StageConstructor.GetRandomCRD(tbuilding);
+                newRoom = new RCT(new CRD(33,21), area.rct.End.Clone().ReturnStepLT());
+                Room appended = building.AppendRoom(newRoom) as Room;
+                crd = building.rct.Start.Clone().ReturnStepRB();
+                newRoom = new RCT(crd, 2, 2);
+                building.BaseRoom.CreateSubRoom(new RCT(new CRD(30, 22), 3, 3));
+                building.BaseRoom.CreateSubRoom(new RCT(new CRD(30, 20), 3, 2));
+                building.BaseRoom.CreateSubRoom(new RCT(new CRD(34, 22), 3, 2));
+                building.BaseRoom.CreateSubRoom(new RCT(new CRD(32, 20), 3, 2));
+                appended.CreateSubRoom(new RCT(new CRD(34, 30), 3, 3));
+                building.CreateRoom(new RCT(new CRD(29, 26), 3, 3));
+                building.CreateRoom(new RCT(new CRD(29, 33), 3, 3));
+                //building.CreateMainEntrance(new RCT(new CRD()))
+
             }
             Constructor.Upgrade();
             

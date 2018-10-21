@@ -166,7 +166,7 @@ namespace Map
         {
                 this.surface = surface;
         }
-        
+        // МЕТОДЫ СВЯЗАНЫЕ С ВЗАИМОДЕЙСТВИЕМ С MapElement
         public bool BorderWidthType(Type type)//проверяет граничит ли нода с типом MapElement
         {
             List<Node> siblings = this.GetSiblings();
@@ -187,6 +187,44 @@ namespace Map
             for (int i = 0; i < siblings.Count; i++)
             {
                 if (siblings[i].mapElement.GetType() == type && siblings[i].mapElement.id != mapElement.id)
+                {
+                    return siblings[i].mapElement;
+                }
+            }
+            return mapElement;
+        }
+        public List<MapElement> GetMapElementBorderWidtClass<T>()
+        {
+            List<Node> siblings = this.GetSiblings();
+            List<MapElement> mapElements = new List<MapElement>();
+            for (int i = 0; i < siblings.Count; i++)
+            {
+                if (siblings[i].mapElement is T && siblings[i].mapElement.id != mapElement.id && !mapElements.Contains(siblings[i].mapElement))
+                {
+                    mapElements.Add(siblings[i].mapElement);
+                }
+            }
+            return mapElements;
+        }
+        public List<MapElement> GetMapElementBorderWidtClassNoDiagonals<T>()
+        {
+            List<Node> siblings = this.GetSiblingsNoDiagonals();
+            List<MapElement> mapElements = new List<MapElement>();
+            for (int i = 0; i < siblings.Count; i++)
+            {
+                if (siblings[i].mapElement is T && siblings[i].mapElement.id != mapElement.id && !mapElements.Contains(siblings[i].mapElement))
+                {
+                    mapElements.Add(siblings[i].mapElement);
+                }
+            }
+            return mapElements;
+        }
+        public MapElement GetMapElementBorderWidtType(List<Type> list)
+        {
+            List<Node> siblings = this.GetSiblings();
+            for (int i = 0; i < siblings.Count; i++)
+            {
+                if (list.Contains(siblings[i].mapElement.GetType())  && siblings[i].mapElement.id != mapElement.id)
                 {
                     return siblings[i].mapElement;
                 }
@@ -224,6 +262,23 @@ namespace Map
             }
             return siblings;
         }
+        public List<Node> GetSiblingsNoDiagonals()// Получение соседних узлов
+        {
+            List<Node> siblings = new List<Node>();
+            RCT rct = Stage.GetStage().rct;
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int z = -1; z <= 1; z++)
+                {
+                    if ((z == 0 && x == 0) || !rct.isContainCRD(new CRD(crd.x + x, crd.z + z)) || (z != 0 && x != 0))
+                    {
+                        continue;
+                    }
+                    siblings.Add(Stage.GetNode(crd.x + x, crd.z + z, floor.number));
+                }
+            }
+            return siblings;
+        }
         public List<Node> GetMapElementSiblingds()
         {
             List<Node> siblings = new List<Node>();
@@ -241,13 +296,39 @@ namespace Map
             }
             return siblings;
         }
+        public List<Node> GetMapElementSiblingdsNoDiagonals()
+        {
+            List<Node> siblings = new List<Node>();
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int z = -1; z <= 1; z++)
+                {
+                    Node node = Stage.GetNode(crd.x + x, crd.z + z, floor.number);
+                    if ((z == 0 && x == 0) || (!mapElement.childNodes.Contains(node)) || (z != 0 && x != 0))
+                    {
+                        continue;
+                    }
+                    siblings.Add(node);
+                }
+            }
+            return siblings;
+        }
         public int GetMapElementSiblingdsCount()
         {
             return GetMapElementSiblingds().Count;
         }
+        public int GetMapElementSiblingdsNoDiagonalsCount()
+        {
+            return GetMapElementSiblingdsNoDiagonals().Count;
+        }
         public bool IsOnMapElementBorder()
         {
             if (GetMapElementSiblingdsCount() < 8) return true;
+            else return false;
+        }
+        public bool IsOnMapElementBorderNoDiagonals()
+        {
+            if (GetMapElementSiblingdsNoDiagonalsCount() < 4) return true;
             else return false;
         }
         public Node GetSibling(string direction)
@@ -285,23 +366,31 @@ namespace Map
             }
             return node;
         }
-        public List<Node> GetSiblingsNoDiagonals()// Получение соседних узлов
+       
+        public List<string> GetOuterCorners()
         {
-            List<Node> siblings = new List<Node>();
-            RCT rct = Stage.GetStage().rct;
-            for (int x = -1; x <= 1; x++)
-            {
-                for (int z = -1; z <= 1; z++)
-                {
-                    if ((z == 0 && x == 0) || !rct.isContainCRD(new CRD(crd.x + x, crd.z + z)) || (z != 0 && x != 0))
-                    {
-                        continue;
-                    }
-                    siblings.Add(Stage.GetNode(crd.x + x, crd.z + z, floor.number));
-                }
-            }
-            return siblings;
+            List<string> list = new List<string>();
+            Node lNode = GetSibling("l"), rNode = GetSibling("r"), tNode = GetSibling("t"), bNode = GetSibling("b");
+            Node ltNode = GetSibling("lt"), rtNode = GetSibling("rt"), lbNode = GetSibling("lb"), rbNode = GetSibling("rb");
+            List<Node> nodes = GetMapElementSiblingds();
+            if (nodes.Contains(lNode) && nodes.Contains(tNode) && !nodes.Contains(ltNode)) list.Add("lt");
+            if (nodes.Contains(rNode) && nodes.Contains(tNode) && !nodes.Contains(rtNode)) list.Add("rt");
+            if (nodes.Contains(lNode) && nodes.Contains(bNode) && !nodes.Contains(lbNode)) list.Add("lb");
+            if (nodes.Contains(rNode) && nodes.Contains(bNode) && !nodes.Contains(rbNode)) list.Add("rb");
+            return list;
         }
+        public List<string> GetWall()
+        {
+            List<string> list = new List<string>();
+            List<Node> nodes = GetMapElementSiblingdsNoDiagonals();
+            Node lNode = GetSibling("l"), rNode = GetSibling("r"), tNode = GetSibling("t"), bNode = GetSibling("b");
+            if (!nodes.Contains(lNode)) list.Add("l");
+            if (!nodes.Contains(rNode)) list.Add("r");
+            if (!nodes.Contains(tNode)) list.Add("t");
+            if (!nodes.Contains(bNode)) list.Add("b");
+            return list;
+        }
+
         // МЕТОДЫ СВЯЗАННЫЕ СО СВЯЗЯМИ УЗЛОВ  TODO добавить брэйки в циклы
         public void LinkNode(Node node, float w) //создание ссылки из этого узла в указанный
         {

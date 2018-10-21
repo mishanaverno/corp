@@ -95,6 +95,23 @@ namespace Map
             this.height = end.x - start.x + 1;
             this.sq = width * height;
         }
+        public RCT(List<Node> list)
+        {
+            Stage stage = Stage.GetStage();
+            int minSX = stage.rct.End.x, minSZ = stage.rct.End.z, maxEX = stage.rct.Start.x, maxEZ = stage.rct.Start.z;
+            for(int i = 0; i < list.Count; i++)
+            {
+                if (list[i].crd.x < minSX) minSX = list[i].x;
+                if (list[i].crd.z < minSZ) minSZ = list[i].z;
+                if (list[i].crd.x > maxEX) maxEX = list[i].x;
+                if (list[i].crd.z > maxEZ) maxEZ = list[i].z;
+            }
+            this.end = new CRD(minSX, minSZ);
+            this.start = new CRD(maxEX, maxEZ);
+            this.width = end.z - start.z + 1;
+            this.height = end.x - start.x + 1;
+            this.sq = width * height;
+        }
         public void CalcSq() //вычисляет площадь прямоугольника
         {
             this.sq = this.width * this.height;
@@ -303,6 +320,7 @@ namespace Map
             Start = Start.ReturnStepRB();
             End = End.ReturnStepLT();
         }
+        
 
     }
 }
