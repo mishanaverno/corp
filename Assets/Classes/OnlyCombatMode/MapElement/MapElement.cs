@@ -179,6 +179,7 @@ namespace Map
         public void RemoveElement(MapElement mapElement)
         {
             mapElement.parentElement = Stage.GetStage();
+            mapElement.layers.Clear();
             this.moveNodesFromMapElementToThis(mapElement);
             childElements.Remove(mapElement);
         }

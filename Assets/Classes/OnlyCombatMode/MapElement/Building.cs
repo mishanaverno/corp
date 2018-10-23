@@ -41,7 +41,6 @@ namespace Map
         } 
         public void GrowFor(RCT rct)
         {
-            this.rct.DebugLog("before grow");
             if (parentElement.rct.isContainRCT(rct))
             {
                 Area parentArea = parentElement as Area;
@@ -49,17 +48,32 @@ namespace Map
                 this.rct = RCT.Addition(this.rct, rct);
                 parentArea.addNewElement(this);
             }
-            this.rct.DebugLog("after grow");
         }
-        public void CreateMainEntrance(RCT rct)
+        public RCT CreatePortal(Portal portal)
         {
-            BaseRoom.CreateDoor(rct);
+            portal.parentElement = this;
+            portal.OnAddToChildElements();
+            for (int i = 0; i < childNodes.Count; i++)
+            {
+                if (portal.rct.isContainCRD(childNodes[i].crd)) portal.childNodes.Add(childNodes[i]);
+            }
+            childElements.Add(portal);
+            portal.NodesToConsole();
+            return portal.rct;
         }
+        public void CreateMainEntrance(RCT rct, string entranceName, string exitName)
+        {
+            Door exit = new Door(rct, exitName, true);
+            RCT exitRct = BaseRoom.CreatePortal(exit);
+            Door entrance = new Door(exitRct, entranceName, false);
+            CreatePortal(entrance);
+            Portal.Bind(exit, entrance);
+        }
+        
         public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
         {
             List<NodeLayer> nodeLayers = new List<NodeLayer>(layers);
-            NodeLayer innerWall = new NodeLayer(getPrefabNuber(), "Premetives/Wall", "InnerWall");
-            innerWall.hasMesh = false;
+            
             if (node.IsOnMapElementBorder())
             {
                 List<string> walls = node.GetWall();

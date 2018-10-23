@@ -20,13 +20,37 @@ namespace Map
             parentElement.childElements.Add(room);
             return room;
         }
-       
-        public Door CreateDoor(RCT rct)
+        public RCT CreatePortal(Portal portal)
         {
-            Door door = new Door(rct);
-            addNewElement(door);
-            return door;
+            portal.parentElement = this;
+            portal.OnAddToChildElements();
+            for (int i = 0; i < childNodes.Count; i++)
+            {
+                if (portal.rct.isContainCRD(childNodes[i].crd)) portal.childNodes.Add(childNodes[i]);
+            }
+            childElements.Add(portal);
+            List<Node> nodesSecondPortal = new List<Node>();
+            for(int i = 0; i < portal.childNodes.Count; i++)
+            {
+                List<Node> siblings = portal.childNodes[i].GetSiblingsNoDiagonals();
+                for (int s = 0; s < siblings.Count; s++)
+                {
+                    if(siblings[s].mapElement.id != id)
+                    {
+                        nodesSecondPortal.Add(siblings[s]);
+                        break;
+                    }
+                }
+            }
+            return new RCT(nodesSecondPortal);
         }
+        public void CreateDoor(RCT rct, string name)
+        {
+            Door door = new Door(rct, name, true);
+            RCT doorRCT = CreatePortal(door);
+            
+        }
+        
         public override void OnAddToChildElements()
         {
             NodeLayer floor = new NodeLayer(getPrefabNuber(), "Premetives/Surface", "Floor");

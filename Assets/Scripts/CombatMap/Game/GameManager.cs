@@ -52,7 +52,8 @@ namespace Game
                 appended.CreateSubRoom(new RCT(new CRD(34, 30), 3, 3));
                 building.CreateRoom(new RCT(new CRD(29, 26), 3, 3));
                 building.CreateRoom(new RCT(new CRD(29, 33), 3, 3));
-                //building.CreateMainEntrance(new RCT(new CRD()))
+                building.CreateMainEntrance(new RCT(new CRD(31, 19), new CRD(31, 19)),"OuterPortal","InnerPortal");
+                building.CreateMainEntrance(new RCT(new CRD(29, 23), new CRD(29, 23)), "OuterPortal", "InnerPortal");
 
             }
             Constructor.Upgrade();
