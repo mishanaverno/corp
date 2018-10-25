@@ -6,7 +6,7 @@ namespace Map
 {
     public class Door : Portal
     {
-        public Door(RCT rct, string name, bool isExit) : base(rct, name, isExit)
+        public Door(RCT rct, string innername, string outername, bool isExit) : base(rct, innername, outername, isExit)
         {
 
         }

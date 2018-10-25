@@ -6,19 +6,28 @@ namespace Map
 {
     public class Portal : MapElement
     {
-        protected string name;
+        protected string innername, outsidename;
         protected bool isExit;
         public Portal Brother { get; set; }
 
-        public Portal(RCT rct, string name, bool isExit) : base(rct)
+        public Portal(RCT rct, string innername, string outsidename, bool isExit) : base(rct)
         {
-            this.name = name;
+            this.innername = innername;
+            this.outsidename = outsidename;
             this.isExit = isExit;
         }
 
         public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
         {
-            
+            string name;
+            if(parentElement is Room)
+            {
+                name = innername;
+            }
+            else
+            {
+                name = outsidename;
+            }
             NodeLayer door = new NodeLayer(getPrefabNuber(), "Premetives/Portal", name);
             if (isExit)
             {
@@ -27,12 +36,12 @@ namespace Map
             else
             {
                 RCT dirRCT = Brother.parentElement.rct.Clone();
+                dirRCT.DebugLog("portal");
                 dirRCT.Grow();
                 door.direction = dirRCT.GetDirection(node.crd);
                 door.InvertDirection();
             }
             door.hasMesh = false;
-            Debug.Log(door.name + " - " + door.direction);
             NodeLayer wall = node.Layers.Find(x => x.direction == door.direction && (x.name == "InnerWall" || x.name == "OuterWall"));
             node.Layers.Remove(wall);
             return new List<NodeLayer>() { door };

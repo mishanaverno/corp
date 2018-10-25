@@ -20,6 +20,28 @@ namespace Map
             parentElement.childElements.Add(room);
             return room;
         }
+        public void CreateDoor(CRD crd, string order = "Default")
+        {
+            if (rct.isContainCRD(crd))
+            {
+                MapElement.SetOrder(CreateOpenablePortal(new RCT(crd, crd), "InnerDoor", "InnerPortal", "OuterPortal"), order);
+            }
+        }
+        
+        public void CreateWindow(CRD crd, string order = "Default")
+        {
+            if (rct.isContainCRD(crd))
+            {
+                MapElement.SetOrder(CreateNonOpenablePortal(new RCT(crd, crd), "InnerWindow", "OuterWindow"), order);
+            }
+        }
+        public void CreateDoorway(CRD crd, string order = "Default")
+        {
+            if (rct.isContainCRD(crd))
+            {
+                MapElement.SetOrder(CreateNonOpenablePortal(new RCT(crd, crd), "InnerPortal", "OuterPortal"), order);
+            }
+        }
         public RCT CreatePortal(Portal portal)
         {
             portal.parentElement = this;
@@ -44,13 +66,42 @@ namespace Map
             }
             return new RCT(nodesSecondPortal);
         }
-        public void CreateDoor(RCT rct, string name)
-        {
-            Door door = new Door(rct, name, true);
-            RCT doorRCT = CreatePortal(door);
-            
+        public List<MapElement> CreateNonOpenablePortal(RCT rct, string insidename, string outsidename) {
+            return CreateOpenablePortal(rct, insidename, insidename, outsidename);
         }
-        
+        public List<MapElement> CreateOpenablePortal(RCT rct, string innername, string outername, string outsidename)
+        {
+            Portal exit = new Portal(rct, innername, outername, true);
+            RCT doorRCT = CreatePortal(exit);
+            MapElement mapElement = Stage.GetNode(doorRCT.Start, GetFloorNumber()).mapElement;
+            Portal entrence;
+            if (mapElement.GetType() == typeof(Building))
+            {
+                entrence = new Portal(doorRCT, innername, outsidename, false);
+                Building building = mapElement as Building;
+                building.CreatePortal(entrence);
+            }
+            else
+            {
+                entrence = new Portal(doorRCT, outername, outsidename, false);
+                Room room = mapElement as Room;
+                room.CreatePortal(entrence);
+            }
+            Portal.Bind(exit, entrence);
+            return new List<MapElement>() { exit, entrence };
+        }
+       
+        public int GetFloorNumber()
+        {
+            if (childNodes.Count > 0)
+            {
+                return childNodes[0].floor.number;
+            }
+            else
+            {
+                return -1;
+            }
+        }
         public override void OnAddToChildElements()
         {
             NodeLayer floor = new NodeLayer(getPrefabNuber(), "Premetives/Surface", "Floor");

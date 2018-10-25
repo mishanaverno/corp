@@ -58,16 +58,11 @@ namespace Map
                 if (portal.rct.isContainCRD(childNodes[i].crd)) portal.childNodes.Add(childNodes[i]);
             }
             childElements.Add(portal);
-            portal.NodesToConsole();
             return portal.rct;
         }
-        public void CreateMainEntrance(RCT rct, string entranceName, string exitName)
+        public void CreateMainEntrance(RCT rct, string innername, string outername)
         {
-            Door exit = new Door(rct, exitName, true);
-            RCT exitRct = BaseRoom.CreatePortal(exit);
-            Door entrance = new Door(exitRct, entranceName, false);
-            CreatePortal(entrance);
-            Portal.Bind(exit, entrance);
+            BaseRoom.CreateNonOpenablePortal(rct, innername, outername);
         }
         
         public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)

@@ -296,7 +296,13 @@ namespace Map
             return this;
             
         }
-        
+        public static void SetOrder(List<MapElement> list, string order)
+        {
+            for(int i = 0; i < list.Count; i++)
+            {
+                list[i].order = order;
+            }
+        }
         public void DebugParents()
         {
             MapElement elem = this; 
