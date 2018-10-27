@@ -373,17 +373,43 @@ namespace Map
             Node lNode = GetSibling("l"), rNode = GetSibling("r"), tNode = GetSibling("t"), bNode = GetSibling("b");
             Node ltNode = GetSibling("lt"), rtNode = GetSibling("rt"), lbNode = GetSibling("lb"), rbNode = GetSibling("rb");
             List<Node> nodes = GetMapElementSiblingds();
+            List<Node> lnodes = new List<Node>() { rtNode, rbNode, ltNode, lbNode };
+            for (int i = 0; i < lnodes.Count; i++)
+            {
+                if (!lnodes[i].empty)
+                {
+                    if (lnodes[i].mapElement.GetType() == typeof(Column))
+                    {
+                        Column column = lnodes[i].mapElement as Column;
+                        if (!column.AsInterior) nodes.Add(lnodes[i]);
+                    }
+                }
+            }
+            
             if (nodes.Contains(lNode) && nodes.Contains(tNode) && !nodes.Contains(ltNode)) list.Add("lt");
             if (nodes.Contains(rNode) && nodes.Contains(tNode) && !nodes.Contains(rtNode)) list.Add("rt");
             if (nodes.Contains(lNode) && nodes.Contains(bNode) && !nodes.Contains(lbNode)) list.Add("lb");
             if (nodes.Contains(rNode) && nodes.Contains(bNode) && !nodes.Contains(rbNode)) list.Add("rb");
             return list;
         }
+       
         public List<string> GetWall()
         {
             List<string> list = new List<string>();
             List<Node> nodes = GetMapElementSiblingdsNoDiagonals();
             Node lNode = GetSibling("l"), rNode = GetSibling("r"), tNode = GetSibling("t"), bNode = GetSibling("b");
+            List<Node> lnodes = new List<Node>() { lNode, rNode, tNode, bNode };
+            for(int i = 0; i < lnodes.Count; i++)
+            {
+                if (!lnodes[i].empty)
+                {
+                    if (lnodes[i].mapElement.GetType() == typeof(Column))
+                    {
+                        Column column = lnodes[i].mapElement as Column;
+                        if (!column.AsInterior) nodes.Add(lnodes[i]);
+                    }
+                }
+            }
             if (!nodes.Contains(lNode)) list.Add("l");
             if (!nodes.Contains(rNode)) list.Add("r");
             if (!nodes.Contains(tNode)) list.Add("t");

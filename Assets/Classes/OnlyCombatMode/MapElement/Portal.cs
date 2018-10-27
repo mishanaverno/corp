@@ -9,6 +9,7 @@ namespace Map
         protected string innername, outsidename;
         protected bool isExit;
         public Portal Brother { get; set; }
+        public Portal TwinBrother { get; set; }
 
         public Portal(RCT rct, string innername, string outsidename, bool isExit) : base(rct)
         {
@@ -50,6 +51,11 @@ namespace Map
         {
             p1.Brother = p2;
             p2.Brother = p1;
+        }
+        public static void BindTwin(Portal p1, Portal p2)
+        {
+            p1.TwinBrother = p2;
+            p2.TwinBrother = p1;
         }
     }
 }

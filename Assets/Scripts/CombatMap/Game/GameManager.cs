@@ -37,7 +37,7 @@ namespace Game
                 tbuilding.Thin();
                 CRD crd = StageConstructor.GetRandomCRD(tbuilding);
                 RCT newRoom = new RCT(new CRD(34,25), 4, 4);
-                building.AppendRoom(newRoom);
+                Room firstappended = building.AppendRoom(newRoom) as Room;
                 tbuilding = building.rct.Clone();
                 tbuilding.Thin();
                 crd = StageConstructor.GetRandomCRD(tbuilding);
@@ -51,10 +51,16 @@ namespace Game
                 building.BaseRoom.CreateSubRoom(new RCT(new CRD(34, 22), 3, 2)).CreateDoor(new CRD(35, 23));
                 building.BaseRoom.CreateSubRoom(new RCT(new CRD(32, 20), 3, 2));
                 appended.CreateSubRoom(new RCT(new CRD(34, 30), 3, 3));
+                firstappended.CreateDoubleDoor(new CRD(34,27));
+                firstappended.CreateDoubleDoorway(new CRD(37, 26));
+                firstappended.CreateColumn(new CRD(35, 27));
                 building.CreateRoom(new RCT(new CRD(29, 26), 3, 3));
                 building.CreateRoom(new RCT(new CRD(29, 33), 3, 3)).CreateDoorway(new CRD(31,34));
                 building.CreateMainEntrance(new RCT(new CRD(31, 19), new CRD(31, 19)),"InnerWindow", "OuterWindow");
                 building.CreateMainEntrance(new RCT(new CRD(29, 23), new CRD(29, 23)), "InnerDoor", "OuterPortal");
+                building.BaseRoom.CreateDoubleDoorway(new CRD(33, 19));
+                building.BaseRoom.CreateDoubleDoor(new CRD(29, 21));
+                building.CreateColumn(new CRD(38, 19));
                 //building.BaseRoom
             }
             Constructor.Upgrade();

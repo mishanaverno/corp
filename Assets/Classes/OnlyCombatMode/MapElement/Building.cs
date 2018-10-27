@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -49,6 +50,10 @@ namespace Map
                 parentArea.addNewElement(this);
             }
         }
+        public void CreateColumn(CRD crd)
+        {
+            addNewElement(new Column(crd));
+        }
         public RCT CreatePortal(Portal portal)
         {
             portal.parentElement = this;
@@ -68,7 +73,8 @@ namespace Map
         public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
         {
             List<NodeLayer> nodeLayers = new List<NodeLayer>(layers);
-            
+            List<Type> ignoreList = new List<Type>();
+            ignoreList.Add(typeof(Column));
             if (node.IsOnMapElementBorder())
             {
                 List<string> walls = node.GetWall();

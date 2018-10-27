@@ -11,6 +11,11 @@ namespace Map
         {
 
         }
+        public void CreateColumn(CRD crd)
+        {
+            addNewElement(new Column(crd));
+        }
+
         public Room CreateSubRoom(RCT rct)
         {
             Room room = new Room(rct);
@@ -41,6 +46,65 @@ namespace Map
             {
                 MapElement.SetOrder(CreateNonOpenablePortal(new RCT(crd, crd), "InnerPortal", "OuterPortal"), order);
             }
+        }
+        public void CreateDoubleDoor(CRD crd, string order = "Default")
+        {
+            if (rct.isContainCRD(crd))
+            {
+                MapElement.SetOrder(CreateDoublePortal(crd, true), order);
+            }
+        }
+        public void CreateDoubleDoorway(CRD crd, string order = "Default")
+        {
+            if (rct.isContainCRD(crd))
+            {
+                MapElement.SetOrder(CreateDoublePortal(crd, false), order);
+            }
+        }
+        public List<MapElement> CreateDoublePortal(CRD crd, bool openable = false)
+        {
+            string crdDirection = rct.GetDirection(crd), twinNode;
+            switch (crdDirection)
+            {
+                case "l":
+                    twinNode = "b";
+                    break;
+                case "r":
+                    twinNode = "t";
+                    break;
+                case "t":
+                    twinNode = "l";
+                    break;
+                case "b":
+                    twinNode = "r";
+                    break;
+                default:
+                    twinNode = "t";
+                    break;
+            }
+            CRD twinCRD = Stage.GetNode(crd).GetSibling(twinNode).crd;
+            List<MapElement> RightPortals;
+            List<MapElement> LeftPortals;
+            if (openable)
+            {
+                RightPortals = CreateOpenablePortal(new RCT(crd, crd), "InnerDoubleDoorR", "InnerDoublePortalL", "OuterDoublePortalL");
+                LeftPortals = CreateOpenablePortal(new RCT(twinCRD, twinCRD), "InnerDoubleDoorL", "InnerDoublePortalR", "OuterDoublePortalR");
+            }
+            else
+            {
+                RightPortals = CreateOpenablePortal(new RCT(crd, crd), "InnerDoublePortalR", "InnerDoublePortalL", "OuterDoublePortalL");
+                LeftPortals = CreateOpenablePortal(new RCT(twinCRD, twinCRD), "InnerDoublePortalL", "InnerDoublePortalR", "OuterDoublePortalR");
+            }
+            List<MapElement> list = new List<MapElement>();
+            for (int i = 0; i < 2; i++)
+            {
+                Portal p1 = RightPortals[i] as Portal;
+                Portal p2 = LeftPortals[i] as Portal;
+                Portal.BindTwin(p1, p2);
+            }
+            list.AddRange(RightPortals);
+            list.AddRange(LeftPortals);
+            return list;
         }
         public RCT CreatePortal(Portal portal)
         {

@@ -28,6 +28,7 @@
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,6 +38,7 @@
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <NoConfig>true</NoConfig>
@@ -107,6 +109,7 @@
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Area.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\BackgroundStreet.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Building.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Column.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Crossroad.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\CrossroadCorner.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\CrossroadCrosswalk.cs" />
