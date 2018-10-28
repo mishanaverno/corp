@@ -44,24 +44,22 @@ namespace Map
         {
                 surface = "Road";
         }
-  
         public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
         {
-            
             List<NodeLayer> nodeLayers = new List<NodeLayer>(layers);
             if(parentElement.parentElement.GetType() == typeof(Road)){
                 if (axis == 'v')
                 {
                     if (node.crd.z == parentElement.parentElement.rct.Start.z || node.crd.z == parentElement.parentElement.rct.End.z)
                     {
-                        
-                        if (!node.BorderWidthType(typeof(ParkingPlace)))
+
+                        if (node.BorderWidthTypeNoDiagonal(typeof(ParkingPlace)) || node.BorderWidthTypeNoDiagonal(typeof(ParkingDelimetr)))
                         {
-                            nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "SideLine"));
+                            nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "ShortDashedLine"));
                         }
                         else
                         {
-                            nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "ShortDashedLine"));
+                            nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "SideLine"));
                         }
                     }
                     else if (node.crd.z == parentElement.rct.Start.z || node.crd.z == parentElement.rct.End.z)
@@ -77,13 +75,13 @@ namespace Map
                 {
                     if (node.crd.x == parentElement.parentElement.rct.Start.x || node.crd.x == parentElement.parentElement.rct.End.x)
                     {
-                        if (!node.BorderWidthType(typeof(ParkingPlace)))
+                        if (node.BorderWidthTypeNoDiagonal(typeof(ParkingPlace)) || node.BorderWidthTypeNoDiagonal(typeof(ParkingDelimetr)))
                         {
-                            nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "SideLine"));
+                            nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "ShortDashedLine"));
                         }
                         else
                         {
-                            nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "ShortDashedLine"));
+                            nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "SideLine"));
                         }
                     }
                     else if (node.crd.x == parentElement.rct.Start.x || node.crd.x == parentElement.rct.End.x)
@@ -95,12 +93,12 @@ namespace Map
                         nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "DashedLine"));
                     }
                 }
-
             }
             else if(parentElement.parentElement.GetType() == typeof(CrossroadCrosswalk))
             {
                 nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "Crosswalk"));
-            }else if(parentElement.parentElement.GetType() == typeof(CrossroadRoad))
+            }
+            else if(parentElement.parentElement.GetType() == typeof(CrossroadRoad))
             {
                 if (node.BorderWidthType(typeof(Intersection)))
                 {
@@ -111,9 +109,12 @@ namespace Map
                     nodeLayers.Add(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "CenterLine"));
                 }
             }
+            if (parentElement.parentElement.parentElement.GetType() != typeof(BackgroundStreet))
+            {
+                nodeLayers.Add(new NodeLayer(0, "Main", "ControllQuad"));
+            }
             return base.BeforeAddLayersToNode(nodeLayers, node);
         }
-        
     }
 }
 

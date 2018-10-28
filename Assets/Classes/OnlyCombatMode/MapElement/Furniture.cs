@@ -62,6 +62,11 @@ namespace Map
                 furniture.direction = furnitureDirection;
                 nodeLayers.Add(furniture);
             }
+            int controllzone = nodeLayers.FindIndex(x => x.name == "ControllQuad");
+            if (controllzone >= 0)
+            {
+                nodeLayers.RemoveAt(controllzone);
+            }
             return base.BeforeAddLayersToNode(nodeLayers, node);
         }
 

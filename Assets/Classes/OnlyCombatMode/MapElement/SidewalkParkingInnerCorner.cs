@@ -16,7 +16,9 @@ namespace Map
             surface = "Road";
             NodeLayer layer = new NodeLayer(getPrefabNuber(), "Additions/Sidewalk", "InnerCorner");
             layer.direction = direction;
+            layer.hasMesh = false;
             AddLayer(layer);
+            AddLayer(new NodeLayer(0, "Main", "ControllQuad"));
         }
         public override List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)
         {

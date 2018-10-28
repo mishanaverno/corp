@@ -168,14 +168,19 @@ namespace Map
         }
         public override void OnAddToChildElements()
         {
+            base.OnAddToChildElements();
             NodeLayer floor = new NodeLayer(getPrefabNuber(), "Premetives/Surface", "Floor");
             floor.hasMesh = false;
             AddLayer(floor);
-            base.OnAddToChildElements();
+            
+            NodeLayer controllQuad = new NodeLayer(0, "Main", "ControllQuad");
+            controllQuad.positionCorrection = new Vector3(0, 0.05f, 0);
+            AddLayer(controllQuad);
         }
         public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
         {
             List<NodeLayer> nodeLayers = new List<NodeLayer>(layers);
+            
             if (node.IsOnMapElementBorder())
             {
                 
@@ -198,6 +203,12 @@ namespace Map
             }
             
             return base.BeforeAddLayersToNode(nodeLayers, node);
+        }
+        public override List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)
+        {
+            int oldControllQuad = layers.FindIndex(x => x.name == "ControllQuad");
+            if (oldControllQuad >= 0) layers.RemoveAt(oldControllQuad);
+            return base.BeforeProcessLayers(layers);
         }
         public override void setNodeDirections()
         {

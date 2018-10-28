@@ -511,6 +511,9 @@ MonoBehaviour:
     type: 2}
   Unit: {fileID: 1789288632294186, guid: 1d44f39fbc57c634f8a1b70c189a6061, type: 2}
   EnemyUnit: {fileID: 1745595876250614, guid: 19132badbe2b50f43973805aee072b4b, type: 2}
+  Cell: {fileID: 1598320467111064, guid: 3675fc82508350c4c8e98c2e5f126cb5, type: 2}
+  ControllZone: {fileID: 1326873917694810, guid: cf46778819b445143bf52bf6bf8bf017,
+    type: 2}
 --- !u!1 &1430396800
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,6 +523,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1430396802}
   - component: {fileID: 1430396801}
+  - component: {fileID: 1430396803}
   m_Layer: 0
   m_Name: LinePainter
   m_TagString: Untagged
@@ -533,7 +537,7 @@ LineRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1430396800}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -542,7 +546,7 @@ LineRenderer:
   m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 7aa3edfdc422b6342a0aaa894d2d0b0d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -564,7 +568,6 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 2
     widthMultiplier: 1
@@ -572,8 +575,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 1
+        time: 0.5026455
+        value: 0.059171185
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -632,6 +635,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1430396803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1430396800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a195d2cf50cebc4da6d3d56064d75a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1681539948
 GameObject:
   m_ObjectHideFlags: 0
@@ -758,7 +772,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1699502698}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4dafe0db100aaf546a00d78cfbaafa8f, type: 3}
   m_Name: 

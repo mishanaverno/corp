@@ -16,6 +16,8 @@ namespace Map
             base.OnAddToChildElements();
             surface = "Ground";
             AddLayer(new NodeLayer(getPrefabNuber(), "Premetives/Surface", "Building"));
+           
+            AddLayer(new NodeLayer(0, "Main", "ControllQuad"));
         }
         public void Init()
         {
@@ -73,8 +75,9 @@ namespace Map
         public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
         {
             List<NodeLayer> nodeLayers = new List<NodeLayer>(layers);
-            List<Type> ignoreList = new List<Type>();
-            ignoreList.Add(typeof(Column));
+            int oldVontrollZone = nodeLayers.FindIndex(x => x.name == "ControllQuad");
+            if(oldVontrollZone >= 0) nodeLayers.RemoveAt(oldVontrollZone);
+
             if (node.IsOnMapElementBorder())
             {
                 List<string> walls = node.GetWall();

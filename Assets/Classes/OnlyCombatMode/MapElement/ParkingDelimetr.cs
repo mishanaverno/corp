@@ -15,6 +15,7 @@ namespace Map
         {
             surface = "Road";
             AddLayer(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "CenterLine"));
+            AddLayer(new NodeLayer(0, "Main", "ControllQuad"));
         }
     }
 }

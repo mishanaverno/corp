@@ -37,7 +37,6 @@ namespace Map
             else
             {
                 RCT dirRCT = Brother.parentElement.rct.Clone();
-                dirRCT.DebugLog("portal");
                 dirRCT.Grow();
                 door.direction = dirRCT.GetDirection(node.crd);
                 door.InvertDirection();

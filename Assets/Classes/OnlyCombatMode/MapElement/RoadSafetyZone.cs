@@ -30,6 +30,11 @@ namespace Map
                 surface = "Road";
                 AddLayer(new NodeLayer(0, "Premetives/Surface", "Sidewalk"));
             }
+            if (parentElement.parentElement.GetType() != typeof(BackgroundStreet))
+            {
+                AddLayer(new NodeLayer(0, "Main", "ControllQuad"));
+            }
+            
         }
         public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
         {
@@ -39,6 +44,11 @@ namespace Map
                 if (node.BorderWidthType(typeof(Intersection)))
                 {
                     //nodeLayers.Add(new NodeLayer(0, "Premetives/Surface", "Sidewalk"));
+                    if (parentElement.parentElement.GetType() != typeof(BackgroundStreet))
+                    {
+                        nodeLayers.Add(new NodeLayer(0, "Main", "ControllQuad"));
+                    }
+                    
                 }
                 else
                 {
@@ -46,13 +56,19 @@ namespace Map
                     layer.direction = GetParentByClass(typeof(Crossroad)).rct.GetDirection(node.crd);
                     layer.InvertDirection();
                     nodeLayers.Add(layer);
+                    if (parentElement.parentElement.GetType() != typeof(BackgroundStreet))
+                    {
+                        nodeLayers.Add(new NodeLayer(0, "Main", "ControllQuad"));
+                    }
                 }
                
             }
             else
             {
                 nodeLayers = layers;
+                
             }
+            
             return base.BeforeAddLayersToNode(nodeLayers, node);
         }
         public override void setNodeDirections()

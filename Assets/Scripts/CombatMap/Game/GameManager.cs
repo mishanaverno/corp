@@ -16,8 +16,10 @@ namespace Game
 		public GameObject portalPrefab;
 		public GameObject Unit;
 		public GameObject EnemyUnit;
+        public GameObject Cell;
+        public GameObject ControllZone;
 
-		public List<Team> teams = new List<Team> ();
+        public List<Team> teams = new List<Team> ();
 		public List<Unit> playerUnits = new List<Unit>();
 		public List<Unit> enemyUnits = new List<Unit>();
 		// Use this for initialization

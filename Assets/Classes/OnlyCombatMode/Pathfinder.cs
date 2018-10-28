@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Map
 {	// класс объекта отвечающего за поиск пути на карте, реализует метод поиска А* в двухмерном массиве
 	public class Pathfinder{
-		public List<Node> FindPath(Node startNode, Node targetNode, Node[,,] map){//непосредственно метод поиска пути на карте от начальной точки до коненчо 
+		public List<Node> FindPath(Node startNode, Node targetNode){//непосредственно метод поиска пути на карте от начальной точки до коненчо 
 			List<Node> openSet = new List<Node> ();// список клеток которые нужно проверить
 			List<Node> closeSet = new List<Node> ();// список уже проверенных клеток
 			startNode.parentNode = null; // инициализация параметров стартовой клетки
@@ -21,11 +21,11 @@ namespace Map
 				}
 				openSet.Remove (currentNode); //удаляем из списка ожидающих проверку проверяемую клетку 
 				closeSet.Add (currentNode); //и записываем ее в список провереных
-				foreach(Node node in GetNeigbours(currentNode,targetNode,map)){// получаем точки соседние с проверяемой
+				foreach(Node node in GetNeigbours(currentNode)){// получаем точки соседние с проверяемой
 					if(closeSet.Contains(node)) // если сосед уже есть в списке провереных, пропускаем итерацию и переходим к следующему
 						continue;
 					if (node.isWalkable && !node.busy) { // если сосед доступен для передвижения и не занят другим юнитом
-						node.gCost = currentNode.gCost + 1; // увеличиваем расстояние от стартовой точки до соседа на 1
+                        node.gCost = currentNode.gCost + currentNode.links.Find(x => x.To == node).w; // увеличиваем расстояние от стартовой точки до соседа на 1
 						node.hCost = GetHeuristicPathLength (node, targetNode); // вычисляем приблизительное расстояние от соседа до конечной точки
 						node.refreshFCost (); //пересчитываем общее расстояние
 						if (openSet.Contains (node)) {// если сосед уже есть в списке на проверку
@@ -70,46 +70,15 @@ namespace Map
 			return minNode;
 		}
 		private float GetHeuristicPathLength(Node startNode, Node targetNode){// метод получения пути до конечной точки игнорируя препятствия
-			return Mathf.Max(Mathf.Abs(startNode.x - targetNode.x),Mathf.Abs(startNode.y - targetNode.y));
+			return Mathf.Max(Mathf.Abs(startNode.crd.x - targetNode.crd.x), Mathf.Abs(startNode.crd.z - targetNode.crd.z), Mathf.Abs(startNode.floor.number - targetNode.floor.number));
 		}
-		private List<Node> GetNeigbours(Node node, Node target,Node[,,] map){// метод получения соседних точек
+		private List<Node> GetNeigbours(Node node){// метод получения соседних точек
 			List<Node> result = new List<Node> ();
-			bool nx = false;
-			bool ny = false;
-			Node neighbour = null;
-
-			if (node.x > 0) {
-				neighbour = MapManager.instance.GetNode (node.level, node.x - 1, node.y);
-				result.Add (neighbour);
-				nx = neighbour.isWalkable;
-			}
-			if (node.y > 0) {
-				neighbour = MapManager.instance.GetNode (node.level, node.x, node.y - 1);
-				result.Add (neighbour);
-				ny = neighbour.isWalkable;
-			}
-			if(nx && ny) result.Add(MapManager.instance.GetNode(node.level,node.x-1,node.y-1));
-			nx = false;
-			if (node.x < map.GetLength (1) - 1) {
-				neighbour = MapManager.instance.GetNode (node.level, node.x + 1, node.y);
-				result.Add (neighbour);
-				nx = neighbour.isWalkable;
-			}
-			if(nx && ny) result.Add(MapManager.instance.GetNode(node.level,node.x+1,node.y-1));
-			ny = false;
-			if (node.y < map.GetLength (2) - 1) {
-				neighbour = MapManager.instance.GetNode (node.level, node.x, node.y + 1);
-				result.Add (neighbour);
-				ny = neighbour.isWalkable;
-			}
-			if(nx && ny) result.Add(MapManager.instance.GetNode(node.level,node.x+1,node.y+1));	
-			nx = false;
-			if (node.x > 0) {
-				neighbour = MapManager.instance.GetNode (node.level, node.x - 1, node.y);
-				nx = neighbour.isWalkable;
-			}
-			if(nx && ny) result.Add(MapManager.instance.GetNode(node.level,node.x-1,node.y+1));	
-			return result;
+			for(int i = 0; i < node.links.Count; i++)
+            {
+                result.Add(node.links[i].To);
+            }
+            return result;
 		}
 
 

@@ -18,5 +18,12 @@ namespace Map
             AddLayer(new NodeLayer(getPrefabNuber(), "Premetives/Wall", "Column"));
             base.OnAddToChildElements();
         }
+        public override List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)
+        {
+            int oldControllQuad = layers.FindIndex(x => x.name == "ControllQuad");
+            if (oldControllQuad >= 0) layers.RemoveAt(oldControllQuad);
+            return base.BeforeProcessLayers(layers);
+        }
+        
     }
 }

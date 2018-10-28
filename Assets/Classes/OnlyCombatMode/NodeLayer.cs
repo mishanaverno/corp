@@ -15,6 +15,7 @@ namespace Map
         public bool mapping;
         public bool[,] map;
         public bool nonWalkable;
+        public Vector3 positionCorrection;
         //public string obstacle;
         public NodeLayer(int number, string premitive, string name)
         {
@@ -27,6 +28,7 @@ namespace Map
             this.prefabNumber = number;
             this.premitive = premitive;
             this.name = name;
+            positionCorrection = new Vector3(0, 0, 0);
         }
         public NodeLayer Clone()
         {
@@ -37,6 +39,7 @@ namespace Map
             layer.direction = direction;
             layer.nonWalkable = nonWalkable;
             layer.ignorePreviosMesh = ignorePreviosMesh;
+            layer.positionCorrection = positionCorrection;
             return layer;
 
         }

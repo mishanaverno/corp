@@ -17,6 +17,7 @@ namespace Map
             string layerDirection = parentElement.rct.GetDirection(this.rct.Start);
             corner.direction = layerDirection;
             AddLayer(corner);
+            AddLayer(new NodeLayer(0, "Main", "ControllQuad"));
             NodeLayer trafficLight = new NodeLayer(getPrefabNuber(), "Additions/Pilars", "TrafficLight");
             trafficLight.direction = layerDirection;
             trafficLight.hasMesh = false;

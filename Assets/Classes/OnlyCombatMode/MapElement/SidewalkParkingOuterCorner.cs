@@ -17,6 +17,7 @@ namespace Map
             NodeLayer layer = new NodeLayer(getPrefabNuber(), "Additions/Sidewalk", "OuterCorner");
             layer.direction = direction;
             AddLayer(layer);
+            AddLayer(new NodeLayer(0, "Main", "ControllQuad"));
         }
         public override List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)
         {

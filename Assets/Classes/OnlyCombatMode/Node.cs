@@ -100,12 +100,16 @@ namespace Map
             return rotation;
         }
         private void GenerateSurface()// генерация поверхности
-        {
+        {   
+            
             Vector3 rotation = GetRotation();
             Vector3 position = new Vector3(crd.x, floor.number, crd.z);
-            GameObject cellInstance = GameObject.Instantiate (Resources.Load("Stage/" + this.floor.stage.DesignName + "/Premetives/Surface/" + this.surface + "/" + this.order + "/" + this.prefabNumber), position, Quaternion.Euler(rotation)) as GameObject;
+            GameObject cellInstance = GameObject.Instantiate(Game.GameManager.instance.Cell, position, Quaternion.Euler(rotation)) as GameObject;
             cellInstance.transform.name = "cell-[" + position.x + "," + position.z + "]:" + position.y;
             Cell = cellInstance;
+            Cell.GetComponent<CellController>().node = this;
+            GameObject surface = GameObject.Instantiate(Resources.Load("Stage/" + this.floor.stage.DesignName + "/Premetives/Surface/" + this.surface + "/" + this.order + "/" + this.prefabNumber), position, Quaternion.Euler(rotation)) as GameObject;
+            surface.transform.parent = Cell.transform;
         }
         private void GenerateLayers()// генерация слоев
         {
@@ -128,6 +132,7 @@ namespace Map
                 
                 Vector3 cPos = Instance.transform.localPosition;
                 cPos.y = cPY;
+                cPos += Layers[i].positionCorrection;
                 Instance.transform.localPosition = cPos;
                 pPY = cPY;
                 if (Layers[i].hasMesh)
@@ -147,6 +152,19 @@ namespace Map
             {
                 layer.direction = direction;
             }
+            Vector3 rotation = GetRotation(layer.direction);
+            Vector3 position = new Vector3(crd.x, floor.number, crd.z);
+            if (layer.premitive == "Main")
+            {
+                switch (layer.name)
+                {
+                    case "ControllQuad":
+                        return GameObject.Instantiate(Game.GameManager.instance.ControllZone, position, Quaternion.Euler(rotation));
+                    default:
+                        break;
+                }
+            }
+            
             if (layer.nonWalkable)
             {
                 Node node = GetSibling(layer.direction);
@@ -156,11 +174,10 @@ namespace Map
                     node.UnlinkNode(this);
                 }
             }
-            Vector3 rotation = GetRotation(layer.direction);
+           
             UnityEngine.Object prefab = Resources.Load("Stage/" + this.floor.stage.DesignName + "/" + layer.premitive + "/" + layer.name + "/" + this.order + "/" + layer.prefabNumber);
-            Vector3 position = new Vector3(crd.x, floor.number, crd.z);
-            GameObject LayerInstance;
-            return LayerInstance = GameObject.Instantiate(prefab ,position, Quaternion.Euler(rotation)) as GameObject;
+            
+            return GameObject.Instantiate(prefab ,position, Quaternion.Euler(rotation)) as GameObject;
         }
         public void ChangeSurface(string surface)
         {

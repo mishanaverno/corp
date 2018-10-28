@@ -13,6 +13,7 @@ namespace Map
         public override void OnAddToChildElements()
         {
             surface = "Ground";
+            AddLayer(new NodeLayer(0, "Main", "ControllQuad"));
         }
         public Building CreateBuilding(RCT rct)
         {

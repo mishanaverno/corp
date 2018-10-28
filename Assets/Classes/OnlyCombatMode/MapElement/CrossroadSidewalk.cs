@@ -15,6 +15,7 @@ namespace Map
         {
             surface = "Road";
             AddLayer(new NodeLayer(getPrefabNuber(), "Premetives/Surface", "Sidewalk"));
+            AddLayer(new NodeLayer(0, "Main", "ControllQuad"));
         }
         public override void setNodeDirections()
         {

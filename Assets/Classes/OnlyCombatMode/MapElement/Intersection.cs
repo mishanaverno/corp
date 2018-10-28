@@ -14,6 +14,7 @@ namespace Map
         {
             base.OnAddToChildElements();
             surface = "Road";
+           AddLayer(new NodeLayer(0, "Main", "ControllQuad"));
         }
     }
 }

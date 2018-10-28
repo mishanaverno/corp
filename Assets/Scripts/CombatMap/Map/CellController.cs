@@ -5,7 +5,8 @@ using Map;
 	
 	//скрипт управления клеткой 
 public class CellController : MonoBehaviour {
-	public Node node;
+    [SerializeField]
+    public Node node;
 	[SerializeField]
 	private GameObject halfShelterPrefab;
 	[SerializeField]

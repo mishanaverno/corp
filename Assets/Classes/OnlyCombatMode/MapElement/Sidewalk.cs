@@ -17,6 +17,10 @@ namespace Map
         {
             surface = "Road";
             AddLayer(new NodeLayer(0, "Premetives/Surface", "Sidewalk"));
+            if (parentElement.GetType() != typeof(BackgroundStreet))
+            {
+                AddLayer(new NodeLayer(0, "Main", "ControllQuad"));
+            }
             NodeLayer lights = new NodeLayer(getPrefabNuber(), "Additions/Pilars", "NightLight");
             int offset = 2;
             int roadOffset = getRoadOffset(offset);
