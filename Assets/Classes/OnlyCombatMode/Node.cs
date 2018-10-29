@@ -59,6 +59,44 @@ namespace Map
         public void GenerateCell(){// метод генерации клетки
             GenerateSurface();
             GenerateLayers();
+            UpdateLinks();
+        }
+        private void UpdateLinks()
+        {
+            if(mapElement.GetType() == typeof(Furniture))
+            {
+
+                Furniture furniture = mapElement as Furniture;
+                List<Node> noDiagonalSiblings = GetSiblingsNoDiagonals();
+                for (int i = 0; i < noDiagonalSiblings.Count; i++)
+                {
+                    if (!furniture.rct.isContainCRD(noDiagonalSiblings[i].crd))
+                        noDiagonalSiblings[i].UnlinkNode(noDiagonalSiblings);
+                }
+
+                isWalkable = furniture.monoFurniture.Walkable;
+                UnlinkAllLinksMutually();
+                if (furniture.monoFurniture.Walkable)
+                {
+                    LinkNode(noDiagonalSiblings, 1 + furniture.monoFurniture.ExtraWeightFrom);
+                    foreach(Node node in noDiagonalSiblings)
+                    {
+                        node.LinkNode(this, 1 + furniture.monoFurniture.ExtraWeightTo);
+                    }
+                }
+            }
+            if(mapElement.GetType() == typeof(Column))
+            {
+                Column column = mapElement as Column;
+                List<Node> noDiagonalSiblings = GetSiblingsNoDiagonals();
+                for (int i = 0; i < noDiagonalSiblings.Count; i++)
+                {
+                    if (!column.rct.isContainCRD(noDiagonalSiblings[i].crd))
+                        noDiagonalSiblings[i].UnlinkNode(noDiagonalSiblings);
+                }
+                isWalkable = false;
+                UnlinkAllLinksMutually();
+            }
         }
         private Vector3 GetRotation()//в зависимости от направление задает угол вращения
         {
@@ -108,8 +146,9 @@ namespace Map
             cellInstance.transform.name = "cell-[" + position.x + "," + position.z + "]:" + position.y;
             Cell = cellInstance;
             Cell.GetComponent<CellController>().node = this;
+            Cell.transform.SetParent(MapManager.instance.gameObject.transform);
             GameObject surface = GameObject.Instantiate(Resources.Load("Stage/" + this.floor.stage.DesignName + "/Premetives/Surface/" + this.surface + "/" + this.order + "/" + this.prefabNumber), position, Quaternion.Euler(rotation)) as GameObject;
-            surface.transform.parent = Cell.transform;
+            surface.transform.SetParent(Cell.transform);
         }
         private void GenerateLayers()// генерация слоев
         {
@@ -435,12 +474,26 @@ namespace Map
         }
 
         // МЕТОДЫ СВЯЗАННЫЕ СО СВЯЗЯМИ УЗЛОВ  TODO добавить брэйки в циклы
+        public void LinkNode(List<Node> list, float w)
+        {
+            for(int i = 0; i < list.Count; i++)
+            {
+                LinkNode(list[i], w);
+            }
+        }
         public void LinkNode(Node node, float w) //создание ссылки из этого узла в указанный
         {
             if (node.empty) return;
             if (!IsLinked(node))
             {
                 this.links.Add(new NodeLink(this, node, w));
+            }
+        }
+        public void UnlinkNode(List<Node> list)
+        {
+            for(int i = 0; i < list.Count; i++)
+            {
+                UnlinkNode(list[i]);
             }
         }
         public void UnlinkNode(Node node)//удаление ссылки
@@ -451,6 +504,7 @@ namespace Map
                 if (links[i].LinkedTo(node))
                 {
                     links.RemoveAt(i);
+                    return;
                 }
             }
         }
@@ -516,15 +570,17 @@ namespace Map
                 }
             }
         }
-        public void UpdateLinkedSiblingsLinksMutually(float extraTo, float extraFrom)
+        public void UpdateLinkedSiblingsLinksMutually(float extraTo, float extraFrom, bool ignoreSiblingsInSelfMapElement = false)
         {
             List<Node> siblings = GetSiblings();
             for (int i = 0; i < siblings.Count; i++)
             {
+                if (ignoreSiblingsInSelfMapElement && mapElement.rct.isContainCRD(siblings[i].crd)) continue;
                 for (int l = 0; l < siblings[i].links.Count; l++)
                 {
                     if (siblings[i].links[l].LinkedTo(this))
                     {
+                        
                         siblings[i].links[l].UpdateW(extraTo);
                         this.UpdateLinkTo(siblings[i], extraFrom);
                     }

@@ -6,21 +6,21 @@ using Game;
 
 namespace Map
 {
-	// скрипт управления игровым полем
+	// скрипт управления игровым полемSS
 public class MapManager : MonoBehaviour {
 		public Node[,,] map;
 		public Pathfinder pathfinder;
-		private Node activeUnitNode;
-
+		public Node activeUnitNode;
+        public Transform stageObject;
 		void OnEnabled(){
-			map = new Node[MapGenerator.instance.map.GetLength (0), MapGenerator.instance.map.GetLength (1), MapGenerator.instance.map.GetLength (2)];
-			map = MapGenerator.instance.map;
+            stageObject = GetComponent<Transform>();
 		}
 	// Use this for initialization
 		void Start () {
+            CameraMoving.instance.SetMapLengths(Stage.GetStage().rct.Height, Stage.GetStage().rct.Width);
 			pathfinder = new Pathfinder();
 			activeUnitNode = Stage.GetNode(new CRD(0,0));
-			UnitsGenerator.instance.enabled = true;	
+			//UnitsGenerator.instance.enabled = true;	
 		}
 
 		public List<Node> GetPathFromActivUnit(Node targetNode){ // метод получения кратчайшего пути

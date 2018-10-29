@@ -67,6 +67,10 @@ namespace Map
             {
                 nodeLayers.RemoveAt(controllzone);
             }
+            if (monoFurniture.Walkable)
+            {
+                nodeLayers.Add(new NodeLayer(0, "Main", "ControllQuad"));
+            }
             return base.BeforeAddLayersToNode(nodeLayers, node);
         }
 
