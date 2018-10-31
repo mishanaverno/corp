@@ -98,5 +98,5 @@ MonoBehaviour:
   opened: 1
   openable: 0
   locked: 0
-  extraWeight: 3
+  extraWeight: 10
   shelterHeight: 1

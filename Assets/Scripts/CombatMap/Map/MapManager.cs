@@ -19,7 +19,7 @@ public class MapManager : MonoBehaviour {
 		void Start () {
             CameraMoving.instance.SetMapLengths(Stage.GetStage().rct.Height, Stage.GetStage().rct.Width);
 			pathfinder = new Pathfinder();
-			activeUnitNode = Stage.GetNode(new CRD(0,0));
+			activeUnitNode = Stage.GetNode(new CRD(27,16));
 			//UnitsGenerator.instance.enabled = true;	
 		}
 

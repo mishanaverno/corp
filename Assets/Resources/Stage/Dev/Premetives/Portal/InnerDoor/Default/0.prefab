@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad4dd6b9cc2dbaa47b2c15c9eff84fd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  opened: 1
+  opened: 0
   openable: 1
   locked: 0
   extraWeight: 0

@@ -65,6 +65,7 @@ namespace Map
                 if (portal.rct.isContainCRD(childNodes[i].crd)) portal.childNodes.Add(childNodes[i]);
             }
             childElements.Add(portal);
+            portal.Init();
             return portal.rct;
         }
         public void CreateMainEntrance(RCT rct, string innername, string outername)
@@ -118,6 +119,10 @@ namespace Map
                     corner.direction = outerCorners[c];
                     corner.hasMesh = false;
                     nodeLayers.Add(corner);
+                    Node n1 = node.GetSibling(outerCorners[c][0].ToString());
+                    Node n2 = node.GetSibling(outerCorners[c][1].ToString());
+                    n1.UnlinkNode(n2);
+                    n2.UnlinkNode(n1);
                 }
             }
             return base.BeforeAddLayersToNode(nodeLayers, node);

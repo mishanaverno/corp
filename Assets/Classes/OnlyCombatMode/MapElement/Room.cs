@@ -115,6 +115,7 @@ namespace Map
                 if (portal.rct.isContainCRD(childNodes[i].crd)) portal.childNodes.Add(childNodes[i]);
             }
             childElements.Add(portal);
+            portal.Init();
             List<Node> nodesSecondPortal = new List<Node>();
             for(int i = 0; i < portal.childNodes.Count; i++)
             {
@@ -191,6 +192,49 @@ namespace Map
                     wall.direction = walls[w];
                     wall.hasMesh = false;
                     nodeLayers.Add(wall);
+                    Node wallNode = node.GetSibling(walls[w]);
+                    List<Node> wallNodes = wallNode.GetMapElementSiblingdsNoDiagonals();
+                    wallNodes.Add(wallNode);
+                    List<Node> nodes = node.GetMapElementSiblingdsNoDiagonals();
+                    nodes.Add(node);
+                    node.UnlinkNode(wallNodes);
+                    wallNode.UnlinkNode(nodes);
+                    foreach(Node wNode in wallNodes){
+                        wNode.UnlinkNode(node);
+                    }
+                    foreach (Node sNode in nodes)
+                    {
+                        sNode.UnlinkNode(wallNode);
+                    }
+                    if (walls.Count >= 2)
+                    {
+                        Node ocNode;
+                        if (walls.Contains("l") && walls.Contains("t"))
+                        {
+                            ocNode = node.GetSibling("lt");
+                            ocNode.UnlinkNode(node);
+                            node.UnlinkNode(ocNode);
+                        }
+                        if (walls.Contains("l") && walls.Contains("b"))
+                        {
+                            ocNode = node.GetSibling("lb");
+                            ocNode.UnlinkNode(node);
+                            node.UnlinkNode(ocNode);
+                        }
+                        if (walls.Contains("r") && walls.Contains("t"))
+                        {
+                            ocNode = node.GetSibling("rt");
+                            ocNode.UnlinkNode(node);
+                            node.UnlinkNode(ocNode);
+                        }
+                        if (walls.Contains("r") && walls.Contains("b"))
+                        {
+                            ocNode = node.GetSibling("rb");
+                            ocNode.UnlinkNode(node);
+                            node.UnlinkNode(ocNode);
+                        }
+                    }
+
                 }
                 List<string> outerCorners = node.GetOuterCorners();
                 for (int c = 0; c < outerCorners.Count; c++)
@@ -199,6 +243,13 @@ namespace Map
                     outerCorner.direction = outerCorners[c];
                     outerCorner.hasMesh = false;
                     nodeLayers.Add(outerCorner);
+                    Node n1 = node.GetSibling(outerCorners[c][0].ToString());
+                    Node n2 = node.GetSibling(outerCorners[c][1].ToString());
+                    n1.UnlinkNode(n2);
+                    n2.UnlinkNode(n1);
+                    /*Debug.Log("node" + node.crd.x + ":" + node.crd.z);
+                    Debug.Log("n1" + n1.crd.x + ":" + n1.crd.z);
+                    Debug.Log("n2" + n2.crd.x + ":" + n2.crd.z);*/
                 }
             }
             
