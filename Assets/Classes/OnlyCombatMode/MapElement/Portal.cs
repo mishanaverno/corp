@@ -49,13 +49,16 @@ namespace Map
             door.hasMesh = false;
             NodeLayer wall = node.Layers.Find(x => x.direction == door.direction && (x.name == "InnerWall" || x.name == "OuterWall"));
             node.Layers.Remove(wall);
-            if (IsOpened())
+            if (IsOpened() && isExit)
             {
+               
                 node.UnlinkNode(Brother.childNodes[0]);
+                Brother.childNodes[0].UnlinkNode(node);
                 node.LinkNode(Brother.childNodes[0], 1 + monoPortal.ExtraWeight);
+                Brother.childNodes[0].LinkNode(node, 1 + monoPortal.ExtraWeight);
                 foreach(NodeLink link in node.links)
                 {
-                    Debug.Log(link.To.crd.x + ":" + link.To.crd.z + " -> " + link.w);
+                    Debug.Log(node.crd.x + ":" + node.crd.z +" - "+link.To.crd.x + ":" + link.To.crd.z + " -> " + link.w);
                 }
             }
             return new List<NodeLayer>() { door };

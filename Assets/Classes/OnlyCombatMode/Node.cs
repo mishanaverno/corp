@@ -35,12 +35,18 @@ namespace Map
         public List<Shelter> shelters; //укрытия
         public MapElement mapElement;
         public bool empty = false;
+        public static int iterator = 0;
+        public int id;
         public Node()
         {
+            id = iterator;
+            iterator++;
             empty = true;
         }
         public Node(int x, int z, Floor floor, bool movable)
         {
+            id = iterator;
+            iterator++;
             this.crd = new CRD(x, z);
             this.x = x;
             this.z = z;
@@ -141,7 +147,7 @@ namespace Map
         {   
             
             Vector3 rotation = GetRotation();
-            Vector3 position = new Vector3(crd.x, floor.number, crd.z);
+            Vector3 position = new Vector3(crd.x, floor.number * floor.height, crd.z);
             GameObject cellInstance = GameObject.Instantiate(Game.GameManager.instance.Cell, position, Quaternion.Euler(rotation)) as GameObject;
             cellInstance.transform.name = "cell-[" + position.x + "," + position.z + "]:" + position.y;
             Cell = cellInstance;

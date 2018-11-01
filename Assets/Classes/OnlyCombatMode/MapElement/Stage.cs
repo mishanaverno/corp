@@ -8,7 +8,7 @@ namespace Map
     public class Stage : MapElement // родительский элемент карты - singleton
     {
         [SerializeField]
-        public int floorCounter = 0, width, height, groundFloor, basementFloor = 0;
+        public int floorCounter = 2, width, height, groundFloor = 1, basementFloor = 0;
         [SerializeField]
         public bool enabledBasement;
         public List<Floor> floors;
@@ -23,19 +23,12 @@ namespace Map
             this.enabledBasement = enabledBasement;
             this.DesignName = DesignName;
             floors = new List<Floor>();
-            
             if (enabledBasement)
             {
-                AddFloor(new UndergroundFloor(floorCounter, this));
-                AddFloor(new GroundFloor(floorCounter, this));
-                groundFloor = 1;
+                AddFloor(new UndergroundFloor(0, this));
             }
-            else
-            {
-                AddFloor(new GroundFloor(floorCounter, this));
-                groundFloor = 0;
-            }
-            
+            AddFloor(new GroundFloor(groundFloor, this));
+            floorCounter = 2;
             instance = this;
         }
         public void AddFloor(Floor floor)//добавляет этаж
@@ -106,12 +99,11 @@ namespace Map
         public static Node GetNode(CRD crd, int floornumber)// возвращает узел
         {
             Stage stage = Stage.GetStage();
-            return stage.floors[floornumber].GetNode(crd.x, crd.z);
+            return stage.floors.Find(x => x.number == floornumber).GetNode(crd.x, crd.z);
         }
         public static Node GetNode(CRD crd)
         {
-            Stage stage = Stage.GetStage();
-            return stage.floors[stage.groundFloor].GetNode(crd.x, crd.z);
+            return GetNode(crd, 1);
         }
         public static Node GetNode(int x, int z, int floornumber)
         {

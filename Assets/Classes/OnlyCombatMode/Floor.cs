@@ -11,6 +11,8 @@ namespace Map
         public Node[,] map;//узлы
         public Stage stage;//сцена
         protected RCT rct;//прямоугольник
+        public float height = 3;
+        public float extraheight = 0;
         [SerializeField]
         protected bool defaultIsWalkable;//доступен ли для передвижения по умолчанию
         public Floor(int number, Stage stage)

@@ -23,7 +23,7 @@ namespace Map{
                 renderer.positionCount = path.Count;
                 for(int p = 0; p < path.Count; p++)
                 {
-                    renderer.SetPosition(p, new Vector3(path[p].crd.x, path[p].floor.number + 0.2f, path[p].crd.z));
+                    renderer.SetPosition(p, new Vector3(path[p].crd.x, path[p].floor.number * 3 + 0.2f, path[p].crd.z));
                 }
             }
 		}

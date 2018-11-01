@@ -24,7 +24,7 @@ namespace Map
             NodeLayer lights = new NodeLayer(getPrefabNuber(), "Additions/Pilars", "NightLight");
             int offset = 2;
             int roadOffset = getRoadOffset(offset);
-            lights.addMap(StageConstructor.createPeriodicalMap(rct, axis, roadOffset, 10));
+            lights.addMap(StageConstructor.createPeriodicalMap(rct, axis, roadOffset, 7));
             lights.hasMesh = false;
             lights.nonWalkable = true;
             AddLayer(lights);

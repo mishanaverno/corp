@@ -21,6 +21,7 @@ namespace Map
             NodeLayer trafficLight = new NodeLayer(getPrefabNuber(), "Additions/Pilars", "TrafficLight");
             trafficLight.direction = layerDirection;
             trafficLight.hasMesh = false;
+            trafficLight.nonWalkable = true;
             AddLayer(trafficLight);
         }
         public override List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)

@@ -28,7 +28,7 @@ namespace Map
             {
                 for(int z = rct.Start.z; z <= rct.End.z; z++)
                 {
-                    Node node = new Node(x, z, stage.floors[stage.groundFloor], false);
+                    Node node = new Node(x, z, stage.floors.Find(g => g.number == stage.groundFloor), false);
                     node.mapElement = this;
                     childNodes.Add(node);
                 }

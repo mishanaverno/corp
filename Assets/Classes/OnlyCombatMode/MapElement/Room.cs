@@ -257,8 +257,7 @@ namespace Map
         }
         public override List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)
         {
-            int oldControllQuad = layers.FindIndex(x => x.name == "ControllQuad");
-            if (oldControllQuad >= 0) layers.RemoveAt(oldControllQuad);
+            layers.RemoveAll(x => x.name == "ControllQuad");
             return base.BeforeProcessLayers(layers);
         }
         public override void setNodeDirections()

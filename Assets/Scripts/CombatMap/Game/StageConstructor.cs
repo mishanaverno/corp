@@ -54,7 +54,8 @@ namespace Map
         }
         public void RenderBackground()//Добавление фона карты
         {
-            Node[,] map = stage.floors[stage.groundFloor].map;
+            //stage.groundFloor
+            Node[,] map = stage.floors.Find(x => x.number == stage.groundFloor).map;
             // left side
             int sbg = 0, ebg = 0;
             for (int x = 0; x < map.GetLength(0); x++)
@@ -207,7 +208,8 @@ namespace Map
         }
         private void createQuad(CRD crd, Vector3 rotation, int width)//Добавление фона карты один элемент
         {
-            Vector3 position = new Vector3(crd.x, stage.groundFloor, crd.z);
+            Floor floor = stage.floors.Find(x => x.number == stage.groundFloor) as Floor;
+            Vector3 position = new Vector3(crd.x, floor.number * floor.height, crd.z);
             int prefabNumber = 0;
             string size;
             if (width == -1)

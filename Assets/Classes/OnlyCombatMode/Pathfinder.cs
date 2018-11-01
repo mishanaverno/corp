@@ -25,18 +25,23 @@ namespace Map
 					if(closeSet.Contains(node)) // если сосед уже есть в списке провереных, пропускаем итерацию и переходим к следующему
 						continue;
 					if (node.isWalkable && !node.busy) { // если сосед доступен для передвижения и не занят другим юнитом
-                        node.gCost = currentNode.gCost + currentNode.links.Find(x => x.To == node).w; // увеличиваем расстояние от стартовой точки до соседа на 1
-						node.hCost = GetHeuristicPathLength (node, targetNode); // вычисляем приблизительное расстояние от соседа до конечной точки
-						node.refreshFCost (); //пересчитываем общее расстояние
-						if (openSet.Contains (node)) {// если сосед уже есть в списке на проверку
-							Node nodeAlredyInList = openSet.Find (n => n == node); //получаем клетку из открытого списка которая и есть сосед
- 							if (nodeAlredyInList.gCost > node.gCost) {// если расстояние от старта до клетки в списке больше чем до соседа
-								nodeAlredyInList.parentNode = currentNode;//устанавливаем ей ссылку на проверяемую клетку
-								nodeAlredyInList.gCost = node.gCost; // задаем расстояние от старта соседа, так как оно меньше 
-								nodeAlredyInList.refreshFCost(); // пересчитываем общий путь
+                        
+                        if (openSet.Contains (node)) {// если сосед уже есть в списке на проверку
+ 							if (node.gCost > currentNode.gCost + currentNode.links.Find(x => x.To == node).w) {// если расстояние от старта до клетки в списке больше чем до соседа
+								node.parentNode = currentNode;//устанавливаем ей ссылку на проверяемую клетку
+								node.gCost = currentNode.gCost + currentNode.links.Find(x => x.To == node).w; // задаем расстояние от старта соседа, так как оно меньше 
+                                node.hCost = GetHeuristicPathLength(node, targetNode);
+                                node.refreshFCost(); // пересчитываем общий путь
 							}
 						} else {// если соседа нет в списке на проверку
-							node.parentNode = currentNode; // то сохраняем ссылку на проверяемую клетку
+                            node.gCost = currentNode.gCost + currentNode.links.Find(x => x.To == node).w; // увеличиваем расстояние от стартовой точки до соседа на 1
+                            node.hCost = GetHeuristicPathLength(node, targetNode); // вычисляем приблизительное расстояние от соседа до конечной точки
+                            node.refreshFCost(); //пересчитываем общее расстояние
+                            if (node.crd.x == 31 && node.crd.z == 18)
+                            {
+                                Debug.Log("path node 31:18 id:" + node.id + " g:" + node.gCost + " h:" + node.hCost + " f:" + node.fCost);
+                            }
+                            node.parentNode = currentNode; // то сохраняем ссылку на проверяемую клетку
 							openSet.Add (node); // и добавляем соседа в список на проверку
 						}
 					}
@@ -54,7 +59,9 @@ namespace Map
 				result.Add (currentNode);
 				currentNode = currentNode.parentNode;
 			}
+            Debug.Log("path w: " + result[0].gCost);
 			result.Reverse ();
+
 			return result;
 		}
 		private Node GetMinFCost(List<Node> list){// метод получения из мписка клетки с минимальным значением общего пути
