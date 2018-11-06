@@ -12,7 +12,7 @@ namespace Map
         public Portal Brother { get; set; }
         public Portal TwinBrother { get; set; }
         public MonoPortal monoPortal;
-        public Portal(RCT rct, string innername, string outsidename, bool isExit) : base(rct)
+        public Portal(RCT rct, int floor, string innername, string outsidename, bool isExit) : base(rct,floor)
         {
             this.innername = innername;
             this.outsidename = outsidename;
@@ -32,7 +32,7 @@ namespace Map
             MonoPortal script = prefab.GetComponent < MonoPortal>();
             monoPortal = script;
         }
-        public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
+        public override List<NodeLayer> HookAddLayersToNode(List<NodeLayer> layers, Node node)
         {
             NodeLayer door = new NodeLayer(getPrefabNuber(), "Premetives/Portal", name);
             if (isExit)
@@ -56,10 +56,7 @@ namespace Map
                 Brother.childNodes[0].UnlinkNode(node);
                 node.LinkNode(Brother.childNodes[0], 1 + monoPortal.ExtraWeight);
                 Brother.childNodes[0].LinkNode(node, 1 + monoPortal.ExtraWeight);
-                foreach(NodeLink link in node.links)
-                {
-                    Debug.Log(node.crd.x + ":" + node.crd.z +" - "+link.To.crd.x + ":" + link.To.crd.z + " -> " + link.w);
-                }
+                
             }
             return new List<NodeLayer>() { door };
         }

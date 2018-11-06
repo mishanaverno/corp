@@ -7,12 +7,12 @@ namespace Map
     public class RoadSafetyZone : MapElement//островок безопасности
     {
         public char axis;
-        public RoadSafetyZone(RCT rct, char axis) : base(rct)
+        public RoadSafetyZone(RCT rct, int floor, char axis) : base(rct,floor)
         {
             this.axis = axis;
             
         }
-        public override void OnAddToChildElements()
+        public override void HookAddToChildElements()
         {
             if (parentElement.GetType() == typeof(CrossroadCrosswalk))
             {
@@ -36,7 +36,7 @@ namespace Map
             }
             
         }
-        public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
+        public override List<NodeLayer> HookAddLayersToNode(List<NodeLayer> layers, Node node)
         {
             List<NodeLayer> nodeLayers = new List<NodeLayer>();
             if (parentElement.GetType() == typeof(CrossroadRoad))
@@ -69,7 +69,7 @@ namespace Map
                 
             }
             
-            return base.BeforeAddLayersToNode(nodeLayers, node);
+            return base.HookAddLayersToNode(nodeLayers, node);
         }
         public override void setNodeDirections()
         {

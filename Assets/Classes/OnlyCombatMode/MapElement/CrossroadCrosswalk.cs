@@ -6,11 +6,11 @@ namespace Map
 {
     public class CrossroadCrosswalk : Road //пешеходный переход
     {
-        public CrossroadCrosswalk(RCT rct, char axis) : base(rct, axis)
+        public CrossroadCrosswalk(RCT rct, int floor, char axis) : base(rct, floor, axis)
         {
            
         }
-        public override void OnAddToChildElements()
+        public override void HookAddToChildElements()
         {
             surface = "Sidewalk";
         }

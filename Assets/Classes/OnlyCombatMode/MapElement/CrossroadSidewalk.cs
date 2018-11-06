@@ -7,11 +7,11 @@ namespace Map
     public class CrossroadSidewalk : MapElement//тратуар в перекрестке
     {
         public CRD corner;
-        public CrossroadSidewalk(RCT rct, CRD corner) : base(rct)
+        public CrossroadSidewalk(RCT rct, int floor, CRD corner) : base(rct, floor)
         {
             this.corner = corner;
         }
-        public override void OnAddToChildElements()
+        public override void HookAddToChildElements()
         {
             surface = "Road";
             AddLayer(new NodeLayer(getPrefabNuber(), "Premetives/Surface", "Sidewalk"));
@@ -56,7 +56,7 @@ namespace Map
         }
         public override void Upgrade()
         {
-            addNewElement(new CrossroadCorner(new RCT(corner, corner)));
+            addNewElement(new CrossroadCorner(new RCT(corner, corner), floorNumber));
         }
         
     }

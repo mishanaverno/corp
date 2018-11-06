@@ -9,7 +9,7 @@ namespace Map
         public int start, width, sidewalk;
         public char axis;
 
-        public Street(RCT rct, char axis, int sidewalk) : base(rct)
+        public Street(RCT rct, int floor, char axis, int sidewalk) : base(rct,floor)
         {
             //Debug.Log("RCT " + rct.Start.x + "," + rct.Start.z + ":" + rct.End.x + "," + rct.End.z + " h: " + rct.Height + " w: " + rct.Width);
             this.sidewalk = sidewalk;
@@ -33,7 +33,7 @@ namespace Map
             Street newStreet;
             if(this.axis == 'v')
             {
-                newStreet = new Street(new RCT(new CRD(crossroad.rct.End.x + 1, this.rct.Start.z), this.rct.End), this.axis, this.sidewalk);
+                newStreet = new Street(new RCT(new CRD(crossroad.rct.End.x + 1, this.rct.Start.z), this.rct.End),floorNumber, this.axis, this.sidewalk);
                 newStreet.moveNodesFromMapElementToThis(this);
 
        
@@ -41,7 +41,7 @@ namespace Map
             }
             else
             {
-                newStreet = new Street(new RCT(new CRD(this.rct.Start.x, crossroad.rct.End.z + 1), this.rct.End), this.axis, this.sidewalk);
+                newStreet = new Street(new RCT(new CRD(this.rct.Start.x, crossroad.rct.End.z + 1), this.rct.End),floorNumber, this.axis, this.sidewalk);
                 newStreet.moveNodesFromMapElementToThis(this);
                 this.rct.Width = crossroad.rct.Start.z - this.rct.Start.z;
             }
@@ -66,7 +66,7 @@ namespace Map
             {
                 if (rcts[i].Equals(road))
                 {
-                    mapElements.Add(new Road(rcts[i], this.axis));
+                    mapElements.Add(new Road(rcts[i], floorNumber, this.axis));
                 }
                 else
                 {
@@ -93,7 +93,7 @@ namespace Map
                             direction = "t";
                         }
                     }
-                    mapElements.Add(new Sidewalk(rcts[i], this.axis, direction));
+                    mapElements.Add(new Sidewalk(rcts[i],floorNumber, this.axis, direction));
                 }
             }
             addNewElements(mapElements);

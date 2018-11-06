@@ -7,7 +7,7 @@ namespace Map
     public class Crossroad : MapElement//перекресток
     {
         public int hsidewalk, vsidewalk;
-        public Crossroad(RCT rct, int vsidewalk, int hsidewalk) : base(rct)
+        public Crossroad(RCT rct, int floor, int vsidewalk, int hsidewalk) : base(rct, floor)
         {
             this.hsidewalk = hsidewalk;
             this.vsidewalk = vsidewalk;
@@ -24,31 +24,31 @@ namespace Map
                     switch (i)
                     {
                         case 0:
-                            newMapElements.Add(new CrossroadSidewalk(rcts[i], rcts[i].CloneEnd()));
+                            newMapElements.Add(new CrossroadSidewalk(rcts[i], floorNumber, rcts[i].CloneEnd()));
                             break;
                         case 1:
-                            newMapElements.Add(new CrossroadRoad(rcts[i], 'v'));
+                            newMapElements.Add(new CrossroadRoad(rcts[i],floorNumber, 'v'));
                             break;
                         case 2:
-                            newMapElements.Add(new CrossroadSidewalk(rcts[i], new CRD(rcts[i].End.x, rcts[i].Start.z)));
+                            newMapElements.Add(new CrossroadSidewalk(rcts[i],floorNumber, new CRD(rcts[i].End.x, rcts[i].Start.z)));
                             break;
                         case 3:
-                            newMapElements.Add(new CrossroadRoad(rcts[i], 'h'));
+                            newMapElements.Add(new CrossroadRoad(rcts[i],floorNumber, 'h'));
                             break;
                         case 4:
-                            newMapElements.Add(new Intersection(rcts[i]));
+                            newMapElements.Add(new Intersection(rcts[i],floorNumber));
                             break;
                         case 5:
-                            newMapElements.Add(new CrossroadRoad(rcts[i], 'h'));
+                            newMapElements.Add(new CrossroadRoad(rcts[i],floorNumber, 'h'));
                             break;
                         case 6:
-                            newMapElements.Add(new CrossroadSidewalk(rcts[i], new CRD(rcts[i].Start.x, rcts[i].End.z)));
+                            newMapElements.Add(new CrossroadSidewalk(rcts[i],floorNumber, new CRD(rcts[i].Start.x, rcts[i].End.z)));
                             break;
                         case 7:
-                            newMapElements.Add(new CrossroadRoad(rcts[i], 'v'));
+                            newMapElements.Add(new CrossroadRoad(rcts[i],floorNumber, 'v'));
                             break;
                         case 8:
-                            newMapElements.Add(new CrossroadSidewalk(rcts[i], rcts[i].CloneStart()));
+                            newMapElements.Add(new CrossroadSidewalk(rcts[i],floorNumber, rcts[i].CloneStart()));
                             break;
                         default:
                             break;
@@ -59,7 +59,7 @@ namespace Map
             }
             else
             {
-                Intersection intersection = new Intersection(this.rct);
+                Intersection intersection = new Intersection(this.rct, floorNumber);
                 childElements.Add(intersection);
                 intersection.parentElement = this;
                 intersection.moveNodesFromMapElementToThis(this);

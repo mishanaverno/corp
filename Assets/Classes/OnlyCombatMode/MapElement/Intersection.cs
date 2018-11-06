@@ -6,13 +6,13 @@ namespace Map
 {
     public class Intersection : MapElement//пересечение дорог на перекрестке
     {
-        public Intersection(RCT rct) : base(rct)
+        public Intersection(RCT rct, int floor) : base(rct,floor)
         {
             
         }
-        public override void OnAddToChildElements()
+        public override void HookAddToChildElements()
         {
-            base.OnAddToChildElements();
+            base.HookAddToChildElements();
             surface = "Road";
            AddLayer(new NodeLayer(0, "Main", "ControllQuad"));
         }

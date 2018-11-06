@@ -7,11 +7,11 @@ namespace Map
     public class ParkingDelimetr : MapElement //Разделитель парковочных мест в парковочных карманах
     {
         public char axis;
-        public ParkingDelimetr(RCT rct, char axis) : base(rct)
+        public ParkingDelimetr(RCT rct, int floor, char axis) : base(rct,floor)
         {
             this.axis = axis;
         }
-        public override void OnAddToChildElements()
+        public override void HookAddToChildElements()
         {
             surface = "Road";
             AddLayer(new NodeLayer(getPrefabNuber(), "Additions/RoadMarker", "CenterLine"));

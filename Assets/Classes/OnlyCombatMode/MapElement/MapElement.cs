@@ -10,6 +10,7 @@ namespace Map
         public MapElement parentElement;  //конкретный родительский элемент
         public List<Node> childNodes;     //узлы карты пренадлежащие этому элементу
         public RCT rct;                   //прямоугольник на карте
+        public int floorNumber; // номер этажа
         public string surface = "Ground"; // название поверхности передаваемое узлам
         public static int iterator = 0;   //итератор для установки id
         public int id;                    //порядковый номер
@@ -18,10 +19,11 @@ namespace Map
         public string order = "Default";
         public List<string> furnitureList = new List<string>();
 
-        public MapElement(RCT rct)
+        public MapElement(RCT rct, int floor)
         {
             childElements = new List<MapElement>();
             childNodes = new List<Node>();
+            floorNumber = floor;
             this.rct = rct;
             id = iterator;
             iterator++;
@@ -31,7 +33,7 @@ namespace Map
             for (int i = 0; i < from.childNodes.Count; i++)
             {
                 Node node = from.childNodes[i];
-                if (rct.isContainCRD(node.crd))
+                if (rct.isContainCRD(node.crd) && (floorNumber == node.floor.number || floorNumber == -1))
                 {  
                     moveNode(i, from, this);
                     i--;
@@ -82,7 +84,7 @@ namespace Map
         }
         public void addFurniture(string name, CRD start, string furnitureDirection)//добавление мебели
         {
-            Furniture furniture = new Furniture(name, start, furnitureDirection, getPrefabNuber());
+            Furniture furniture = new Furniture(name, start, floorNumber, furnitureDirection, getPrefabNuber());
             bool collision = false;
             for(int i = 0; i < childElements.Count; i++)
             {
@@ -156,7 +158,7 @@ namespace Map
         public void addNewElement(MapElement newMapElement)// добавляет елементу один дочерний
         {
             newMapElement.parentElement = this;
-            newMapElement.OnAddToChildElements();
+            newMapElement.HookAddToChildElements();
             newMapElement.moveNodesFromMapElementToThis(this);
             childElements.Add(newMapElement);
         }
@@ -192,7 +194,7 @@ namespace Map
         }
         public void ProcessLayersChildElements(List<NodeLayer> layers)// рекурсивная обработка слоев всех елементов  
         {
-            List<NodeLayer> newLayers = BeforeProcessLayers(layers);
+            List<NodeLayer> newLayers = HookProcessLayers(layers);
             ProcessLayers(newLayers);
             for (int i = 0; i < childElements.Count; i++)
             {
@@ -206,11 +208,11 @@ namespace Map
 
             for (int i = 0; i < childNodes.Count; i++)
             {
-                List<NodeLayer> newLayers = BeforeAddLayersToNode(layers, childNodes[i]);
+                List<NodeLayer> newLayers = HookAddLayersToNode(layers, childNodes[i]);
                 childNodes[i].Layers.AddRange(newLayers);
             }
         }
-        public virtual List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)// виртуальный метод по необходимости переопределяемый конкретными классами
+        public virtual List<NodeLayer> HookAddLayersToNode(List<NodeLayer> layers, Node node)// виртуальный метод по необходимости переопределяемый конкретными классами
         {                                                                                      // обработка слоев перед добавлением узлу
             List<NodeLayer> nodeLayers = new List<NodeLayer>(layers);
             for (int i = 0; i < nodeLayers.Count; i++)
@@ -237,14 +239,14 @@ namespace Map
             }
         }
 
-        public virtual List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)// виртуальный метод по необходимости переопределяемый конкретными классами
+        public virtual List<NodeLayer> HookProcessLayers(List<NodeLayer> layers)// виртуальный метод по необходимости переопределяемый конкретными классами
         {                                                                         // обработка слоев перед добавление узлам
             List<NodeLayer> newLayers = new List<NodeLayer>();
             newLayers.AddRange(layers);
             newLayers.AddRange(this.layers);
             return newLayers;
         }
-        public virtual void OnAddToChildElements()// виртуальный метод по необходимости переопределяемый конкретными классами
+        public virtual void HookAddToChildElements()// виртуальный метод по необходимости переопределяемый конкретными классами
         {                                         // метод вызываемый перед добавлением елемента к дочерним, после него к нему добавляются узлы
             surface = parentElement.surface;
         }

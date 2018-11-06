@@ -14,7 +14,7 @@ namespace Map
         public List<Floor> floors;
         public string DesignName;
         private static Stage instance;
-        public Stage(int width, int height, bool enabledBasement, string DesignName) : base(new RCT(new CRD(0, 0), width, height))
+        public Stage(int width, int height, bool enabledBasement, string DesignName) : base(new RCT(new CRD(0, 0), width, height), -1)
         {
             prefabNumber = 0;
             Debug.Log(parentElement);
@@ -23,21 +23,23 @@ namespace Map
             this.enabledBasement = enabledBasement;
             this.DesignName = DesignName;
             floors = new List<Floor>();
+            AddFloor(new GroundFloor(groundFloor, this));
+
             if (enabledBasement)
             {
                 AddFloor(new UndergroundFloor(0, this));
             }
-            AddFloor(new GroundFloor(groundFloor, this));
+            
             floorCounter = 2;
             instance = this;
         }
         public void AddFloor(Floor floor)//добавляет этаж
         {
-            floor.Init();
             floors.Add(floor);
+            floor.Init();
             floorCounter++;
         }
-        public void CreateStreet(RCT rct, char axis, int sidewalk)//добавляет улицу
+        public void CreateStreet(RCT rct, int floor,  char axis, int sidewalk)//добавляет улицу
         {
             List<MapElement> newElements = new List<MapElement>();
             for(int i = 0; i< this.childElements.Count; i++)
@@ -52,11 +54,11 @@ namespace Map
                         for(int n = 0; n < newRcts.Count; n++)
                         {
                             if (newRcts[n].Equals(collision)){
-                                newElements.Add(new Street(collision, axis, sidewalk));
+                                newElements.Add(new Street(collision,floor, axis, sidewalk));
                             }
                             else
                             {
-                                newElements.Add(new Area(newRcts[n]));
+                                newElements.Add(new Area(newRcts[n],floor));
                             }
                         }
                     }
@@ -80,11 +82,11 @@ namespace Map
                         {
                             if (newRcts[n].Equals(collision))
                             {
-                                newElements.Add(new Crossroad(collision, vsidewalk, hsidewalk));
+                                newElements.Add(new Crossroad(collision,floor, vsidewalk, hsidewalk));
                             }
                             else
                             {
-                                newElements.Add(new Street(newRcts[n], oldstreet.axis, oldstreet.sidewalk));
+                                newElements.Add(new Street(newRcts[n],floor, oldstreet.axis, oldstreet.sidewalk));
                             }
                         }
                         

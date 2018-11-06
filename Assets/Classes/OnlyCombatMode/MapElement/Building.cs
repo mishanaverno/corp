@@ -8,25 +8,23 @@ namespace Map
     public class Building : MapElement
     {
         public Room BaseRoom { get; protected set; }
-        public Building(RCT rct) : base(rct)
+        public Building(RCT rct, int floor) : base(rct, floor)
         {
         }
-        public override void OnAddToChildElements()
+        public override void HookAddToChildElements()
         {
-            base.OnAddToChildElements();
+            base.HookAddToChildElements();
             surface = "Ground";
             AddLayer(new NodeLayer(getPrefabNuber(), "Premetives/Surface", "Building"));
-           
             AddLayer(new NodeLayer(0, "Main", "ControllQuad"));
         }
         public void Init()
         {
             BaseRoom = CreateRoom(new RCT(rct.Start.Clone().ReturnStepRB(), rct.End.Clone().ReturnStepLT()));
-            
         }
         public Room CreateRoom(RCT rct)
         {
-            Room room = new Room(rct);
+            Room room = new Room(rct, floorNumber);
             addNewElement(room);
             return room;
         }
@@ -54,12 +52,12 @@ namespace Map
         }
         public void CreateColumn(CRD crd)
         {
-            addNewElement(new Column(crd));
+            addNewElement(new Column(crd, floorNumber));
         }
         public RCT CreatePortal(Portal portal)
         {
             portal.parentElement = this;
-            portal.OnAddToChildElements();
+            portal.HookAddToChildElements();
             for (int i = 0; i < childNodes.Count; i++)
             {
                 if (portal.rct.isContainCRD(childNodes[i].crd)) portal.childNodes.Add(childNodes[i]);
@@ -73,7 +71,7 @@ namespace Map
             BaseRoom.CreateNonOpenablePortal(rct, innername, outername);
         }
         
-        public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
+        public override List<NodeLayer> HookAddLayersToNode(List<NodeLayer> layers, Node node)
         {
             List<NodeLayer> nodeLayers = new List<NodeLayer>(layers);
             int oldVontrollZone = nodeLayers.FindIndex(x => x.name == "ControllQuad");
@@ -125,7 +123,7 @@ namespace Map
                     n2.UnlinkNode(n1);
                 }
             }
-            return base.BeforeAddLayersToNode(nodeLayers, node);
+            return base.HookAddLayersToNode(nodeLayers, node);
         }
 
     }

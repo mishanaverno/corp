@@ -11,7 +11,7 @@ namespace Map
         public CRD origin;
         public string name;
         public MonoFurniture monoFurniture;
-        public Furniture(string name, CRD start, string furnitureDirection, int prefabNumber) :base(new RCT(start, 0, 0))
+        public Furniture(string name, CRD start, int floor, string furnitureDirection, int prefabNumber) :base(new RCT(start, 0, 0),floor)
         {
             this.name = name;
             this.prefabNumber = prefabNumber;
@@ -53,7 +53,7 @@ namespace Map
             MonoFurniture script = prefab.GetComponent<MonoFurniture>();
             monoFurniture = script;
         }
-        public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
+        public override List<NodeLayer> HookAddLayersToNode(List<NodeLayer> layers, Node node)
         {
             List<NodeLayer> nodeLayers = new List<NodeLayer>(layers);
             if (node.crd == origin)
@@ -71,7 +71,7 @@ namespace Map
             {
                 nodeLayers.Add(new NodeLayer(0, "Main", "ControllQuad"));
             }
-            return base.BeforeAddLayersToNode(nodeLayers, node);
+            return base.HookAddLayersToNode(nodeLayers, node);
         }
 
     }

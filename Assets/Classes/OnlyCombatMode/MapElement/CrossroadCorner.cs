@@ -6,11 +6,11 @@ namespace Map
 {
     public class CrossroadCorner : MapElement//угол на перекрестке
     {
-        public CrossroadCorner(RCT rct) : base(rct)
+        public CrossroadCorner(RCT rct, int floor) : base(rct, floor)
         {
         
         }
-        public override void OnAddToChildElements()
+        public override void HookAddToChildElements()
         {
             surface = "Road";
             NodeLayer corner = new NodeLayer(getPrefabNuber(), "Additions/Sidewalk", "OuterCorner");
@@ -24,7 +24,7 @@ namespace Map
             trafficLight.nonWalkable = true;
             AddLayer(trafficLight);
         }
-        public override List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)
+        public override List<NodeLayer> HookProcessLayers(List<NodeLayer> layers)
         {
             return new List<NodeLayer>(this.layers); 
         }

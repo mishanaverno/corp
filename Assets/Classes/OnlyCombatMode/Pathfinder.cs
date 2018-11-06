@@ -37,10 +37,7 @@ namespace Map
                             node.gCost = currentNode.gCost + currentNode.links.Find(x => x.To == node).w; // увеличиваем расстояние от стартовой точки до соседа на 1
                             node.hCost = GetHeuristicPathLength(node, targetNode); // вычисляем приблизительное расстояние от соседа до конечной точки
                             node.refreshFCost(); //пересчитываем общее расстояние
-                            if (node.crd.x == 31 && node.crd.z == 18)
-                            {
-                                Debug.Log("path node 31:18 id:" + node.id + " g:" + node.gCost + " h:" + node.hCost + " f:" + node.fCost);
-                            }
+                            
                             node.parentNode = currentNode; // то сохраняем ссылку на проверяемую клетку
 							openSet.Add (node); // и добавляем соседа в список на проверку
 						}
@@ -59,7 +56,6 @@ namespace Map
 				result.Add (currentNode);
 				currentNode = currentNode.parentNode;
 			}
-            Debug.Log("path w: " + result[0].gCost);
 			result.Reverse ();
 
 			return result;

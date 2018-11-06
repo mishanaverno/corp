@@ -7,7 +7,7 @@ namespace Map
     public class BackgroundStreet : Street
     {
         private List<Node> nodeList;
-        public BackgroundStreet(RCT rct, char axis, int sidewalk) : base(rct, axis, sidewalk)
+        public BackgroundStreet(RCT rct, char axis, int sidewalk) : base(rct, 1, axis, sidewalk)
         {
             parentElement =  Stage.GetStage();
             Init();

@@ -8,12 +8,12 @@ namespace Map
     {
         public char axis;
         public int placeSize;
-        public SidewalkParking(RCT rct, char axis, int placeSize) : base(rct)
+        public SidewalkParking(RCT rct, int floor, char axis, int placeSize) : base(rct,floor)
         {
             this.placeSize = placeSize;
             this.axis = axis;
         }
-        public override List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)
+        public override List<NodeLayer> HookProcessLayers(List<NodeLayer> layers)
         {
             return new List<NodeLayer>();
         }
@@ -40,12 +40,12 @@ namespace Map
             int position;
             List<MapElement> mapElements = new List<MapElement>();
             if (axis == 'v') {
-                mapElements.Add(new ParkingPlace(new RCT(rct.CloneStart(), maxParkingSize, placeSize),axis));
+                mapElements.Add(new ParkingPlace(new RCT(rct.CloneStart(), maxParkingSize, placeSize),floorNumber, axis));
                 position = rct.Start.x + placeSize;
             }
             else
             {
-                mapElements.Add(new ParkingPlace(new RCT(rct.CloneStart(), placeSize, maxParkingSize), axis));
+                mapElements.Add(new ParkingPlace(new RCT(rct.CloneStart(), placeSize, maxParkingSize),floorNumber, axis));
                 position = rct.Start.z + placeSize;
             }
             while (i < placeCount)
@@ -53,15 +53,15 @@ namespace Map
                 i++;
                 if(axis == 'v')
                 {
-                    mapElements.Add(new ParkingDelimetr(new RCT(new CRD(position, rct.Start.z), rct.Width, 1), axis));
+                    mapElements.Add(new ParkingDelimetr(new RCT(new CRD(position, rct.Start.z), rct.Width, 1),floorNumber, axis));
                     position++;
-                    mapElements.Add(new ParkingPlace(new RCT(new CRD(position, rct.Start.z), rct.Width, placeSize), axis));
+                    mapElements.Add(new ParkingPlace(new RCT(new CRD(position, rct.Start.z), rct.Width, placeSize),floorNumber, axis));
                 }
                 else
                 {
-                    mapElements.Add(new ParkingDelimetr(new RCT(new CRD(rct.Start.x,position), 1, rct.Height), axis));
+                    mapElements.Add(new ParkingDelimetr(new RCT(new CRD(rct.Start.x,position), 1, rct.Height),floorNumber, axis));
                     position++;
-                    mapElements.Add(new ParkingPlace(new RCT(new CRD(rct.Start.x, position), placeSize, rct.Height), axis));
+                    mapElements.Add(new ParkingPlace(new RCT(new CRD(rct.Start.x, position), placeSize, rct.Height),floorNumber, axis));
                     
                 }
                 position += placeSize;

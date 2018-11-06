@@ -6,23 +6,23 @@ namespace Map
 {
     public class Column : MapElement
     {
-        public Column(CRD crd, bool asInterior = false):base(new RCT(crd, crd))
+        public Column(CRD crd, int floor, bool asInterior = false):base(new RCT(crd, crd), floor)
         {
            AsInterior = asInterior;
         }
 
         public bool AsInterior { get; }
 
-        public override void OnAddToChildElements()
+        public override void HookAddToChildElements()
         {
             AddLayer(new NodeLayer(getPrefabNuber(), "Premetives/Wall", "Column"));
-            base.OnAddToChildElements();
+            base.HookAddToChildElements();
         }
-        public override List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)
+        public override List<NodeLayer> HookProcessLayers(List<NodeLayer> layers)
         {
             int oldControllQuad = layers.FindIndex(x => x.name == "ControllQuad");
             if (oldControllQuad >= 0) layers.RemoveAt(oldControllQuad);
-            return base.BeforeProcessLayers(layers);
+            return base.HookProcessLayers(layers);
         }
         
     }

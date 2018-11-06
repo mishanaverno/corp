@@ -6,18 +6,18 @@ namespace Map
 {
     public class Area : MapElement // свободная зона
     {
-        public Area(RCT rct) : base(rct)
+        public Area(RCT rct, int floor) : base(rct, floor)
         {
             
         }
-        public override void OnAddToChildElements()
+        public override void HookAddToChildElements()
         {
             surface = "Ground";
-            AddLayer(new NodeLayer(0, "Main", "ControllQuad"));
+            AddLayer(new NodeLayer(getPrefabNuber(), "Main", "ControllQuad"));
         }
         public Building CreateBuilding(RCT rct)
         {
-            Building building = new Building(rct);
+            Building building = new Building(rct, floorNumber);
             addNewElement(building);
             building.Init();
             return building;

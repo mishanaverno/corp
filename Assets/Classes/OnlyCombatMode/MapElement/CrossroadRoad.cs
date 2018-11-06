@@ -6,7 +6,7 @@ namespace Map
 {
     public class CrossroadRoad : Road//дорога на перекрестке
     {
-        public CrossroadRoad(RCT rct, char axis) : base(rct, axis)
+        public CrossroadRoad(RCT rct, int floor, char axis) : base(rct,floor, axis)
         {
 
         }
@@ -30,11 +30,11 @@ namespace Map
                     //newRCTs[i].DebugLog(this.ToString() + " id:" + this.id);
                     if (newRCTs[i].Equals(crosswalkRct))
                     {
-                        newElements.Add(new CrossroadCrosswalk(newRCTs[i], axis));
+                        newElements.Add(new CrossroadCrosswalk(newRCTs[i], floorNumber, axis));
                     }
                     else
                     {
-                        newElements.Add(new CrossroadRoad(newRCTs[i], axis));
+                        newElements.Add(new CrossroadRoad(newRCTs[i],floorNumber, axis));
                     }
                 }
                 parentElement.moveNodesFromMapElementToThis(this);

@@ -17,7 +17,7 @@ namespace Map
             string json = JsonUtility.ToJson(stage);
             Debug.Log(json);
         }
-        public void AddStreet(int start, char axis, int width, int sidewalk) //добавляет улицу
+        public void AddStreet(int start, int floor, char axis, int width, int sidewalk) //добавляет улицу
         {
             RCT rct;
             if (width < 2)
@@ -37,7 +37,7 @@ namespace Map
                 rct = new RCT(new CRD(start, 0), stage.width, width + sidewalk * 2);
 
             }
-            stage.CreateStreet(rct, axis, sidewalk);
+            stage.CreateStreet(rct, floor, axis, sidewalk);
         }
         public void Upgrade()
         {

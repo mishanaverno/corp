@@ -7,20 +7,20 @@ namespace Map
 {
     public class Room : MapElement
     {
-        public Room(RCT rct) : base(rct)
+        public Room(RCT rct, int floor) : base(rct,floor)
         {
 
         }
         public void CreateColumn(CRD crd)
         {
-            addNewElement(new Column(crd));
+            addNewElement(new Column(crd, floorNumber));
         }
 
         public Room CreateSubRoom(RCT rct)
         {
-            Room room = new Room(rct);
+            Room room = new Room(rct, floorNumber);
             room.parentElement = parentElement;
-            room.OnAddToChildElements();
+            room.HookAddToChildElements();
             room.moveNodesFromMapElementToThis(this);
             parentElement.childElements.Add(room);
             return room;
@@ -109,7 +109,7 @@ namespace Map
         public RCT CreatePortal(Portal portal)
         {
             portal.parentElement = this;
-            portal.OnAddToChildElements();
+            portal.HookAddToChildElements();
             for (int i = 0; i < childNodes.Count; i++)
             {
                 if (portal.rct.isContainCRD(childNodes[i].crd)) portal.childNodes.Add(childNodes[i]);
@@ -136,19 +136,20 @@ namespace Map
         }
         public List<MapElement> CreateOpenablePortal(RCT rct, string innername, string outername, string outsidename)
         {
-            Portal exit = new Portal(rct, innername, outername, true);
+            Portal exit = new Portal(rct,floorNumber, innername, outername, true);
             RCT doorRCT = CreatePortal(exit);
+            Debug.Log("Room fl n"+GetFloorNumber());
             MapElement mapElement = Stage.GetNode(doorRCT.Start, GetFloorNumber()).mapElement;
             Portal entrence;
             if (mapElement.GetType() == typeof(Building))
             {
-                entrence = new Portal(doorRCT, innername, outsidename, false);
+                entrence = new Portal(doorRCT,floorNumber, innername, outsidename, false);
                 Building building = mapElement as Building;
                 building.CreatePortal(entrence);
             }
             else
             {
-                entrence = new Portal(doorRCT, outername, outsidename, false);
+                entrence = new Portal(doorRCT, floorNumber, outername, outsidename, false);
                 Room room = mapElement as Room;
                 room.CreatePortal(entrence);
             }
@@ -158,18 +159,11 @@ namespace Map
        
         public int GetFloorNumber()
         {
-            if (childNodes.Count > 0)
-            {
-                return childNodes[0].floor.number;
-            }
-            else
-            {
-                return -1;
-            }
+            return floorNumber;
         }
-        public override void OnAddToChildElements()
+        public override void HookAddToChildElements()
         {
-            base.OnAddToChildElements();
+            base.HookAddToChildElements();
             NodeLayer floor = new NodeLayer(getPrefabNuber(), "Premetives/Surface", "Floor");
             floor.hasMesh = false;
             AddLayer(floor);
@@ -178,7 +172,7 @@ namespace Map
             controllQuad.positionCorrection = new Vector3(0, 0.05f, 0);
             AddLayer(controllQuad);
         }
-        public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
+        public override List<NodeLayer> HookAddLayersToNode(List<NodeLayer> layers, Node node)
         {
             List<NodeLayer> nodeLayers = new List<NodeLayer>(layers);
             
@@ -253,12 +247,12 @@ namespace Map
                 }
             }
             
-            return base.BeforeAddLayersToNode(nodeLayers, node);
+            return base.HookAddLayersToNode(nodeLayers, node);
         }
-        public override List<NodeLayer> BeforeProcessLayers(List<NodeLayer> layers)
+        public override List<NodeLayer> HookProcessLayers(List<NodeLayer> layers)
         {
             layers.RemoveAll(x => x.name == "ControllQuad");
-            return base.BeforeProcessLayers(layers);
+            return base.HookProcessLayers(layers);
         }
         public override void setNodeDirections()
         {

@@ -13,8 +13,9 @@ namespace Map
         public override void Init()
         {
             GenerateNodes();
+            stage.addNewElement(new Area(rct, number));
             LinkNodes();
-            stage.addNewElement(new Area(rct));
+           
         }
         
     }

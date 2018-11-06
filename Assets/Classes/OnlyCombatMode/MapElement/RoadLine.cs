@@ -7,7 +7,7 @@ namespace Map
     public class RoadLine : MapElement // линия движения транспорта
     {
         public char axis;
-        public RoadLine(RCT rct, char axis) : base(rct)
+        public RoadLine(RCT rct, int floor, char axis) : base(rct,floor)
         {
             this.rct = rct;
             this.axis = axis;
@@ -40,11 +40,11 @@ namespace Map
                 }
             }
         }
-        public override void OnAddToChildElements()
+        public override void HookAddToChildElements()
         {
                 surface = "Road";
         }
-        public override List<NodeLayer> BeforeAddLayersToNode(List<NodeLayer> layers, Node node)
+        public override List<NodeLayer> HookAddLayersToNode(List<NodeLayer> layers, Node node)
         {
             List<NodeLayer> nodeLayers = new List<NodeLayer>(layers);
             if(parentElement.parentElement.GetType() == typeof(Road)){
@@ -113,7 +113,7 @@ namespace Map
             {
                 nodeLayers.Add(new NodeLayer(0, "Main", "ControllQuad"));
             }
-            return base.BeforeAddLayersToNode(nodeLayers, node);
+            return base.HookAddLayersToNode(nodeLayers, node);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Map
     public class RoadStripe : MapElement //полоса движения(напр. встречная)
     {
         public char axis;
-        public RoadStripe(RCT rct, char axis) : base(rct)
+        public RoadStripe(RCT rct, int floor, char axis) : base(rct,floor)
         {
             this.axis = axis;
             surface = "Road";
@@ -21,7 +21,7 @@ namespace Map
                 for (int i = this.rct.Start.z; i <= this.rct.Start.z + linecount * 2; i += 2)
                 {
                     RCT rct = new RCT(new CRD(this.rct.Start.x, i), 2, this.rct.Height);
-                    mapElements.Add(new RoadLine(rct, axis));
+                    mapElements.Add(new RoadLine(rct,floorNumber, axis));
                 }
 
             }
@@ -31,12 +31,12 @@ namespace Map
                 for(int i = this.rct.Start.x; i <= this.rct.Start.x + linecount * 2; i += 2)
                 {
                     RCT rct = new RCT(new CRD(i, this.rct.Start.z), this.rct.Width, 2);
-                    mapElements.Add(new RoadLine(rct, axis));
+                    mapElements.Add(new RoadLine(rct,floorNumber, axis));
                 }
             }
             this.addNewElements(mapElements);
         }
-        public override void OnAddToChildElements()
+        public override void HookAddToChildElements()
         {
            
         }

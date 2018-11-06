@@ -10,5 +10,12 @@ namespace Map
         {
             defaultIsWalkable = false;
         }
+        public override void Init()
+        {
+            GenerateNodes();
+            stage.addNewElement(new UndergroundDirt(rct));
+           
+            
+        }
     }
 }

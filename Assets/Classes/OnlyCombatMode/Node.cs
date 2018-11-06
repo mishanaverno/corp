@@ -69,6 +69,7 @@ namespace Map
         }
         private void UpdateLinks()
         {
+
             if(mapElement.GetType() == typeof(Furniture))
             {
 
@@ -149,7 +150,7 @@ namespace Map
             Vector3 rotation = GetRotation();
             Vector3 position = new Vector3(crd.x, floor.number * floor.height, crd.z);
             GameObject cellInstance = GameObject.Instantiate(Game.GameManager.instance.Cell, position, Quaternion.Euler(rotation)) as GameObject;
-            cellInstance.transform.name = "cell-[" + position.x + "," + position.z + "]:" + position.y;
+            cellInstance.transform.name = "cell-[" + position.x + "," + position.z + "]:" + floor.number;
             Cell = cellInstance;
             Cell.GetComponent<CellController>().node = this;
             Cell.transform.SetParent(MapManager.instance.gameObject.transform);

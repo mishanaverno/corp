@@ -19,7 +19,7 @@ namespace Map
         {
             this.number = number;
             this.stage = stage;
-            this.rct = new RCT(new CRD(0, 0), stage.width, stage.height);
+            this.rct = stage.rct.Clone();
             map = new Node[stage.height, stage.width];
                 
         }

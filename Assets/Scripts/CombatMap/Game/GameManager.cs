@@ -25,12 +25,12 @@ namespace Game
 		// Use this for initialization
 		void Start () {
             StageConstructor Constructor = new StageConstructor();
-            Constructor.CreateStage(37, 40, false, "Dev");
-            Constructor.AddStreet(1, 'h', 3, 5);
-            Constructor.AddStreet(20, 'h', 1, 3);
-            Constructor.AddStreet(1, 'v', 7, 5);
+            Constructor.CreateStage(37, 40, true, "Dev");
+            Constructor.AddStreet(1,1, 'h', 3, 5);
+            Constructor.AddStreet(20,1, 'h', 1, 3);
+            Constructor.AddStreet(1,1,'v', 7, 5);
             //Constructor.AddStreet(16, 'v', 6, 4);
-            MapElement elem = Constructor.GetMapElementById(22);
+            MapElement elem = Constructor.GetMapElementById(23);
             if (elem.GetType() == typeof(Area))
             {
                 Area area = elem as Area;
