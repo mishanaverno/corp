@@ -302,12 +302,21 @@ namespace Map
 
             Debug.Log("PARENTS LOG " + log);
         }
-        public void NodesToConsole()
+        public void DebugNodes()
         {
             Debug.Log("ELEMENT " + this.ToString() + " ID:" + this.id + " w: " + this.rct.Width + " h: " + this.rct.Height + " sq: " + this.rct.sq);
             for (int i = 0; i < this.childNodes.Count; i++)
             {
                 Debug.Log(this.childNodes[i].name);
+            }
+
+        }
+        public void DebugChildrens()
+        {
+            Debug.Log("PARENT ELEMENT " + this.ToString() + " ID:" + this.id + " w: " + this.rct.Width + " h: " + this.rct.Height + " sq: " + this.rct.sq);
+            foreach(MapElement el in childElements)
+            {
+                Debug.Log("CHILD ELEMENT " + el.ToString() + " ID:" + el.id + " w: " + el.rct.Width + " h: " + el.rct.Height + " sq: " + el.rct.sq);
             }
 
         }

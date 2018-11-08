@@ -138,7 +138,6 @@ namespace Map
         {
             Portal exit = new Portal(rct,floorNumber, innername, outername, true);
             RCT doorRCT = CreatePortal(exit);
-            Debug.Log("Room fl n"+GetFloorNumber());
             MapElement mapElement = Stage.GetNode(doorRCT.Start, GetFloorNumber()).mapElement;
             Portal entrence;
             if (mapElement.GetType() == typeof(Building))

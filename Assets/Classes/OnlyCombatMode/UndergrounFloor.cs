@@ -14,8 +14,7 @@ namespace Map
         {
             GenerateNodes();
             stage.addNewElement(new UndergroundDirt(rct));
-           
-            
+               
         }
     }
 }

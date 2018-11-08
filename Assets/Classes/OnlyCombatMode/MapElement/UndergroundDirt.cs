@@ -13,7 +13,7 @@ namespace Map
         public override void HookAddToChildElements()
         {
             this.surface = "Dirt";
-            NodesToConsole();
         }
+        
     }
 }

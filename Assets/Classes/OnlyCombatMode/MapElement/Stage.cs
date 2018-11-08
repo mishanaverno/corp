@@ -44,7 +44,7 @@ namespace Map
             List<MapElement> newElements = new List<MapElement>();
             for(int i = 0; i< this.childElements.Count; i++)
             {
-                if (this.childElements[i].rct.checkCollision(rct))
+                if (this.childElements[i].rct.checkCollision(rct) && childElements[i].floorNumber == floor)
                 {
         
                     if (this.childElements[i] is Area)
@@ -97,6 +97,13 @@ namespace Map
                 }
             }
             addNewElements(newElements);
+        }
+        public UndergrounRoom AddUndergroundRoom(RCT rct)
+        {
+            UndergrounRoom room = new UndergrounRoom(rct);
+            MapElement dirt = childElements.Find(x => x.floorNumber == 0 && x.GetType() == typeof(UndergroundDirt));
+            dirt.addNewElement(room);
+            return room; 
         }
         public static Node GetNode(CRD crd, int floornumber)// возвращает узел
         {

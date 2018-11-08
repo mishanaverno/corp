@@ -132,6 +132,7 @@
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Stage.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Street.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\UndergroundDirt.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\UndergrounRoom.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\Node.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\NodeLayer.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\NodeLink.cs" />

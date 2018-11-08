@@ -31,6 +31,8 @@ namespace Game
             Constructor.AddStreet(1,1,'v', 7, 5);
             //Constructor.AddStreet(16, 'v', 6, 4);
             MapElement elem = Constructor.GetMapElementById(23);
+            Stage stage = Constructor.GetMapElementById(0) as Stage;
+            stage.AddUndergroundRoom(new RCT(new CRD(1, 1), 5, 5));
             if (elem.GetType() == typeof(Area))
             {
                 Area area = elem as Area;
@@ -68,6 +70,7 @@ namespace Game
             Constructor.Upgrade();
             Constructor.RenderStage();
             Constructor.RenderBackground();
+            //Constructor.GetMapElementById(0).DebugChildrens();
             
             /*RCT rct = new RCT(new CRD(2, 3), 6, 4);
             bool[,] nmap = StageConstructor.createPeraiodicalMap(rct, 'h', 1, 2);
