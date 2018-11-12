@@ -56,10 +56,12 @@ namespace Map{
                                                        //UnitsController.instance.activeUnit.model.GetComponent<UnitMoveController> ().SetMovingPath (pathFromActiveUnit, parentCellController.node);// передать путь к активному юниту для движения
                         MapManager.instance.activeUnitNode = parentCellController.node;
                         MapManager.instance.ClearAllPathFromActivNode();
+                        
 					}
 				}
 			}
-		}
+            Debug.Log(parentCellController.node.name);
+        }
 
 		public void CleatPathFromActivUnit(){// метод отчиски кэша пути
 			pathFromActiveUnit.Clear ();

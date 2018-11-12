@@ -7,6 +7,8 @@ namespace Map
     public class Node {
         [SerializeField]
         public string name;
+        public float meshHeight;
+        public float noMeshHeight;
         public CRD crd;
         public int x; // позиция по оси X
         public int z; // позиция по оси Z
@@ -54,10 +56,12 @@ namespace Map
             this.floor = floor;
             this.busy = false;
             this.isWalkable = movable;
-            this.name = "cell-[" + x + "," + z + "]:" + floor.number;
+            this.name = "cell[" + x + "," + z + "]:" + floor.number;
             this.links = new List<NodeLink>();
             this.Layers = new List<NodeLayer>();
             this.shelters = new List<Shelter>();
+            meshHeight = 0;
+            noMeshHeight = 0;
         }
         public void refreshFCost(){ // метод вычисляющий fCost, должен вызыватся при изменении hCost или gCost
 			fCost = hCost + gCost;
@@ -145,23 +149,37 @@ namespace Map
             return rotation;
         }
         private void GenerateSurface()// генерация поверхности
-        {   
-            
+        {
+            float extraHeight = 0;
+            if (floor.number == 0) extraHeight = 0;
+            if (floor.number == 1) extraHeight = 3.075f;
+            if (floor.number > 1)
+            {
+                Node prevFloorNode = Stage.GetNode(crd, floor.number - 1);
+                if (!prevFloorNode.empty)
+                {
+                    Debug.Log(name + " prev -> " + prevFloorNode.name);
+                    extraHeight = prevFloorNode.mapElement.extraHeight;
+                }
+            }
             Vector3 rotation = GetRotation();
-            Vector3 position = new Vector3(crd.x, floor.number * floor.height, crd.z);
+            Vector3 position = new Vector3(crd.x, extraHeight, crd.z);
             GameObject cellInstance = GameObject.Instantiate(Game.GameManager.instance.Cell, position, Quaternion.Euler(rotation)) as GameObject;
-            cellInstance.transform.name = "cell-[" + position.x + "," + position.z + "]:" + floor.number;
+            cellInstance.transform.name = name;
             Cell = cellInstance;
             Cell.GetComponent<CellController>().node = this;
             Cell.transform.SetParent(MapManager.instance.gameObject.transform);
-            GameObject surface = GameObject.Instantiate(Resources.Load("Stage/" + this.floor.stage.DesignName + "/Premetives/Surface/" + this.surface + "/" + this.order + "/" + this.prefabNumber), position, Quaternion.Euler(rotation)) as GameObject;
-            surface.transform.SetParent(Cell.transform);
+           
+            if (this.surface != "None")
+            {
+                GameObject surface = GameObject.Instantiate(Resources.Load("Stage/" + this.floor.stage.DesignName + "/Premetives/Surface/" + this.surface + "/" + this.order + "/" + this.prefabNumber), position, Quaternion.Euler(rotation)) as GameObject;
+                surface.transform.SetParent(Cell.transform);
+            }
         }
         private void GenerateLayers()// генерация слоев
         {
             float pPY = 0;
             float pSY = 0.05f;
-            float cSY;
             for(int i = 0; i < Layers.Count; i++)
             {
                 GameObject Instance = this.CreateLayer(Layers[i]);
@@ -183,14 +201,22 @@ namespace Map
                 pPY = cPY;
                 if (Layers[i].hasMesh)
                 {
-                    Mesh mesh = Instance.GetComponent<MeshFilter>().mesh;
-                    pSY = mesh.bounds.size.y;
+                    MeshFilter mesh = Instance.GetComponent<MeshFilter>();
+                    pSY = mesh.mesh.bounds.size.y;
+                    meshHeight += mesh.mesh.bounds.size.y;
+
                 }
                 else
                 {
                     pSY = 0;
+                    MeshFilter mesh = Instance.GetComponent<MeshFilter>();
+                    if(mesh != null)
+                    {
+                        noMeshHeight = Mathf.Max(noMeshHeight, mesh.mesh.bounds.size.y);
+                    }
                 }
             }
+            SetExtraHeight(Cell.transform.position.y + meshHeight + noMeshHeight + 0.05f);
         }
         private GameObject CreateLayer(NodeLayer layer)//создание слоя
         {
@@ -224,6 +250,11 @@ namespace Map
             UnityEngine.Object prefab = Resources.Load("Stage/" + this.floor.stage.DesignName + "/" + layer.premitive + "/" + layer.name + "/" + this.order + "/" + layer.prefabNumber);
             
             return GameObject.Instantiate(prefab ,position, Quaternion.Euler(rotation)) as GameObject;
+        }
+        
+        public void SetExtraHeight(float extraHeight)
+        {
+            if (mapElement != null) mapElement.extraHeight = Mathf.Max(mapElement.extraHeight, extraHeight);
         }
         public void ChangeSurface(string surface)
         {

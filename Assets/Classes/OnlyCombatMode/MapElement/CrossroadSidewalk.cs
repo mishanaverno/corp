@@ -17,7 +17,7 @@ namespace Map
             AddLayer(new NodeLayer(getPrefabNuber(), "Premetives/Surface", "Sidewalk"));
             AddLayer(new NodeLayer(0, "Main", "ControllQuad"));
         }
-        public override void setNodeDirections()
+        public override void HookAfterAddNodesToMapElement()
         {
            
             for (int i = 0; i < childNodes.Count; i++)

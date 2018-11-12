@@ -50,7 +50,7 @@ namespace Map
             }
             return roadOffset;
         }
-        public override void setNodeDirections()
+        public override void HookAfterAddNodesToMapElement()
         {
             for(int i = 0; i < childNodes.Count; i++)
             {

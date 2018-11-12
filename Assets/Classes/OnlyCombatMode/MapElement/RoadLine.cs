@@ -12,7 +12,7 @@ namespace Map
             this.rct = rct;
             this.axis = axis;
         }
-        public override void setNodeDirections()
+        public override void HookAfterAddNodesToMapElement()
         {
             for(int i = 0; i < childNodes.Count; i++)
             {

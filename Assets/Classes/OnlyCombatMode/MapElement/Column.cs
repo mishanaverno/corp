@@ -15,7 +15,9 @@ namespace Map
 
         public override void HookAddToChildElements()
         {
-            AddLayer(new NodeLayer(getPrefabNuber(), "Premetives/Wall", "Column"));
+            NodeLayer column = new NodeLayer(getPrefabNuber(), "Premetives/Wall", "Column");
+            column.hasMesh = false;
+            AddLayer(column);
             base.HookAddToChildElements();
         }
         public override List<NodeLayer> HookProcessLayers(List<NodeLayer> layers)

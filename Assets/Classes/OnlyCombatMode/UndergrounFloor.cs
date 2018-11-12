@@ -9,6 +9,7 @@ namespace Map
         public UndergroundFloor(int number, Stage stage) : base(number, stage)
         {
             defaultIsWalkable = false;
+            extraheight = 0.05f;
         }
         public override void Init()
         {

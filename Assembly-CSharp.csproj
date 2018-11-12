@@ -113,6 +113,7 @@
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\CrossroadCrosswalk.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\CrossroadRoad.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\CrossroadSidewalk.cs" />
+    <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\EmptyArea.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Furniture.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\Intersection.cs" />
     <Compile Include="Assets\Classes\OnlyCombatMode\MapElement\MapElement.cs" />

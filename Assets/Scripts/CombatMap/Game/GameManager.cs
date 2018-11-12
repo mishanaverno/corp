@@ -18,6 +18,7 @@ namespace Game
 		public GameObject EnemyUnit;
         public GameObject Cell;
         public GameObject ControllZone;
+        
 
         public List<Team> teams = new List<Team> ();
 		public List<Unit> playerUnits = new List<Unit>();
@@ -33,6 +34,9 @@ namespace Game
             MapElement elem = Constructor.GetMapElementById(23);
             Stage stage = Constructor.GetMapElementById(0) as Stage;
             stage.AddUndergroundRoom(new RCT(new CRD(1, 1), 5, 5));
+            Room undergroundRoom = stage.AddUndergroundRoom(new RCT(new CRD(29, 19),new CRD(35,28)));
+            undergroundRoom.CreateSubRoom(new RCT(new CRD(30, 23), 3, 3));
+            stage.AddUndergroundRoom(new RCT(new CRD(31, 5), new CRD(33, 23)));
             if (elem.GetType() == typeof(Area))
             {
                 Area area = elem as Area;
@@ -65,7 +69,7 @@ namespace Game
                 building.BaseRoom.CreateDoubleDoorway(new CRD(33, 19));
                 building.BaseRoom.CreateDoubleDoor(new CRD(29, 21));
                 building.CreateColumn(new CRD(38, 19));
-                //building.BaseRoom
+                building.Addfloor();
             }
             Constructor.Upgrade();
             Constructor.RenderStage();
@@ -94,7 +98,7 @@ namespace Game
                     //UnitsGenerator.instance.enemyUnits = enemyUnits;
 
         }
-
+        
 		public static GameManager instance;
 		void Awake(){
 			instance = this;

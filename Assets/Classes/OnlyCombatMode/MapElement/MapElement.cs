@@ -18,6 +18,7 @@ namespace Map
         public int prefabNumber = -1;
         public string order = "Default";
         public List<string> furnitureList = new List<string>();
+        public float extraHeight = 0;
 
         public MapElement(RCT rct, int floor)
         {
@@ -39,7 +40,7 @@ namespace Map
                     i--;
                 }
             }
-            setNodeDirections();
+            HookAfterAddNodesToMapElement();
         }
 
         public void moveNode(int index, MapElement from, MapElement to) //передача узла
@@ -66,7 +67,7 @@ namespace Map
             }
         }
         
-        public virtual void setNodeDirections()// виртуальный метод по необходимости переопределяемый конкретными классами
+        public virtual void HookAfterAddNodesToMapElement()// виртуальный метод по необходимости переопределяемый конкретными классами
         {                                       // устанавливает узлам направление параметр direction
 
         }

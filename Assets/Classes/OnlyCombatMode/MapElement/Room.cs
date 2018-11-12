@@ -253,13 +253,13 @@ namespace Map
             layers.RemoveAll(x => x.name == "ControllQuad");
             return base.HookProcessLayers(layers);
         }
-        public override void setNodeDirections()
+        public override void HookAfterAddNodesToMapElement()
         {
             for(int i = 0; i < childNodes.Count; i++)
             {
                 childNodes[i].direction = rct.GetDirectionNoDiagonals(childNodes[i].crd);
             }
-            base.setNodeDirections();
+            base.HookAfterAddNodesToMapElement();
         }
     }
 }

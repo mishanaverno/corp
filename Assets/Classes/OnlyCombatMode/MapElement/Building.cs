@@ -66,6 +66,12 @@ namespace Map
             portal.Init();
             return portal.rct;
         }
+        public void Addfloor()
+        {
+            Stage stage = Stage.GetStage();
+            Debug.Log(stage.floorCounter);
+            stage.AddFloor(new AbovegroundFloor(stage.floorCounter, stage));
+        }
         public void CreateMainEntrance(RCT rct, string innername, string outername)
         {
             BaseRoom.CreateNonOpenablePortal(rct, innername, outername);
@@ -80,6 +86,7 @@ namespace Map
             if (node.IsOnMapElementBorder())
             {
                 List<string> walls = node.GetWall();
+                
                 for (int w = 0; w < walls.Count; w++)
                 {
                     if ((node.crd.x == rct.Start.x && walls[w] == "t") || 
@@ -91,26 +98,27 @@ namespace Map
                         w--;
                         continue;
                     }
-                    NodeLayer border = new NodeLayer(getPrefabNuber(), "Premetives/Surface", "BuildingBorder");
-                    border.direction = walls[w];
-                    border.hasMesh = false;
-                    nodeLayers.Add(border);
-                }
-                for (int w = 0; w < walls.Count; w++)
-                {
                     NodeLayer wall = new NodeLayer(getPrefabNuber(), "Premetives/Wall", "OuterWall");
                     wall.direction = walls[w];
                     wall.hasMesh = false;
                     nodeLayers.Add(wall);
                 }
+                /*for (int w = 0; w < walls.Count; w++)
+                {
+                    
+                    NodeLayer border = new NodeLayer(getPrefabNuber(), "Premetives/Surface", "BuildingBorder");
+                    border.direction = walls[w];
+                    border.hasMesh = false;
+                    nodeLayers.Add(border);
+                }*/
                 List<string> outerCorners = node.GetOuterCorners();
-                for (int c = 0; c < outerCorners.Count; c++)
+                /*for (int c = 0; c < outerCorners.Count; c++)
                 {
                     NodeLayer border = new NodeLayer(getPrefabNuber(), "Premetives/Surface", "BuildingBorderOuterCorner");
                     border.direction = outerCorners[c];
                     border.hasMesh = false;
                     nodeLayers.Add(border);
-                }
+                }*/
                 for (int c = 0; c < outerCorners.Count; c++)
                 {
                     NodeLayer corner = new NodeLayer(getPrefabNuber(), "Premetives/Wall", "OuterWallOuterCorner");

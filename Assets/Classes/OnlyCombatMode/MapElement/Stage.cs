@@ -23,13 +23,13 @@ namespace Map
             this.enabledBasement = enabledBasement;
             this.DesignName = DesignName;
             floors = new List<Floor>();
-            AddFloor(new GroundFloor(groundFloor, this));
+            
 
             if (enabledBasement)
             {
                 AddFloor(new UndergroundFloor(0, this));
             }
-            
+            AddFloor(new GroundFloor(groundFloor, this));
             floorCounter = 2;
             instance = this;
         }
@@ -102,13 +102,21 @@ namespace Map
         {
             UndergrounRoom room = new UndergrounRoom(rct);
             MapElement dirt = childElements.Find(x => x.floorNumber == 0 && x.GetType() == typeof(UndergroundDirt));
-            dirt.addNewElement(room);
-            return room; 
+            if (dirt != null) {
+                dirt.addNewElement(room);
+                return room;
+            }
+            else
+            {
+                return null;
+            }
         }
         public static Node GetNode(CRD crd, int floornumber)// возвращает узел
         {
             Stage stage = Stage.GetStage();
-            return stage.floors.Find(x => x.number == floornumber).GetNode(crd.x, crd.z);
+            Floor floor = stage.floors.Find(x => x.number == floornumber);
+            if(floor != null) return floor.GetNode(crd.x, crd.z);
+            return new Node();
         }
         public static Node GetNode(CRD crd)
         {

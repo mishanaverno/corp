@@ -9,22 +9,41 @@ namespace Game{
 	public class GameController : MonoBehaviour {
 		public CameraMoving cameraTarget;
 		public bool combatMode;
+        private string gameMode; 
 		public int turnNumber;
 		public int activeUnitIndex;
 		public List<Unit> allUnits = new List<Unit>();
 		public bool pauseMoving = false;
 		public bool blockPathfinding = false;
-		// Use this for initialization
-		void Start () {
+        public int activFloorNumber = 0;
+        // Use this for initialization
+        void Start () {
 			turnNumber = 1;
 			combatMode = true;
 			activeUnitIndex = 0;
 		}
 		
 		// Update is called once per frame
-		void Update () {
-			
-		}
+		void FixedUpdate()
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                ChangeActiveFloor(0);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                ChangeActiveFloor(1);
+            }
+        }
+        public static void ChangeActiveFloor(int floorNumber)
+        {
+            if (GameController.instance.activFloorNumber != floorNumber)
+            {
+                Debug.Log(floorNumber);
+                GameController.instance.activFloorNumber = floorNumber;
+                MapManager.instance.gameObject.transform.BroadcastMessage("ChangeActiveFloor");
+            }
+        }
 		public void EndTurn(){// метод обработки конца хода
 			if (activeUnitIndex == allUnits.Count) {
 				activeUnitIndex = 0;

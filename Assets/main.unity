@@ -489,6 +489,7 @@ MonoBehaviour:
   activeUnitIndex: 0
   pauseMoving: 0
   blockPathfinding: 0
+  activFloorNumber: 0
 --- !u!114 &917622072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -570,7 +571,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 2
-    widthMultiplier: 1
+    widthMultiplier: 0.2
     widthCurve:
       serializedVersion: 2
       m_Curve:

@@ -71,7 +71,7 @@ namespace Map
             
             return base.HookAddLayersToNode(nodeLayers, node);
         }
-        public override void setNodeDirections()
+        public override void HookAfterAddNodesToMapElement()
         {
             string direction;
             if (axis == 'v')

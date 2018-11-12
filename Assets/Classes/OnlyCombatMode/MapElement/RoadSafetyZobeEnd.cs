@@ -20,7 +20,7 @@ namespace Map
         {
             return this.layers;
         }
-        public override void setNodeDirections()
+        public override void HookAfterAddNodesToMapElement()
         {
             childNodes[0].direction = direction;
         }
